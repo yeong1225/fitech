@@ -1,19 +1,64 @@
 <!DOCTYPE html>
+<html>
+
+<head>
+    <title>Socket.IO Example</title>
+</head>
+
+<body>
+    <h1>Socket.IO Example</h1>
+
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        function sendScore() {
+            var score = Math.floor(Math.random() * 101); // 임의의 점수 생성
+            socket.emit('new_score', { 'score': score });
+        }
+    </script>
+</body>
+
+</html>
+
+
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 </head>
+
 <body>
     <h2>hihi</h2>
-    <p>A 점수: <span id="a_score">{{ a_score }}</span></p>
-    <p>Labels: {{ labels }}</p>
-    <div class="image-container">
-        <img src="{{ url_for('static', filename='img/Warrior.jpg') }}" class="image" alt="Warrior Pose">
-        <img src="{{ url_for('main.video_feed1') }}" class="image">
+    <div id="score-container">
+        <p>Current Score: <span id="current-score">N/A</span></p>
+    </div>
+    <h1>Current Time</h1>
+    <div id="timeDisplay"></div>
+    <img src="{{ url_for('.video_feed1') }}" class="image">
+
     </div>
 
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // 'new_score' 이벤트 수신
+        socket.on('new_score', function (data) {
+            var score = data.score;
+            document.getElementById('current-score').innerText = score;
+        
+        });
+        socket.on('time_hen', function(data) {
+            var time_hen = data.time_hen;
+            document.getElementById('timeDisplay').innerHTML = 'Time: ' + time_hen;
+        });
+    </script>
+
+
+
 </body>
+
 </html>
