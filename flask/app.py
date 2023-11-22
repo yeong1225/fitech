@@ -56,6 +56,8 @@ def generate_frames():
     seconds_old =0
     dem =  0
     z =1 
+    new_frame_width = 640
+    new_frame_height = 480
     
     cap = cv2.VideoCapture(0) 
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
@@ -63,6 +65,7 @@ def generate_frames():
             ret, frame = cap.read()
             if not ret:
                 break
+            frame = cv2.resize(frame, (new_frame_width, new_frame_height))
 
             image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             image.flags.writeable = False
