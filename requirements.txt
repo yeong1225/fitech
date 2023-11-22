@@ -4,4 +4,3 @@ mediapipe
 tensorflow==2.4.0
 spicy
 flask-socketio
-scipy
