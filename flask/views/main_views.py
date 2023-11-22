@@ -11,6 +11,7 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 
 
+<<<<<<< HEAD
 model = load_model("./model/videoyoga1.h5",compile=False)
 
 if model:
@@ -19,9 +20,17 @@ else:
     print("모델을 로드하지 못했습니다.")
 
 
+=======
+# bp = Blueprint('main', __name__, template_folder="templates")
+
+
+# mp_drawing = mp.solutions.drawing_utils # Visualizing our poses
+# mp_pose = mp.solutions.pose # Importing our pose estimation model (ex)hand,
+>>>>>>> 8b6e1b162d6b15bd8561b2a89ee897f807730ab8
 
 bp = Blueprint("main", __name__, template_folder="templates")
 
+<<<<<<< HEAD
 mp_holistic = mp.solutions.holistic # Holistic model
 mp_drawing = mp.solutions.drawing_utils # Drawing utilities
 
@@ -31,6 +40,29 @@ import numpy as np
 import cv2
 
 app = Flask(__name__)
+=======
+# @bp.route('/')
+# def home():
+#     return render_template('home.html')
+
+# @bp.route('/calendar')
+# def calendar():
+#     return render_template('calendar.html')
+
+# @bp.route('/login')
+# def login():
+#     return render_template('login.html')
+
+
+# @bp.route('/register')
+# def register():
+#     return render_template('register.html')
+
+
+# @bp.route('/contact')
+# def contact():
+#     return render_template('contact.html')
+>>>>>>> 8b6e1b162d6b15bd8561b2a89ee897f807730ab8
 
 
 
