@@ -51,7 +51,30 @@ def calendar():
 # 운동 후 페이지
 @app.route('/after')
 def after():
-    return render_template('after.html')
+    hits = 10  # Replace with actual logic to get this value
+    total = 14  # Replace with actual logic to get this value
+
+    def calculate_grade(hits, total):
+        if total == 0:
+            return 'N/A', '#555555'  # Dark gray for undefined grade
+
+        percentage = (hits / total) * 100
+
+        if percentage >= 90:
+            return 'A', '#4c9a2a'  # Dark green
+        elif percentage >= 80:
+            return 'B', '#2a77ad'  # Dark blue
+        elif percentage >= 70:
+            return 'C', '#ebcb2d'  # Dark yellow
+        elif percentage >= 60:
+            return 'D', '#ad6c2a'  # Dark orange
+        else:
+            return 'F', '#9a2a2a'  # Dark red
+
+    grade, color = calculate_grade(hits, total)
+
+    # Pass the grade, color, hits, and total to your template
+    return render_template('after.html', grade=grade, color=color, hits=hits, total=total)
 
 # 연락처 페이지
 @app.route('/contact')
