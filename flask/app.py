@@ -12,20 +12,20 @@ import datetime
 #from scipy import spatial
 import math
 from flask import jsonify
-#from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model
 #from views.main_views import bp 
 from views.login_views import log
 from db_config import db  # db_config 모듈에서 db 불러오기
 
 
-#from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model
 
-#model = load_model("./model/videoyoga10.h5",compile=False)
+model = load_model("./model/videoyoga10.h5",compile=False)
 
-#if model:
-#    print("모델이 성공적으로 로드되었습니다.")
-#else:
-#    print("모델을 로드하지 못했습니다.")
+if model:
+    print("모델이 성공적으로 로드되었습니다.")
+else:
+    print("모델을 로드하지 못했습니다.")
 
 
 
