@@ -46,10 +46,20 @@ def home():
 def calendar():
     return render_template('calendar.html')
 
+# 운동 후 페이지
+@app.route('/after')
+def after():
+    return render_template('after.html')
+
 # 연락처 페이지
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
+
+# 운동 시작 전 페이지
+@app.route('/prepare')
+def prepare():
+    return render_template('prepare.html')
 
 
 
@@ -392,7 +402,6 @@ def contact():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
 
 
 

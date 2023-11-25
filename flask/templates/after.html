@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jsCalendar.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jsCalendar.micro.css') }}">
+<script type="text/javascript" src="{{ url_for('static', filename='js/jsCalendar.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jsCalendar.datepicker.js') }}"></script>
+<link href="{{ url_for('static', filename='css/styles3.css') }}" rel="stylesheet" />
+<!-- Additional CSS and JavaScript links can be included here -->
+<style>
+    .feedback-form .btn {
+        float: right;
+        /* 오른쪽 정렬 */
+        margin-right: 5px;
+        /* 기록하기 버튼 마진 조정 */
+    }
+
+    .next-session-buttons {
+        text-align: center;
+        /* 버튼을 중앙에 위치 */
+    }
+
+    .feedback-form .btn,
+    .next-session-buttons .btn,
+    .btn-primary {
+        margin: 10px;
+        /* 모든 버튼의 마진 조정 */
+        padding: 10px 15px;
+        /* 모든 버튼의 패딩 조정 */
+        font-size: 16px;
+        /* 텍스트 크기 조정 */
+        line-height: 1.5;
+        /* 라인 높이 조정 */
+        border-radius: 5px;
+        /* 테두리 반경 조정 */
+        /* 버튼 크기를 일관되게 조정 */
+    }
+
+    .btn-warning {
+        background-color: #a9a9a9;
+        /* 달력보기 버튼 색상 변경 */
+        border-color: #b0c4de;
+        /* 달력보기 버튼 테두리 색상 변경 */
+        color: white;
+        /* 글자 색상 변경 */
+        text-decoration: none;
+        /* 텍스트 꾸미기 제거 */
+    }
+
+    .btn-warning:hover,
+    .btn-warning:focus {
+        background-color: #757575;
+        /* 마우스 오버시 달력보기 버튼 색상 변경 */
+        color: white;
+        /* 글자 색상 유지 */
+    }
+
+    .btn-warning:active {
+        background-color: #757575;
+        /* 클릭 시 색상 변경 */
+        color: white;
+        /* 글자 색상 유지 */
+    }
+
+    .btn-warning:focus {
+        box-shadow: none;
+        /* 클릭 시 노란색 테두리 제거 */
+    }
+
+    /* 새로운 이미지 컨테이너 스타일 */
+    .image-container {
+        display: flex;
+        justify-content: flex-start;
+        /* 이미지를 왼쪽에서부터 시작 */
+        margin-top: 20px;
+    }
+
+    .image-box {
+        border: 1px solid #ddd;
+        /* 테두리 스타일 */
+        width: 200px;
+        /* 너비 설정 */
+        height: 200px;
+        /* 높이 설정 - 정사각형 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f8f8;
+        /* 배경색 */
+        margin-right: 10px;
+        /* 첫 번째 이미지 박스와 두 번째 이미지 박스 사이의 간격 */
+    }
+
+
+    .image-box img {
+        width: 100%;
+        /* The image will fill the width of its container */
+        height: 100%;
+        /* The image will fill the height of its container */
+        object-fit: cover;
+        /* The image will cover the container, cropping if necessary */
+        display: block;
+        /* 이미지 전체가 보이도록 조정 */
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="masthead" style="background-image: url('./static/img/yoga.jpg'); background-size: cover;">
+</header>
+
+<!-- Main Content-->
+<section class="h-100">
+    <div class="container mt-5">
+        <h1 class="text-center">잘했어요!</h1>
+        <br>
+        <!-- Session Summary -->
+        <div class="mt-4">
+            <h2>오늘의 요가 동작</h2>
+            <p>요가 활동을 한눈에 모아봐요!</p>
+            <ul>
+                <li>시간 : 10 분</li>
+                <li>동작 개수 : 2</li>
+                <li>동작 종류 : 나무 자세, 전사2 자세</li>
+            </ul>
+            <div class="image-container">
+                <div class="image-box">
+                    <!-- 첫 번째 이미지 삽입 -->
+                    <img src="{{ url_for('static', filename='img/yoga2.jpg') }}" alt="Image 1">
+                </div>
+                <div class="image-box">
+                    <!-- 두 번째 이미지 삽입 -->
+                    <img src="{{ url_for('static', filename='img/warrior.jpg') }}" alt="Image 2">
+                </div>
+            </div>
+        </div>
+        <br>
+        <!-- Feedback Form -->
+        <div class="mt-4 feedback-form">
+            <h2>감정기록</h2>
+            <p>지금의 감정을 기록해봐요!</p>
+            <form>
+                <div class="form-group">
+                    <textarea class="form-control" id="feedback" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">기록하기</button>
+            </form>
+        </div>
+        <br>
+        <!-- Next Session Recommendation -->
+        <div class="mt-4 mb-5">
+            <h2>조금 더 해볼까요?</h2>
+            <div class="next-session-buttons">
+                <button class="btn btn-primary">다른 동작하기</button>
+                <a href="{{ url_for('calendar') }}" class="btn btn-warning">달력보기</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block footer %}
+<!-- Include any necessary footer elements here -->
+<footer class="border-top">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="small text-center text-muted fst-italic">Copyright © Fitech 2023</div>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock %}
