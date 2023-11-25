@@ -47,10 +47,11 @@
 <script>
 // 페이지 리디렉션을 처리하는 함수입니다.
 function redirectToPage() {
-  window.location.href = '특정_웹페이지.html'; // 원하는 웹페이지 주소로 변경하세요.
+  window.location.href = '{{ url_for("instructions") }}';
 }
 </script>
 
 <script src="{{ url_for('static', filename='js/prepare.js') }}"></script>
 </body>
 </html>
+

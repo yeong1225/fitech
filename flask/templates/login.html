@@ -18,6 +18,7 @@
                 <div class="text-center my-5">
                     <h2>login</h2>
                 </div>
+<<<<<<< HEAD
                 <!-- 로그인 또는 회원가입 템플릿에 추가 -->
 {% with messages = get_flashed_messages(category_filter=["error"]) %}
 {% if messages %}
@@ -28,13 +29,20 @@
     </div>
 {% endif %}
 {% endwith %}
+=======
+>>>>>>> origin/master
                 <div class="card shadow-lg">
                     <div class="card-body p-5">
                         <h1 class="fs-4 card-title fw-bold mb-4">Login</h1>
                         <form method="POST" class="needs-validation" novalidate="" autocomplete="off">
                             <div class="mb-3">
+<<<<<<< HEAD
                                 <label class="mb-2 text-muted" for="user_id">Email</label>
                                 <input id="user_id" type="email" class="form-control" name="user_id" value="" required
+=======
+                                <label class="mb-2 text-muted" for="email">ID</label>
+                                <input id="email" type="email" class="form-control" name="email" value="" required
+>>>>>>> origin/master
                                     autofocus>
                                 <div class="invalid-feedback">
                                     Email is invalid
@@ -43,10 +51,17 @@
 
                             <div class="mb-3">
                                 <div class="mb-2 w-100">
+<<<<<<< HEAD
                                     <label class="text-muted" for="user_password">Password</label>
 
                                 </div>
                                 <input id="user_password" type="password" class="form-control" name="user_password" required>
+=======
+                                    <label class="text-muted" for="password">Password</label>
+
+                                </div>
+                                <input id="password" type="password" class="form-control" name="password" required>
+>>>>>>> origin/master
                                 <div class="invalid-feedback">
                                     Password is required
                                 </div>

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html>
 
 <head>
@@ -24,10 +25,14 @@
 <!DOCTYPE html>
 <html lang="en">
 
+=======
+<html lang="en">
+>>>>>>> origin/master
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+<<<<<<< HEAD
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 </head>
 
@@ -64,4 +69,18 @@
 
 </body>
 
+=======
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h2>hihi</h2>
+    <p>A 점수: <span id="a_score">{{ a_score }}</span></p>
+    <p>Labels: {{ labels }}</p>
+    <div class="image-container">
+        <img src="{{ url_for('static', filename='img/Warrior.jpg') }}" class="image" alt="Warrior Pose">
+        <img src="{{ url_for('main.video_feed1') }}" class="image">
+    </div>
+
+</body>
+>>>>>>> origin/master
 </html>

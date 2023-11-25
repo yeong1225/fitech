@@ -1,6 +1,7 @@
+<<<<<<< HEAD
 from flask import Flask, request, redirect, url_for, render_template, session, flash, Response
-import pandas as pd
-import pymysql
+#import pandas as pd
+#import pymysql
 
 #from werkzeug.security import generate_password_hash, check_password_hash
 from flask_socketio import SocketIO,emit
@@ -32,10 +33,24 @@ app.secret_key = 'your_secret_key_here'
 
 app.register_blueprint(bp, url_prefix='/')
 app.register_blueprint(log,url_prefix='/')
+=======
+from flask import Flask, render_template, Response
+from views.main_views import bp 
+from views.detect_views import dbp
+
+
+
+app = Flask(__name__)
+
+# Blueprint를 /search 경로에 등록
+app.register_blueprint(bp, url_prefix='/')
+app.register_blueprint(dbp, url_prefix='/')
+>>>>>>> origin/master
 
 
 
 
+<<<<<<< HEAD
 # 홈 페이지
 @app.route('/')
 def home():
@@ -46,20 +61,22 @@ def home():
 def calendar():
     return render_template('calendar.html')
 
-# 운동 후 페이지
-@app.route('/after')
-def after():
-    return render_template('after.html')
-
 # 연락처 페이지
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
 
-# 운동 시작 전 페이지
+# 카메라 조정 페이지
 @app.route('/prepare')
 def prepare():
     return render_template('prepare.html')
+
+# 안내 페이지
+@app.route('/instructions')
+def instructions():
+    return render_template('instructions.html')
+
+
 
 
 
@@ -402,6 +419,15 @@ def prepare():
 
 if __name__ == '__main__':
     app.run(debug=True)
+=======
+@app.route('/search')
+def hello_world():
+    return 'Hello /search route'
+
+if __name__ == '__main__':
+    app.run()
+>>>>>>> origin/master
+
 
 
 
