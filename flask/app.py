@@ -58,10 +58,16 @@ def after():
 def contact():
     return render_template('contact.html')
 
-# 운동 시작 전 페이지
+# 카메라 조정 페이지
 @app.route('/prepare')
 def prepare():
     return render_template('prepare.html')
+
+
+# 안내 페이지
+@app.route('/instructions')
+def instructions():
+    return render_template('instructions.html')
 
 
 
