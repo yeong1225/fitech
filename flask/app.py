@@ -61,6 +61,16 @@ def contact():
 def prepare():
     return render_template('prepare.html')
 
+# 카메라 조정 페이지
+@app.route('/prepare')
+def prepare():
+    return render_template('prepare.html')
+
+# 안내 페이지
+@app.route('/instructions')
+def instructions():
+    return render_template('instructions.html')
+
 
 
 # @app.route('/warrior')
