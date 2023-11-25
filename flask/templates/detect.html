@@ -6,12 +6,16 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>모델입니다/</h1>
+    <h1>모델입니다</h1>
     <img src="{{ url_for('video_feed') }}" class="image">
-    <h1>Current Time</h1>
+    <h2>dg</h2>
     <div id="timeDisplay"></div>
+    <div id="feedBackDisplay" style="font-size: 50px;"></div>
+    <div id="feedBackDisplay1" style="font-size: 50px;"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
+        var previousFeedback = ''; // 이전 피드백 값을 저장하는 변수
+
         // Connect to the WebSocket server
         var socket = io.connect('http://' + document.domain + ':' + location.port);
 
@@ -19,6 +23,28 @@
         socket.on('time', function(data) {
             var time = data.time;
             document.getElementById('timeDisplay').innerHTML = 'Time: ' + time;
+        });
+
+         // Listen for the 'return_time' event
+         socket.on('feedback1', function(data) {
+            var feedback1 = data.feedback1;
+            document.getElementById('feedBackDisplay1').innerHTML = '피드백: ' + feedback1;
+        });
+
+        // Listen for the 'return_feedback' event
+        socket.on('feedback', function(data) {
+            var feedback = data.feedback;
+
+            // 이전 피드백 값과 새로운 피드백 값 비교
+            if (feedback !== previousFeedback) {
+                document.getElementById('feedBackDisplay').innerHTML = 'Feedback: ' + feedback;
+                previousFeedback = feedback; // 이전 피드백 값을 업데이트
+                
+                // Web Speech API를 사용하여 음성으로 출력
+                var speechSynthesis = window.speechSynthesis;
+                var speechUtterance = new SpeechSynthesisUtterance(feedback);
+                speechSynthesis.speak(speechUtterance);
+            }
         });
     </script>
 </body>
