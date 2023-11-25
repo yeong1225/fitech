@@ -1,27 +1,4 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-    <title>Socket.IO Example</title>
-</head>
-
-<body>
-    <h1>Socket.IO Example</h1>
-
-    <script>
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
-
-        function sendScore() {
-            var score = Math.floor(Math.random() * 101); // 임의의 점수 생성
-            socket.emit('new_score', { 'score': score });
-        }
-    </script>
-</body>
-
-</html>
-
-
-<!DOCTYPE html>
 <html lang="en">
 
 <head>

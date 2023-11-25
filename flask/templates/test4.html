@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Count Time Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Count Time Test</h1>
+    <button id="testButton">Test Count Time</button>
+    <p>Time: <span id="time">0</span></p>
+    <p>Z: <span id="z">1</span></p>
+
+    <script>
+        $(document).ready(function(){
+            $('#testButton').click(function(){
+                $.get("/test_count_time", function(data){
+                    $('#time').text(data.time);
+                    $('#z').text(data.z);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

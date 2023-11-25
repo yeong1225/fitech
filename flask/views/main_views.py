@@ -1,5 +1,6 @@
-from flask import Flask,Blueprint, render_template, Response
+from flask import Flask,Blueprint, jsonify, render_template, Response
 import cv2
+from flask_socketio import SocketIO
 import mediapipe as mp
 import numpy as np
 from matplotlib import pyplot as plt
@@ -28,9 +29,38 @@ bp = Blueprint("main", __name__, template_folder="templates")
 mp_drawing = mp.solutions.drawing_utils # Visualizing our poses
 mp_pose = mp.solutions.pose 
 
-seconds_old =0
-dem =  0
-z =1  
+seconds_old = 0
+dem = 0
+z = 1
+
+def count_time(time):
+    global seconds_old, dem, z
+    now = datetime.datetime.now()
+    seconds_new = now.strftime("%S")
+    
+    print(f"count_time called - now: {seconds_new}, seconds_old: {seconds_old}, dem: {dem}, z: {z}")
+
+    if seconds_new != seconds_old:
+        seconds_old = seconds_new
+        dem += 1
+        if dem == time + 1:
+            dem = 0
+            z += 1
+            if z == 5:
+                z = 1
+    return dem, z
+
+
+@bp.route('/test4')
+def test4():
+    return render_template('test4.html')
+
+@bp.route('/test_count_time')
+def test_count_time():
+    time, new_z = count_time(5)
+    return {"time": time, "z": new_z}
+
+
 
 
 @bp.route('/detect')
@@ -60,19 +90,7 @@ def extract_keypoints(results):
 
     return np.concatenate([pose])
 
-def count_time(time):
-    global seconds_old, dem,z
-    now = datetime.now()
-    seconds_new = now.strftime("%S")
-    if seconds_new != seconds_old:
-        seconds_old = seconds_new
-        dem = dem + 1
-        if dem == time+1:
-            dem =0
-            z +=1
-            if z==5:
-                z=1
-    return dem, z
+
 
 def calculateAngle(a,b,c):
     a = np.array(a)
@@ -95,7 +113,6 @@ def feed():
     global seconds_old, dem,z
     actions = np.array(['Downdog','Warrior1','Warrior2'])
     cap= cv2.VideoCapture(0)
-# Set mediapipe model 
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
         while cap.isOpened():
 
@@ -198,17 +215,16 @@ def feed():
                 #print(detectedLabel)
             
 
-                if z == 1:
+                if z==1:
                     label = "Warrior2"
                     print("이건 실행되니?1")
-                    if detectedLabel == label:
-                        print(detectedLabel)
-                        print(label)
-                        print("이건 실행되니?2")
-                        time_hen, z = count_time(5)
-                        print(time_hen)
-                        cv2.rectangle(image, (0, 450), (350, 300), (0, 255, 0), cv2.FILLED)
-                        cv2.putText(image, f"TIME: {int(time_hen)}s", (10,250),
+                    cv2.rectangle(image, (0, 450), (350, 300), (0, 255, 0), cv2.FILLED)
+                    cv2.putText(image, str(detectedLabel) ,(10,230),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
+                    if (detectedLabel == label):
+                        time, z = count_time(5)
+                        return_time(time)
+                        cv2.putText(image, f"TIME: {int(time)}s", (10,250),
                                     cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
                     
                 elif z==2:
@@ -237,3 +253,8 @@ def feed():
 @bp.route('/video_feed')
 def video_feed():
     return Response(feed(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@bp.route('/time')
+def return_time(time):
+    return jsonify({"time": time})

@@ -5,20 +5,11 @@ import numpy as np
 from matplotlib import pyplot as plt
 import tensorflow as tf
 import datetime
+import time
 #from tensorflow.keras.utils import to_categorical
 #from tensorflow.keras.models import Sequential
 #from tensorflow.keras.layers import LSTM, Dense
 #from tensorflow.keras.callbacks import TensorBoard
-from tensorflow.keras.models import load_model
-
-
-model = load_model("./model/videoyoga10.h5",compile=False)
-
-if model:
-    print("모델이 성공적으로 로드되었습니다.")
-else:
-    print("모델을 로드하지 못했습니다.")
-
 
 
 bp = Blueprint("main", __name__, template_folder="templates")
@@ -30,19 +21,11 @@ mp_pose = mp.solutions.pose
 
 app = Flask(__name__)
 
-seconds_old =0
-dem =  0
-z =1   
+global seconds_old, dem,z 
 
-sequence = []
-sentence = []
-predictions = []
-threshold = 0.5
-new_frame_width = 640
-new_frame_height = 480
-label = ""
-detectedLabel = ""
-time_hen = 0
+z = 1
+timer_started = False
+start_time = None
 
 
 @bp.route('/detect')
@@ -102,6 +85,9 @@ def feed():
     sentence = []
     predictions = []
     threshold = 0.5
+    seconds_old =0
+    dem =  0
+    z =1   
     new_frame_width = 640
     new_frame_height = 480
     actions = np.array(['Downdog','Warrior1','Warrior2'])
@@ -109,128 +95,128 @@ def feed():
 # Set mediapipe model 
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
         while cap.isOpened():
-
-            # Read feed
-           ret,frame= cap.read()
-        frame = cv2.flip(frame, 1) 
-        # Resize frame to new dimensions
-        frame = cv2.resize(frame, (new_frame_width, new_frame_height))
-        
-        # Make detections
-        image, results = mediapipe_detection(frame, pose)
-        
-        mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
-        # Draw landmarks
-        #draw_styled_landmarks(image, results)
-        
-                
-        actions = np.array(['Downdog','Warrior1','Warrior2'])
-        
-        # 2. Prediction logic
-        keypoints = extract_keypoints(results)
-        sequence.append(keypoints)
-        sequence = sequence[-30:]
-
-        if len(sequence) == 30:
-            res = model.predict(np.expand_dims(sequence, axis=0))[0]
-            print(actions[np.argmax(res)])
-            predictions.append(np.argmax(res))
-            detectedLabel = str(actions[np.argmax(res)])
+                # Read fee
+            ret,frame= cap.read()
+            frame = cv2.flip(frame, 1) 
+            # Resize frame to new dimensions
+            frame = cv2.resize(frame, (new_frame_width, new_frame_height))
             
-        try:
-            landmarks = results.pose_landmarks.landmark
+            # Make detections
+            image, results = mediapipe_detection(frame, pose)
             
-            angle_point = []
+            mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
+            # Draw landmarks
+            #draw_styled_landmarks(image, results)
             
-            #각도 포인트
-            
-            right_elbow = [landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW.value].y]
-            angle_point.append(right_elbow)
-            
-            left_elbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x, landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
-            angle_point.append(left_elbow)
-            
-            right_shoulder = [landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].y]
-            angle_point.append(right_shoulder)
-            
-            left_shoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x, landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y]
-            angle_point.append(left_shoulder)
-            
-            right_wrist = [landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].y]
-            
-            left_wrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x, landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
                     
-            right_hip = [landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].y]
-            angle_point.append(right_hip)
+            actions = np.array(['Downdog','Warrior1','Warrior2'])
             
-            left_hip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x, landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y]
-            angle_point.append(left_hip)
-            
-            right_knee = [landmarks[mp_pose.PoseLandmark.RIGHT_KNEE.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_KNEE.value].y]
-            angle_point.append(right_knee)
-            
-            left_knee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].x, landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].y]
-            angle_point.append(left_knee)
-            right_ankle = [landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE.value].y]
-            
-            left_ankle = [landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].x, landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].y]
+            # 2. Prediction logic
+            keypoints = extract_keypoints(results)
+            sequence.append(keypoints)
+            sequence = sequence[-30:]
+
+            if len(sequence) == 30:
+                res = model.predict(np.expand_dims(sequence, axis=0))[0]
+                print(actions[np.argmax(res)])
+                predictions.append(np.argmax(res))
+                detectedLabel = str(actions[np.argmax(res)])
                 
-            
-            #각도 계산
-            angle = []
-            
-            angle1 = calculateAngle(right_shoulder, right_elbow, right_wrist)
-            angle.append(int(angle1))
-            angle2 = calculateAngle(left_shoulder, left_elbow, left_wrist)
-            angle.append(int(angle2))
-            angle3 = calculateAngle(right_elbow, right_shoulder, right_hip)
-            angle.append(int(angle3))
-            angle4 = calculateAngle(left_elbow, left_shoulder, left_hip)
-            angle.append(int(angle4))
-            angle5 = calculateAngle(right_shoulder, right_hip, right_knee)
-            angle.append(int(angle5))
-            angle6 = calculateAngle(left_shoulder, left_hip, left_knee)
-            angle.append(int(angle6))
-            angle7 = calculateAngle(right_hip, right_knee, right_ankle)
-            angle.append(int(angle7))
-            angle8 = calculateAngle(left_hip, left_knee, left_ankle)
-            angle.append(int(angle8))
-
-            
-            #print(detectedLabel)
-        
-
-            if z == 1:
-                label = "Warrior2"
-                print("이건 실행되니?1")
-                if detectedLabel == label:
-                    print(detectedLabel)
-                    print(label)
-                    print("이건 실행되니?2")
-                    time_hen, z = count_time(30)
-                    print(time_hen)
-                    cv2.rectangle(image, (0, 450), (350, 300), (0, 255, 0), cv2.FILLED)
-                    cv2.putText(image, f"TIME: {int(time_hen)}s", (10,250),
-                                cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
-            elif z==2:
-                labels = "Warrior2"
+            try:
+                landmarks = results.pose_landmarks.landmark
                 
-            elif z==3:
-                labels = "Warrior2"
-                     
+                angle_point = []
                 
-        except:
-            pass
+                #각도 포인트
+                
+                right_elbow = [landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW.value].y]
+                angle_point.append(right_elbow)
+                
+                left_elbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x, landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
+                angle_point.append(left_elbow)
+                
+                right_shoulder = [landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].y]
+                angle_point.append(right_shoulder)
+                
+                left_shoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x, landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y]
+                angle_point.append(left_shoulder)
+                
+                right_wrist = [landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].y]
+                
+                left_wrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x, landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
+                        
+                right_hip = [landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].y]
+                angle_point.append(right_hip)
+                
+                left_hip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x, landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y]
+                angle_point.append(left_hip)
+                
+                right_knee = [landmarks[mp_pose.PoseLandmark.RIGHT_KNEE.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_KNEE.value].y]
+                angle_point.append(right_knee)
+                
+                left_knee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].x, landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].y]
+                angle_point.append(left_knee)
+                right_ankle = [landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE.value].y]
+                
+                left_ankle = [landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].x, landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].y]
+                    
+                
+                #각도 계산
+                angle = []
+                
+                angle1 = calculateAngle(right_shoulder, right_elbow, right_wrist)
+                angle.append(int(angle1))
+                angle2 = calculateAngle(left_shoulder, left_elbow, left_wrist)
+                angle.append(int(angle2))
+                angle3 = calculateAngle(right_elbow, right_shoulder, right_hip)
+                angle.append(int(angle3))
+                angle4 = calculateAngle(left_elbow, left_shoulder, left_hip)
+                angle.append(int(angle4))
+                angle5 = calculateAngle(right_shoulder, right_hip, right_knee)
+                angle.append(int(angle5))
+                angle6 = calculateAngle(left_shoulder, left_hip, left_knee)
+                angle.append(int(angle6))
+                angle7 = calculateAngle(right_hip, right_knee, right_ankle)
+                angle.append(int(angle7))
+                angle8 = calculateAngle(left_hip, left_knee, left_ankle)
+                angle.append(int(angle8))
 
-        # Draw landmarks
-        draw_styled_landmarks(image, results)
-            
-        ret, buffer = cv2.imencode('.jpg', image)
-        frame = buffer.tobytes()
-        yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                
+                #print(detectedLabel)
+                a = count_time(30)
+                print(a)
+                
+                if z == 1:
+                    label = "Warrior2"
+                    print("이건 실행되니?1")
+                    if detectedLabel == label:
+                        print(detectedLabel)
+                        print(label)
+                        print("이건 실행되니?2")
+                        time_hen, z = count_time(30)
+                        print(time_hen)
+                        cv2.rectangle(image, (0, 450), (350, 300), (0, 255, 0), cv2.FILLED)
+                        cv2.putText(image, f"TIME: {int(time_hen)}s", (10,250),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
+                elif z==2:
+                    labels = "Warrior2"
+                    
+                elif z==3:
+                    labels = "Warrior2"
+                        
+                    
+            except:
+                pass
 
-    cap.release()
+            # Draw landmarks
+            draw_styled_landmarks(image, results)
+                
+            ret, buffer = cv2.imencode('.jpg', image)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+        cap.release()
 
 
 

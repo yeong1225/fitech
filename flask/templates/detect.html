@@ -7,6 +7,19 @@
 </head>
 <body>
     <h1>모델입니다/</h1>
-    <img src="{{ url_for('main.video_feed') }}" class="image">
+    <img src="{{ url_for('video_feed') }}" class="image">
+    <h1>Current Time</h1>
+    <div id="timeDisplay"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        // Connect to the WebSocket server
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // Listen for the 'return_time' event
+        socket.on('time', function(data) {
+            var time = data.time;
+            document.getElementById('timeDisplay').innerHTML = 'Time: ' + time;
+        });
+    </script>
 </body>
 </html>
