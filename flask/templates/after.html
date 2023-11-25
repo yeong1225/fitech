@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
+
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jsCalendar.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jsCalendar.micro.css') }}">
 <script type="text/javascript" src="{{ url_for('static', filename='js/jsCalendar.js') }}"></script>
@@ -8,6 +9,130 @@
 <link href="{{ url_for('static', filename='css/styles3.css') }}" rel="stylesheet" />
 <!-- Additional CSS and JavaScript links can be included here -->
 <style>
+    @font-face {
+        font-family: 'SUITE-Regular';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    /* 기본 스타일 설정 */
+    body {
+        font-family: 'SUITE-Regular', Arial, sans-serif;
+        /* Apply the font to the entire body */
+        /* ... other styles ... */
+    }
+
+    /* 메인 컨텐츠 스타일 */
+    .content {
+        flex: 1 0 auto;
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    /* 제목 중앙 정렬 */
+    .title {
+        text-align: center;
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .section {
+        margin-top: 40px;
+        /* Adds space at the top of the section */
+        margin-bottom: 40px;
+        /* Adds space at the bottom of the section */
+        width: 100%;
+        /* Ensures the section takes full width */
+        clear: both;
+        /* Clears floated elements, if any */
+    }
+
+    /* 푸터 스타일 */
+    footer {
+        width: 100%;
+        flex-shrink: 0;
+        text-align: center;
+        padding: 20px 0;
+        background-color: #f8f8f8;
+    }
+
+
+    .title {
+        font-size: 24px;
+        /* Title size */
+        margin-bottom: 20px;
+        /* Space between title and content */
+    }
+
+    #grading-interface {
+        font-size: 16px;
+        /* Adjust base font size as needed */
+    }
+
+    .grade-display {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .grade-circle {
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .grade-letter {
+        font-size: 2em;
+        /* 32px if base font size is 16px */
+        font-weight: bold;
+    }
+
+    .grade-score {
+        font-size: 1em;
+        /* 16px if base font size is 16px */
+    }
+
+    .icons {
+        display: flex;
+        justify-content: center;
+    }
+
+    .icon img {
+        width: 100px;
+        /* 이미지 크기를 80px에서 100px로 조정 */
+        height: 100px;
+        /* 이미지 크기를 80px에서 100px로 조정 */
+        margin-bottom: 10px;
+        /* 이미지와 텍스트 사이의 간격을 조금 더 늘림 */
+    }
+
+    .icon {
+        margin: 0 20px;
+        /* 아이콘 간의 좌우 간격을 15px에서 20px로 늘림 */
+        text-align: center;
+        flex-direction: column;
+        align-items: center;
+        display: flex;
+    }
+
+    .icon-description {
+        margin-top: 4px;
+        text-align: center;
+        font-size: 0.75em;
+        /* Smaller font size for descriptions */
+    }
+
     .feedback-form .btn {
         float: right;
         /* 오른쪽 정렬 */
@@ -67,13 +192,7 @@
         /* 클릭 시 노란색 테두리 제거 */
     }
 
-    /* 새로운 이미지 컨테이너 스타일 */
-    .image-container {
-        display: flex;
-        justify-content: flex-start;
-        /* 이미지를 왼쪽에서부터 시작 */
-        margin-top: 20px;
-    }
+
 
     .image-box {
         border: 1px solid #ddd;
@@ -91,6 +210,14 @@
         /* 첫 번째 이미지 박스와 두 번째 이미지 박스 사이의 간격 */
     }
 
+    /* 페이지 컨텐츠의 너비를 확장 */
+    .container {
+        width: 90%;
+        /* 컨테이너의 너비를 90%로 조정 */
+        max-width: 1200px;
+        /* 최대 너비 설정 */
+    }
+
 
     .image-box img {
         width: 100%;
@@ -102,6 +229,192 @@
         display: block;
         /* 이미지 전체가 보이도록 조정 */
     }
+
+    /* 요약 섹션 스타일 */
+    .summary-section {
+        font-family: 'SUITE-Regular';
+        background-color: #f9f9fb;
+        /* Light background color */
+        border-radius: 10px;
+        /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* Subtle shadow */
+        padding: 20px;
+        /* Padding inside the container */
+        margin-top: 20px;
+        /* Space from top */
+        margin-bottom: 40px;
+        /* Space from bottom */
+        max-width: 400px;
+        /* Maximum width */
+        margin-left: auto;
+        /* Centering the block */
+        margin-right: auto;
+        text-align: center;
+        /* Center align text */
+        border: 2px solid #cccccc;
+        /* Border color */
+    }
+
+    /* 요약 섹션의 제목 스타일 */
+    .summary-section h2 {
+        font-family: 'SUITE-Regular';
+        color: #ff79c6;
+        /* Title color */
+        padding-bottom: 10px;
+        /* Space below the title */
+        border-bottom: 2px solid #ff79c6;
+        /* Title underline */
+        margin-bottom: 20px;
+        /* Space below the underline */
+        font-size: 1.5em;
+        /* Font size */
+    }
+
+    /* 요약 섹션 리스트 스타일 */
+    .summary-section ul {
+        list-style-type: none;
+        /* No bullets */
+        padding: 0;
+        /* Remove padding */
+        margin: 0;
+        /* Remove margin */
+    }
+
+    .summary-section ul li {
+        color: #333333;
+        /* Text color */
+        font-weight: bold;
+        /* Make the font bold */
+        margin-bottom: 10px;
+        /* Space between list items */
+        font-size: 1.2em;
+        /* Font size */
+    }
+
+    /* 감정기록 폼 스타일 */
+    .feedback-form {
+        width: 95%;
+        /* 폼의 폭을 좌우 여백을 줄이고 95%로 설정 */
+        margin: 0 auto;
+        /* 자동 마진으로 중앙 정렬 */
+    }
+
+    /* 피드백 텍스트 영역 스타일 */
+    .feedback-form .form-group {
+        width: 100%;
+        /* 입력 필드의 폭을 폼의 폭과 동일하게 설정 */
+    }
+
+    .feedback-form textarea {
+        width: 100%;
+        /* 텍스트 영역의 폭을 폼의 폭과 동일하게 설정 */
+        margin-bottom: 30px;
+        /*
+         텍스트 영역 하단 여백 설정 */
+    }
+
+    .content,
+    .content * {
+        font-family: 'SUITE-Regular', Arial, sans-serif;
+    }
+
+    @font-face {
+        font-family: 'komika_axisregular';
+        src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/212141/komikax_-webfont.woff2') format('woff2'), url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/212141/komikax_-webfont.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    .grade-circle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        width: 150px;
+        height: 150px;
+        border-radius: 100%;
+        background-color: #EC6F86;
+        color: #FFF;
+        font-family: 'komika_axisregular', sans-serif;
+        font-size: 2em;
+        /* Start with a base font size */
+        flex-direction: column;
+        /* Stack children vertically */
+    }
+
+    .grade-letter {
+        font-size: 2em;
+        /* relative to the parent font size */
+        line-height: 1;
+        /* Adjust if necessary to fit the circle */
+        margin-bottom: 0.25em;
+        /* Adds space below the grade letter */
+    }
+
+    .grade-score {
+        font-size: 0.5em;
+        /* relative to the parent font size */
+        line-height: 1;
+        /* Adjust if necessary to fit the circle */
+        margin-top: -0.25em;
+        /* Negative margin to bring grade score closer to grade letter if needed */
+    }
+
+    #your-button-id,
+    .your-button-class {
+        background-color: black;
+        /* Soft blue */
+        /* other styles if needed */
+    }
+
+    /*복붙*/
+    .services {
+        margin-bottom: 3em;
+    }
+
+    .services .icon {
+        float: left;
+        width: 80px;
+        /* Width of the icon */
+        height: 80px;
+        /* Height of the icon */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: whitesmoke;
+        border-radius: 50%;
+        /* Circular shape */
+        overflow: hidden;
+        /* Ensures content doesn't spill outside the circle */
+        margin-right: 15px;
+        /* Adjust as needed */
+    }
+
+    .services .icon img {
+        max-width: 100%;
+        /* Ensure the image doesn't exceed the icon's width */
+        max-height: 100%;
+        /* Ensure the image doesn't exceed the icon's height */
+        object-fit: contain;
+        /* Ensures the entire image fits within the container */
+    }
+
+    .services .icon i {
+        display: table-cell;
+        vertical-align: middle;
+        font-size: 60px;
+        color: #000;
+    }
+
+    .services .desc {
+        padding-left: 100px;
+    }
+
+    .services .desc h3 {
+        color: #000;
+        font-size: 28px;
+    }
 </style>
 {% endblock %}
 
@@ -110,49 +423,134 @@
 </header>
 
 <!-- Main Content-->
-<section class="h-100">
+
+<div class="title section"><strong>오늘의 운동 결과</strong></div>
+<br>
+<div id="grading-interface">
+    <div class="grade-display">
+        <div class="grade-circle" style="background-color: black">
+            <span class="grade-letter">{{ grade }}</span>
+
+            <span class="grade-score">{{ hits }}/{{ total }}</span>
+        </div>
+    </div>
+    <br>
+    <div class="icons">
+        <div class="icon">
+            <img src="{{ url_for('static', filename='img/icon1.jpg') }}" alt="Image 1">
+            전사자세 1
+            <div class="icon-description">상체를 조금 더 세우세요</div>
+            <div class="icon-description">상체를 조금 더 세우세요</div>
+        </div>
+        <div class="icon">
+            <img src="{{ url_for('static', filename='img/icon2.jpg') }}" alt="icon 2">
+            요가자세 2
+            <div class="icon-description">설명2</div>
+        </div>
+        <div class="icon">
+            <img src="{{ url_for('static', filename='img/icon3.jpg') }}" alt="icon 3">
+            요가자세 3
+            <div class="icon-description">설명3</div>
+        </div>
+        <div class="icon">
+            <img src="{{ url_for('static', filename='img/icon4.jpg') }}" alt="icon 4">
+            요가자세 4
+            <div class="icon-description">설명4</div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+</body>
+<br>
+<section class="h-100" style="margin-top: 30px; margin-bottom: 30px;">
     <div class="container mt-5">
-        <h1 class="text-center">잘했어요!</h1>
+        <br> <br>
+        <br>
         <br>
         <!-- Session Summary -->
-        <div class="mt-4">
-            <h2>오늘의 요가 동작</h2>
-            <p>요가 활동을 한눈에 모아봐요!</p>
-            <ul>
-                <li>시간 : 10 분</li>
-                <li>동작 개수 : 2</li>
-                <li>동작 종류 : 나무 자세, 전사2 자세</li>
-            </ul>
-            <div class="image-container">
-                <div class="image-box">
-                    <!-- 첫 번째 이미지 삽입 -->
-                    <img src="{{ url_for('static', filename='img/yoga2.jpg') }}" alt="Image 1">
-                </div>
-                <div class="image-box">
-                    <!-- 두 번째 이미지 삽입 -->
-                    <img src="{{ url_for('static', filename='img/warrior.jpg') }}" alt="Image 2">
+        <!-- Summary Section -->
+        <div id="colorlib-page">
+            <div id="colorlib-services " style="text-align: center;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <h2 style="font-size: 28px; font-family: 'SUITE-Regular', sans-serif;">요약</h2>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-4 animate-box">
+                            <div class="services">
+                                <span class="icon"><img src="{{ url_for('static', filename='img/time.jpg') }}"
+                                        alt="Time Icon"><i class="icon-pen3"></i></span>
+                                <div class="desc">
+                                    <h3>시간</h3>
+                                    <p>10 분</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 animate-box">
+                            <div class="services">
+                                <span class="icon"><img src="{{ url_for('static', filename='img/count.jpg') }}"
+                                        alt="Time Icon"><i class="icon-diamond"></i></span>
+                                <div class="desc">
+                                    <h3>동작 개수</h3>
+                                    <p>2</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 animate-box">
+                            <div class="services">
+                                <span class="icon"><img src="{{ url_for('static', filename='img/list.jpg') }}"
+                                        alt="Time Icon"><i class="icon-paperplane"></i></span>
+                                <div class="desc">
+                                    <h3>동작 종류</h3>
+                                    <p>
+                                    <ul>
+                                        <li>나무자세</li>
+                                        <li>전사2자세</li>
+                                    </ul>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <br>
+        <br>
+        <br>
+        <br>
         <!-- Feedback Form -->
-        <div class="mt-4 feedback-form">
-            <h2>감정기록</h2>
-            <p>지금의 감정을 기록해봐요!</p>
+        <div class="mt-4 feedback-form section">
+            <h2 style="font-size: 28px;  text-align: center; font-family: 'SUITE-Regular', sans-serif;">감정기록</h2>
+            <p style="  text-align: center; font-family: 'SUITE-Regular', sans-serif;">지금의 감정을 기록해봐요!</p>
             <form>
                 <div class="form-group">
                     <textarea class="form-control" id="feedback" rows="3"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">기록하기</button>
+                <button type="submit" class="btn btn-primary" id="your-button-id">기록하기</button>
             </form>
         </div>
         <br>
+        <br>
+        <br><br><br><br>
+        <br><br>
+        <br>
         <!-- Next Session Recommendation -->
-        <div class="mt-4 mb-5">
-            <h2>조금 더 해볼까요?</h2>
+        <div class="mt-4 mb-5 section">
+            <h2 style="font-size: 28px;  text-align: center; font-family: 'SUITE-Regular', sans-serif;">조금 더 해볼까요?</h2>
+
+            <br>
             <div class="next-session-buttons">
                 <button class="btn btn-primary">다른 동작하기</button>
-                <a href="{{ url_for('calendar') }}" class="btn btn-warning">달력보기</a>
+                <a href="{{ url_for('home') }}" class="btn btn-warning">끝내기</a>
             </div>
         </div>
     </div>

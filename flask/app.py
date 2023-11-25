@@ -12,20 +12,20 @@ import datetime
 #from scipy import spatial
 import math
 from flask import jsonify
-from tensorflow.keras.models import load_model
+#from tensorflow.keras.models import load_model
 #from views.main_views import bp 
 from views.login_views import log
 from db_config import db  # db_config 모듈에서 db 불러오기
 
 
-from tensorflow.keras.models import load_model
+#from tensorflow.keras.models import load_model
 
-model = load_model("./model/videoyoga10.h5",compile=False)
+#model = load_model("./model/videoyoga10.h5",compile=False)
 
-if model:
-    print("모델이 성공적으로 로드되었습니다.")
-else:
-    print("모델을 로드하지 못했습니다.")
+#if model:
+#    print("모델이 성공적으로 로드되었습니다.")
+#else:
+#    print("모델을 로드하지 못했습니다.")
 
 
 
@@ -51,7 +51,30 @@ def calendar():
 # 운동 후 페이지
 @app.route('/after')
 def after():
-    return render_template('after.html')
+    hits = 10  # Replace with actual logic to get this value
+    total = 14  # Replace with actual logic to get this value
+
+    def calculate_grade(hits, total):
+        if total == 0:
+            return 'N/A', '#555555'  # Dark gray for undefined grade
+
+        percentage = (hits / total) * 100
+
+        if percentage >= 90:
+            return 'A', '#4c9a2a'  # Dark green
+        elif percentage >= 80:
+            return 'B', '#2a77ad'  # Dark blue
+        elif percentage >= 70:
+            return 'C', '#ebcb2d'  # Dark yellow
+        elif percentage >= 60:
+            return 'D', '#ad6c2a'  # Dark orange
+        else:
+            return 'F', '#9a2a2a'  # Dark red
+
+    grade, color = calculate_grade(hits, total)
+
+    # Pass the grade, color, hits, and total to your template
+    return render_template('after.html', grade=grade, color=color, hits=hits, total=total)
 
 # 연락처 페이지
 @app.route('/contact')
