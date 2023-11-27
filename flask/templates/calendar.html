@@ -170,20 +170,19 @@
     </div>
 </footer>
 
- <!-- Create the calendar -->
- <script type="text/javascript">
+<!-- Create the calendar -->
+<script type="text/javascript">
+    var initialEvents = {{ events | tojson }};
+
     // Get elements
     var elements = {
-        // Calendar element
         calendar: document.getElementById("events-calendar"),
-        // Input element
         events: document.getElementById("events")
-    }
+    };
 
-    // Create the calendar
+    // Initialize the calendar
     elements.calendar.className = "clean-theme";
     var calendar = jsCalendar.new(elements.calendar);
-
     // Create events elements
     elements.title = document.createElement("div");
     elements.title.className = "title";
@@ -206,89 +205,139 @@
     var date_format = "DD/MM/YYYY";
     var current = null;
 
-    var showEvents = function (date) {
-        // Date string
-        var id = jsCalendar.tools.dateToString(date, date_format, "en");
-        // Set date
-        current = new Date(date.getTime());
-        // Set title
-        elements.title.textContent = id;
-        // Clear old events
-        elements.list.innerHTML = "";
-        // Add events on list
-        if (events.hasOwnProperty(id) && events[id].length) {
-            // Number of events
-            elements.subtitle.textContent = events[id].length + " " + ((events[id].length > 1) ? "events" : "event");
+    // Process initial events from the database
+    initialEvents.forEach(function (event) {
+        var eventDateStr = jsCalendar.tools.dateToString(new Date(event.date), date_format, "en");
+        if (!events.hasOwnProperty(eventDateStr)) {
+            events[eventDateStr] = [];
+        }
+        events[eventDateStr].push({
+            id: event.id,
+            memo: event.memo  // 'name' is replaced with 'memo' to match database structure
+        });
+        calendar.select(new Date(event.date));
+    });
 
-            var div;
-            var close;
-            // For each event
-            for (var i = 0; i < events[id].length; i++) {
-                div = document.createElement("div");
+    // Function to display events on a specific date
+    var showEvents = function (date) {
+        var id = jsCalendar.tools.dateToString(date, date_format, "en");
+        current = new Date(date.getTime());
+        elements.title.textContent = id;
+        elements.list.innerHTML = "";
+
+        if (events.hasOwnProperty(id) && events[id].length) {
+            elements.subtitle.textContent = events[id].length + " events";
+            events[id].forEach(function (event, index) {
+                var div = document.createElement("div");
                 div.className = "event-item";
-                div.textContent = (i + 1) + ". " + events[id][i].name;
+                div.textContent = event.memo;
+                //div.textContent = (index + 1) + ". " + event.memo;
                 elements.list.appendChild(div);
-                close = document.createElement("div");
+                
+                var close = document.createElement("div");
                 close.className = "close";
                 close.textContent = "×";
                 div.appendChild(close);
-                close.addEventListener("click", (function (date, index) {
-                    return function () {
-                        removeEvent(date, index);
-                    }
-                })(date, i), false);
-            }
+                close.addEventListener("click", function () {
+                    removeEvent(id, index);
+                });
+            });
         } else {
             elements.subtitle.textContent = "No events";
         }
     };
 
-    var removeEvent = function (date, index) {
-        // Date string
-        var id = jsCalendar.tools.dateToString(date, date_format, "en");
-
-        // If no events return
-        if (!events.hasOwnProperty(id)) {
+    // Function to remove an event
+    var removeEvent = function (id, index) {
+        if (!events.hasOwnProperty(id) || events[id].length <= index) {
             return;
         }
-        // If not found
-        if (events[id].length <= index) {
-            return;
-        }
-
-        // Remove event
         events[id].splice(index, 1);
-
-        // Refresh events
         showEvents(current);
-
-        // If no events uncheck date
         if (events[id].length === 0) {
-            calendar.unselect(date);
+            calendar.unselect(new Date(id));
         }
-    }
+    };
 
-    // Show current date events
     showEvents(new Date());
 
     // Add events
     calendar.onDateClick(function (event, date) {
         // Update calendar date
         calendar.set(date);
+        // Add event
+        events[id].push({ memo: memo });
+
         // Show events
         showEvents(date);
     });
 
+
+    // Function to add an event to the calendar
+    function addEventToCalendar(memo, dateStr) {
+        var requestData = { date: dateStr, memo: memo };
+        fetch('/add_event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    if (!events.hasOwnProperty(dateStr)) {
+                        events[dateStr] = [];
+                    }
+                    events[dateStr].push({ memo: memo });
+                    calendar.select(new Date(dateStr));
+                    showEvents(current);
+                } else {
+                    alert('Error adding event: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+    }
+</script>
+<script>
+    function addEventToCalendar(memo, date) {
+        const requestData = {
+            date: date,
+            memo: memo
+        };
+
+        fetch('/add_event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Event added successfully');
+                    // Reload the page or update the calendar UI as needed
+                } else {
+                    alert('Error adding event: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+    }
+
+
     elements.addButton.addEventListener("click", function () {
         // Get event name
-        var names = ["John", "Bob", "Anna", "George", "Harry", "Jack", "Alexander"];
-        var name = prompt(
-            "Event info",
-            names[Math.floor(Math.random() * names.length)] + "'s birthday."
-        );
+        var memo = prompt("요가동작과 감정을 기록하세요", "예) 몸이 개운해서 기분 좋다:)");
+        if (memo) {
+            var date = jsCalendar.tools.dateToString(current, 'YYYY-MM-DD', 'en');
+            addEventToCalendar(memo, date);
+        }
 
         //Return on cancel
-        if (name === null || name === "") {
+        if (memo === null || memo === "") {
             return;
         }
 
@@ -308,13 +357,13 @@
         }
 
         // Add event
-        events[id].push({ name: name });
+        events[id].push({ memo: memo });
 
         // Refresh events
         showEvents(current);
     }, false);
+    
 </script>
-
 
 
 <!-- Core theme JS-->
