@@ -1,14 +1,17 @@
-{% extends 'base.html' %}
-
-{% block head %}
-<link rel="stylesheet" href="./static/css/prepare1.css">
-
-<title>앱 이용 안내</title>
-
-{% endblock %}
 
 
-{% block content %}
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./static/css/prepare1.css">
+
+  <title>앱 이용 안내</title>
+</head>
+
 <body>
 
   <section>
@@ -17,7 +20,7 @@
       <div class="text-content">
         <video id="cameraStream" autoplay></video>
       </div>
-      <button class="btn-close" class = "btns" autofocus>Close Modal</button>
+      <button class="btn-close" autofocus>Close Modal</button>
     </dialog>
   </section>
   <main class="main flow">
@@ -31,7 +34,7 @@
             <li>카메라 접근 권한을 허용하여 실시간 자세 교정의 효과를 즐기세요</li>
             <li>화면 안에 전신이 나오도록 카메라의 각도와 위치를 조정해주세요</li>
           </ul>
-          <button class="btn-open" class = "btns">카메라 켜기</button>
+          <button class="btn-open">카메라 켜기</button>
         </div>
 
         <div class="cards__card card">
@@ -60,10 +63,8 @@
       <div class="overlay cards__inner"></div>
     </div>
   </main>
-  {% endblock %}
 
-
-  {% block footer %}
   <script src="./static/js/prepare1.js"></script>
+</body>
 
-  {% endblock %}
+</html>

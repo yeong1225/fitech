@@ -1,45 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* CSS 스타일을 사용하여 video 요소를 나란히 배치 */
+        .video-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .video {
+            width: 48%;
+            /* 각각의 비디오 요소가 화면 너비의 48%를 차지하도록 설정 */
+            max-width: 100%;
+            /* 최대 너비 설정 */
+        }
+
+        /* 로딩 페이지 스타일 */
+        #loadingPage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            /* 흰 배경 */
+            color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            z-index: 1000;
+            /* 로딩 페이지를 다른 콘텐츠 위에 표시 */
+        }
+
+        /* 실제 콘텐츠는 초기에 숨겨진 상태 */
+        #content {
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>모델입니다</h1>
-    <img src="{{ url_for('video_feed') }}" class="image">
-    <h2>dg</h2>
-    <div id="timeDisplay"></div>
-    <div id="feedBackDisplay" style="font-size: 50px;"></div>
-    <div id="feedBackDisplay1" style="font-size: 50px;"></div>
+
+    <div id="loadingPage">
+        <img src="{{ url_for('static', filename='gif/loading.gif') }}">
+    </div>
+    <div id="content">
+        <h1>모델입니다</h1>
+        <img src="{{ url_for('video_feed') }}" class="image" onload="hideLoadingPage()">
+        <!-- <video src="{{ url_for('get_video') }}" class="video" autoplay muted playsinline controls loop></video> -->
+        <img src="{{ url_for('static', filename='gif/warrior2.gif') }}" alt="움짤">
+        <div id="timeDisplay"></div>
+        <div id="feedBackDisplay1" style="font-size: 30px;"></div>
+        <div id="feedBackDisplay2" style="font-size: 30px;"></div>
+        <div id="feedBackDisplay3" style="font-size: 30px;"></div>
+        <div id="feedBackDisplay4" style="font-size: 30px;"></div>
+        <div id="feedBackDisplay5" style="font-size: 30px;"></div>
+        <div id="feedBackDisplay6" style="font-size: 30px;"></div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
+        function hideLoadingPage() {
+            // 로딩 페이지 숨기기
+            document.getElementById("loadingPage").style.display = "none";
+            // 실제 콘텐츠 표시
+            document.getElementById("content").style.display = "block";
+        }
+
         var previousFeedback = ''; // 이전 피드백 값을 저장하는 변수
 
         // Connect to the WebSocket server
         var socket = io.connect('http://' + document.domain + ':' + location.port);
 
         // Listen for the 'return_time' event
-        socket.on('time', function(data) {
+        socket.on('time', function (data) {
             var time = data.time;
             document.getElementById('timeDisplay').innerHTML = 'Time: ' + time;
         });
 
-         // Listen for the 'return_time' event
-         socket.on('feedback1', function(data) {
+        // Listen for the 'return_time' event
+        socket.on('feedback1', function (data) {
             var feedback1 = data.feedback1;
             document.getElementById('feedBackDisplay1').innerHTML = '피드백: ' + feedback1;
         });
 
+        // Listen for the 'return_time' event
+        socket.on('feedback2', function (data) {
+            var feedback2 = data.feedback2;
+            document.getElementById('feedBackDisplay2').innerHTML = '피드백: ' + feedback2;
+        });
+
+        // Listen for the 'return_time' event
+        socket.on('feedback3', function (data) {
+            var feedback3 = data.feedback3;
+            document.getElementById('feedBackDisplay3').innerHTML = '피드백: ' + feedback3;
+        });
+
+        // Listen for the 'return_time' event
+        socket.on('feedback4', function (data) {
+            var feedback4 = data.feedback4;
+            document.getElementById('feedBackDisplay4').innerHTML = '피드백: ' + feedback4;
+        });
+
+        // Listen for the 'return_time' event
+        socket.on('feedback5', function (data) {
+            var feedback5 = data.feedback5;
+            document.getElementById('feedBackDisplay5').innerHTML = '피드백: ' + feedback5;
+        });
+
+
+        // Listen for the 'return_time' event
+        socket.on('feedback6', function (data) {
+            var feedback6 = data.feedback6;
+            document.getElementById('feedBackDisplay6').innerHTML = '피드백: ' + feedback6;
+        });
+
+
         // Listen for the 'return_feedback' event
-        socket.on('feedback', function(data) {
+        socket.on('feedback', function (data) {
             var feedback = data.feedback;
 
             // 이전 피드백 값과 새로운 피드백 값 비교
             if (feedback !== previousFeedback) {
                 document.getElementById('feedBackDisplay').innerHTML = 'Feedback: ' + feedback;
                 previousFeedback = feedback; // 이전 피드백 값을 업데이트
-                
+
                 // Web Speech API를 사용하여 음성으로 출력
                 var speechSynthesis = window.speechSynthesis;
                 var speechUtterance = new SpeechSynthesisUtterance(feedback);
@@ -48,4 +138,5 @@
         });
     </script>
 </body>
+
 </html>
