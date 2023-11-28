@@ -1,0 +1,104 @@
+:root {
+	--var-col: 1fr;
+	--text-color: #000000;
+	--shadow-color: #CCCCCC;
+  }
+  
+  body {
+	background-color: #FFFFFF;
+	margin: 30px auto;
+	max-width: 60rem;
+  }
+  
+  .dashboard {
+	margin-bottom: 30px;
+  }
+  
+  h1 {
+	color: var(--text-color);
+	font-family: Graphik, sans-serif;
+	letter-spacing: -0.03em;
+	font-size: 30px;
+	font-weight: 600;
+	line-height: 1.1;
+	margin: 0 0 4px;
+  }
+  
+  h4 {
+	color: var(--text-color);
+	font-family: Graphik, sans-serif;
+	text-shadow: 0 0 80px var(--shadow-color);
+	margin: 10px 0 0;
+	font-size: 15px;
+  }
+  
+  .profile {
+	margin: 0 40px;
+  }
+  
+  .bento {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	max-width: 75em;
+	height: 85vh;
+	grid-auto-rows: 1fr; /* 박스들이 세로로 늘어날 수 있도록 설정 */
+  }
+  
+  .box {
+	position: relative;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	padding: 2rem;
+	border-radius: 0.75rem;
+	border: 1px solid rgb(45 44 44);
+	background-color: #F0F0F0;
+	color: var(--text-color);
+	font-family: Graphik, sans-serif;
+	text-shadow: 0 0 80px var(--shadow-color);
+	font-size: 12px;
+	box-shadow: 0 1px 1px rgb(45 44 44 / 90%);
+	margin: 12px;
+  }
+  
+  .box > .heading {
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 1.1;
+	margin: 0 0 8px;
+  }
+  
+  .box > .heading-sm {
+	font-size: 14px;
+	text-shadow: 0 0 80px var(--shadow-color);
+  }
+  
+  .stats {
+	display: flex;
+	flex-direction: row;
+	margin-top: 20px;
+	gap: 30px;
+  }
+  
+  .stat-icon {
+	padding: 8px;
+	background-color: #FFFFFF;
+	border-radius: 0.8em;
+	margin-right: 10px;
+  }
+  
+  ul {
+	padding: 0;
+	list-style-type: none;
+  }
+  
+  ul > li:not(:last-child) {
+	padding-bottom: 10px;
+  }
+  
+  .flexy {
+	display: flex;
+	justify-content: space-between;
+  }
+  
+  .space-below {
+	padding-bottom: 5px;
+  }

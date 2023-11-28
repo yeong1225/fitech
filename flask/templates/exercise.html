@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./static/css/exercise.css">
+    <style>
+        /* 추가적인 스타일이 필요하다면 이곳에 작성하세요. */
+        .profile {
+            display: flex;
+            align-items: center; /* 수직 중앙 정렬 */
+        }
+
+        #timer {
+          font-size: 20px;
+          font-weight: bold;
+          margin-top: 6px;
+          padding: 0.3rem 0.8rem; /* 상하 0.5rem, 좌우 1rem로 수정 */
+          border-radius: 0.2rem; /* 수정된 부분 */
+          background-color: #F0F0F0;
+          border: 1px solid rgb(45 44 44);
+          color: var(--text-color);
+          font-family: Graphik, sans-serif;
+          text-shadow: 0 0 80px var(--shadow-color);
+          box-shadow: 0 1px 1px rgb(45 44 44 / 90%);
+          margin-left: 5px; /* FITECH와의 간격 조절 */
+        }
+
+        /* 이미지 크기 조절 */
+        .profile img {
+          width: 28px; /* 원하는 가로 크기로 조절 */
+          height: auto; /* 비율에 맞게 세로 크기 자동 조절 */
+          margin-right: 10px; /* 이미지와 FITECH 간격 조절 */
+        }
+
+        /* 웹캠 비디오 스타일 조절 */
+        .box.calories {
+            position: relative; /* 상대 위치 설정 */
+            overflow: hidden; /* 내부 내용이 넘치는 경우 숨김 처리 */
+            display: flex;
+            justify-content: center; /* 수평 중앙 정렬 추가 */
+            align-items: center; /* 수직 중앙 정렬 추가 */
+            height: 400px; /* 높이를 원하는 크기로 지정 */
+        }
+
+        .box.calories #webcam {
+            width: auto; /* 부모 요소에 대해 자동 너비로 설정 */
+            height: 100%; /* 부모 요소에 대해 100% 높이로 설정 */
+            object-fit: cover; /* 비율 유지하면서 채우기 */
+        }
+    </style>
+    <title>Your Fitness Dashboard</title>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="profile">
+            <h1>Timer</h1>
+            <img src="./static/img/timer.jpg" alt="이미지 설명">
+            <div id="timer">10</div>
+        </div>
+
+        <div class="bento">
+            <div class="box calories">
+                <!-- 웹캠 비디오 요소 추가 -->
+                <video id="webcam" autoplay></video>
+            </div>
+            <div class="box exercise-table">
+                <h2 class="heading heading-sm">Last 5 Exercises</h2>
+                <ul>
+                    <li class="flexy">
+                        <div>
+                            <i class="ph-duotone ph-sneaker-move stat-icon"></i>
+                            Running
+                        </div>
+                        30 min
+                    </li>
+                    <!-- 나머지 운동 항목들은 생략 -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 10초 타이머
+        const timerElement = document.getElementById("timer");
+        let seconds = 10;
+
+        function updateTimer() {
+            timerElement.innerText = seconds;
+            seconds--;
+
+            if (seconds < 0) {
+                clearInterval(timerInterval);
+            }
+        }
+
+        // 1초마다 타이머 업데이트
+        const timerInterval = setInterval(updateTimer, 1000);
+
+        // 웹캠 접근 및 비디오 표시
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                const webcam = document.getElementById("webcam");
+                webcam.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error("Error accessing webcam:", error);
+            });
+    </script>
+</body>
+</html>
