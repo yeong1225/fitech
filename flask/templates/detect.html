@@ -56,12 +56,14 @@
         <!-- <video src="{{ url_for('get_video') }}" class="video" autoplay muted playsinline controls loop></video> -->
         <img src="{{ url_for('static', filename='gif/warrior2.gif') }}" alt="움짤">
         <div id="timeDisplay"></div>
-        <div id="feedBackDisplay1" style="font-size: 30px;"></div>
-        <div id="feedBackDisplay2" style="font-size: 30px;"></div>
-        <div id="feedBackDisplay3" style="font-size: 30px;"></div>
-        <div id="feedBackDisplay4" style="font-size: 30px;"></div>
-        <div id="feedBackDisplay5" style="font-size: 30px;"></div>
-        <div id="feedBackDisplay6" style="font-size: 30px;"></div>
+        <div id="feedBackDisplay1" style="font-size: 20px;"></div>
+        <div id="feedBackDisplay2" style="font-size: 20px;"></div>
+        <div id="feedBackDisplay3" style="font-size: 20px;"></div>
+        <div id="feedBackDisplay4" style="font-size: 20px;"></div>
+        <div id="feedBackDisplay5" style="font-size: 20px;"></div>
+        <div id="feedBackDisplay6" style="font-size: 20px;"></div>
+        <div id="feedBackDisplay7" style="font-size: 20px;"></div>
+        <div id="feedBackDisplay8" style="font-size: 20px;"></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
@@ -118,6 +120,18 @@
         socket.on('feedback6', function (data) {
             var feedback6 = data.feedback6;
             document.getElementById('feedBackDisplay6').innerHTML = '피드백: ' + feedback6;
+        });
+
+        // Listen for the 'return_time' event
+        socket.on('feedback7', function (data) {
+            var feedback7 = data.feedback7;
+            document.getElementById('feedBackDisplay7').innerHTML = '피드백: ' + feedback7;
+        });
+
+        // Listen for the 'return_time' event
+        socket.on('feedback8', function (data) {
+            var feedback8 = data.feedback8;
+            document.getElementById('feedBackDisplay8').innerHTML = '피드백: ' + feedback8;
         });
 
 

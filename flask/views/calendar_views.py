@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 
-log = Blueprint('log', __name__, template_folder="templates")
+cal = Blueprint('cal', __name__, template_folder="templates")
 from db_config import db  # db_config 모듈에서 db 불러오기
 
 from flask import jsonify
@@ -8,7 +8,7 @@ import datetime
 
 
 # 이벤트 추가(캘린더)
-@log.route('/add_event', methods=['POST'])
+@cal.route('/add_event', methods=['POST'])
 def add_event():
     if not session.get('user_id'):
         return jsonify({'status': 'error', 'message': 'Not logged in'}), 401
@@ -36,7 +36,7 @@ def add_event():
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 # 기록 페이지
-@log.route('/calendar')
+@cal.route('/calendar')
 def calendar_page():
     try:
         cursor = db.cursor()
@@ -57,7 +57,7 @@ def calendar_page():
         print(e)
         return render_template('calendar.html', events=[])
 
-@log.route('/delete_event', methods=['POST'])
+@cal.route('/delete_event', methods=['POST'])
 def delete_event():
     if not session.get('user_id'):
         return jsonify({'status': 'error', 'message': 'Not logged in'}), 401
@@ -81,7 +81,7 @@ def delete_event():
 
     
 # 운동 후 페이지
-@log.route('/add_memo', methods=['POST'])
+@cal.route('/add_memo', methods=['POST'])
 def add_memo():
     if not session.get('user_id'):
         return jsonify({'status': 'error', 'message': 'Not logged in'}), 401
@@ -109,7 +109,7 @@ def add_memo():
         return jsonify({'status': 'error', 'message': str(e)}), 500
     
 # 캘린더 페이지
-@log.route('/after')
+@cal.route('/after')
 def after():
     hits = 10  # Replace with actual logic to get this value
     total = 14  # Replace with actual logic to get this value
