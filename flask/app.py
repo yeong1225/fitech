@@ -164,9 +164,10 @@ def instructions():
     return render_template('instructions.html')
 
 # 운동 페이지
-@app.route('/timer')
-def timer():
-    return render_template('timer.html')
+@app.route('/exercise')
+def exercise():
+    return render_template('exercise.html')
+
 
 
 
