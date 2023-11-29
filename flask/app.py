@@ -15,6 +15,7 @@ from flask import jsonify
 from tensorflow.keras.models import load_model
 #from views.main_views import bp 
 from views.login_views import log
+from views.calendar_views import log
 from db_config import db  # db_config 모듈에서 db 불러오기
 
 
@@ -43,6 +44,7 @@ app.register_blueprint(log,url_prefix='/')
 def home():
     return render_template('home.html')
 
+<<<<<<< HEAD
 @app.route('/test')
 def test():
     return render_template('test.html')
@@ -118,38 +120,12 @@ def delete_event():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+=======
+>>>>>>> 39290a2e9ad26d391644026ab06dd213b6313310
 @app.route('/static/video/warrior2.mp4')
 def get_video():
     video_path = './static/video/warrior2.mp4'
     return send_file(video_path, as_attachment=True)
-
-# 운동 후 페이지
-@app.route('/after')
-def after():
-    hits = 10  # Replace with actual logic to get this value
-    total = 14  # Replace with actual logic to get this value
-
-    def calculate_grade(hits, total):
-        if total == 0:
-            return 'N/A', '#555555'  # Dark gray for undefined grade
-
-        percentage = (hits / total) * 100
-
-        if percentage >= 90:
-            return 'A', '#4c9a2a'  # Dark green
-        elif percentage >= 80:
-            return 'B', '#2a77ad'  # Dark blue
-        elif percentage >= 70:
-            return 'C', '#ebcb2d'  # Dark yellow
-        elif percentage >= 60:
-            return 'D', '#ad6c2a'  # Dark orange
-        else:
-            return 'F', '#9a2a2a'  # Dark red
-
-    grade, color = calculate_grade(hits, total)
-
-    # Pass the grade, color, hits, and total to your template
-    return render_template('after.html', grade=grade, color=color, hits=hits, total=total)
 
 # 연락처 페이지
 @app.route('/contact')
