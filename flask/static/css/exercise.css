@@ -1,0 +1,124 @@
+:root {
+	--var-col: 1fr;
+	--text-color: #000000;
+	--shadow-color: #CCCCCC;
+  }
+  
+  body {
+	background-color: #FFFFFF;
+	margin: 30px auto;
+	max-width: 60rem;
+  }
+  
+  .dashboard {
+	margin-bottom: 30px;
+  }
+  
+  h1 {
+	color: var(--text-color);
+	font-family: Graphik, sans-serif;
+	letter-spacing: -0.03em;
+	font-size: 30px;
+	font-weight: 600;
+	line-height: 1.1;
+	margin: 0 0 4px;
+  }
+  
+  h4 {
+	color: var(--text-color);
+	font-family: Graphik, sans-serif;
+	text-shadow: 0 0 80px var(--shadow-color);
+	margin: 10px 0 0;
+	font-size: 15px;
+  }
+  
+  .profile {
+	margin: 0 40px;
+  }
+  
+  .bento {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2개의 컬럼으로 분할 */
+    grid-template-rows: auto 1fr; /* 첫 번째 로우는 자동으로, 두 번째 로우는 나머지 공간을 차지하도록 설정 */
+    gap: 12px; /* 박스 사이의 간격 설정 */
+  }
+  
+  .box {
+	position: static;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	padding: 2rem;
+	border-radius: 0.75rem;
+	border: 1px solid rgb(45 44 44);
+	background-color: #F0F0F0;
+	color: var(--text-color);
+	font-family: Graphik, sans-serif;
+	text-shadow: 0 0 80px var(--shadow-color);
+	font-size: 12px;
+	box-shadow: 0 1px 1px rgb(45 44 44 / 90%);
+	margin: 12px;
+  }
+
+
+  .box.exercise-table img {
+	margin-bottom: 20px; 
+    width: 100%; /* 이미지의 가로 크기를 박스의 100%로 설정 */
+    height: auto; /* 세로 크기를 자동으로 조정하여 비율 유지 */
+  }
+  
+  .box > .heading {
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 1.1;
+	margin: 0 0 8px;
+  }
+  
+  .box > .heading-sm {
+	font-size: 14px;
+	text-shadow: 0 0 80px var(--shadow-color);
+  }
+  
+  .stats {
+	display: flex;
+	flex-direction: row;
+	margin-top: 20px;
+	gap: 30px;
+  }
+  
+  .stat-icon {
+	padding: 8px;
+	background-color: #FFFFFF;
+	border-radius: 0.8em;
+	margin-right: 10px;
+  }
+  
+  ul {
+	padding: 0;
+	list-style-type: none;
+  }
+  
+  ul > li:not(:last-child) {
+	padding-bottom: 10px;
+  }
+  
+  .flexy {
+	display: flex;
+	justify-content: space-between;
+  }
+  
+  .space-below {
+	padding-bottom: 5px;
+  }
+
+  .box.exercise-table #nextButton {
+    position: absolute; /* 절대 위치 설정 */
+    bottom: 10px; /* 하단에서 10px 떨어진 위치 */
+    right: 10px; /* 오른쪽에서 10px 떨어진 위치 */
+    border: none; /* 테두리 제거 */
+    background-color: transparent; /* 배경색 투명 */
+    cursor: pointer; /* 마우스 오버 시 커서 변경 */
+  }
+
+.box.exercise-table #nextButton img {
+    width: 50px; /* 이미지 크기 조절 */
+    height: auto; /* 이미지 높이 자동 조절 */
+  }

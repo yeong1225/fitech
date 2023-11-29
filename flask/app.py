@@ -163,6 +163,12 @@ def prepare():
 def instructions():
     return render_template('instructions.html')
 
+# 운동 페이지
+@app.route('/exercise')
+def exercise():
+    return render_template('exercise.html')
+
+
 
 
 mp_drawing = mp.solutions.drawing_utils # Visualizing our poses
