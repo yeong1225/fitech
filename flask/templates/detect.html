@@ -62,6 +62,10 @@
             <img src="./static/img/timer.jpg" alt="이미지 설명">
             <!--<div id="timer">10</div> -->
             <div id="timeDisplay"></div>
+            <!-- <h1>Time Difference Calculator</h1>
+            <p>Page accessed on: <span id="accessTime"></span></p>
+            <button onclick="calculateTimeDifference()">Calculate Time Difference</button>
+            <p>Time spent since page access: <span id="timeDifference"></span> seconds.</p> -->
         </div>
 
         <div class="bento">
@@ -103,10 +107,43 @@
             </div>
 
         </div>
+        <!-- <a href="after" class="card__cta cta">운동 끝내기</a> -->
+        <button onclick="sendTimeDifference()">Calculate and Send Time Difference</button>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
+
+        let accessTime;
+        console.log(accessTime);
+
+        window.onload = function () {
+            // 페이지가 로드될 때 현재 시간을 기록
+            accessTime = new Date();
+        };
+
+        function sendTimeDifference() {
+            let currentTime = new Date();
+            let timeDifference0 = Math.floor((currentTime - accessTime) / 1000);
+            let timeDifference = Math.floor(timeDifference0 / 60); // 분 단위로 변환
+
+            // AJAX 요청을 사용하여 시간 차이를 서버로 전송
+            fetch('/send_time_difference', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ timeDifference: timeDifference })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    window.location.href = '/after'; // 'after' 페이지로 이동
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+
         function hideLoadingPage() {
             // 로딩 페이지 숨기기
             document.getElementById("loadingPage").style.display = "none";

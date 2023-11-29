@@ -70,6 +70,40 @@ def instructions():
 def exercise():
     return render_template('exercise.html')
 
+@app.route('/send_time_difference', methods=['POST'])
+def receive_time_difference():
+    data = request.json
+    session['time_difference'] = data['timeDifference']
+    return jsonify({'status': 'success'})
+
+@app.route('/get_events', methods=['GET'])
+def get_events():
+    date = request.args.get('date')  # 클라이언트에서 전송한 날짜 정보 받기
+    user_id = session.get('user_id')  # 세션에서 사용자 ID 가져오기
+
+    if user_id:
+        cursor = db.cursor()
+
+        # MySQL에서 해당 날짜의 이벤트 정보 가져오기
+        query = """
+        SELECT time, memo FROM calendar4
+        WHERE user_id = %s AND date = %s
+        """
+        cursor.execute(query, (user_id, date))
+        event_data = cursor.fetchone()  # 날짜에 해당하는 첫 번째 이벤트 데이터 가져오기
+
+        cursor.close()
+
+        if event_data:
+            # 이벤트 데이터가 있으면 클라이언트에 반환
+            events = {
+                "time": event_data["time"],
+                "memo": event_data["memo"]
+            }
+            return jsonify(events)
+        else:
+            # 이벤트 데이터가 없으면 오류 메시지 반환
+            return jsonify({"error": "No events for this date"})
 
 
 
@@ -334,7 +368,7 @@ def feed():
                     a_score = diff_compare_angle(angle,angle_target)
                     compare_pose(image,angle_point,angle,label)
                     if a_score >=75:
-                        time, z = count_time(1)
+                        time, z = count_time(30)
                         send_time(time)
                         cv2.putText(image, f"TIME: {int(time)}s", (10,250),
                                     cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
@@ -347,7 +381,7 @@ def feed():
                     a_score = diff_compare_angle(angle,angle_target)
                     compare_pose(image,angle_point,angle,label)
                     if detectedLabel == label:
-                        time, z = count_time(60)
+                        time, z = count_time(30)
                         send_time(time)
                         cv2.putText(image, f"TIME: {int(time)}s", (10,250),
                                     cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
@@ -363,6 +397,8 @@ def feed():
                         send_time(time)
                         cv2.putText(image, f"TIME: {int(time)}s", (10,250),
                                     cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
+                elif z==4:
+                    label = "Downdog"
                     
             except:
                 pass
@@ -543,21 +579,26 @@ def compare_pose(image,angle_point,angle_user,labels):
 
         if angle_user[7] < (angle_target[7] - 15):
             stage = stage + 1
-            feedback5 = "왼쪽 무릎을 더 세우세요"
+            feedback2 = "왼쪽 무릎을 더 세우세요"
             cv2.putText(image, str("Extend the angle at left knee"), (10,340), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)
         else:
-            feedback5 = ""
-        send_feedback5(feedback5)
+            feedback2= ""
+        send_feedback2(feedback2)
 
         if angle_user[7] > (angle_target[7] + 30):
             stage = stage + 1
-            feedback6 = "왼쪽 무릎을 더 굽히세요"
+            feedback3 = "왼쪽 무릎을 더 굽히세요"
             cv2.putText(image, str("Reduce the angle at left knee"), (10,360), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)
         else:
-            feedback6 =""
-        send_feedback6(feedback6)
+            feedback3 =""
+        send_feedback3(feedback3)
+    feedback4 = ""
+    feedback5 = ""
+    feedback6 = ""
+    feedback7 = ""
+    feedback8 = ""
         
        
         
