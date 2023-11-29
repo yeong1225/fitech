@@ -1,18 +1,24 @@
-
-
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Your Fitness Dashboard</title>
-<link href="./static/css/styles3.css" rel="stylesheet" />
-<link rel="stylesheet" href="./static/css/exercise.css">
+<script src="https://kit.fontawesome.com/b2a71afe25.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jsCalendar.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jsCalendar.micro.css') }}">
+<script type="text/javascript" src="{{ url_for('static', filename='js/jsCalendar.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jsCalendar.datepicker.js') }}"></script>
+<link href="{{ url_for('static', filename='css/styles3.css') }}" rel="stylesheet" />
+<link href="{{ url_for('static', filename='css/exercise.css') }}" rel="stylesheet" />
+<!-- Additional CSS and JavaScript links can be included here -->
 {% endblock %}
 
 {% block content %}
-<!-- Page Header-->
 <header class="masthead" style="background-image: url('./static/img/yoga.jpg'); background-size: cover;">
 </header>
+
 <!-- Main Content-->
+<title>Your Fitness Dashboard</title>
+</head>
+<body>
     <div class="dashboard">
         <div class="profile">
             <h1>Timer</h1>
@@ -26,24 +32,32 @@
                 <video id="webcam" autoplay></video>
             </div>
             <div class="box exercise-score">
-                <h2 class="heading heading-sm">운동 점수</h2>
-                <!-- 운동 점수 내용 추가 -->
+                <div class="decoyoga-container">
+                    <img src="./static/img/decoyoga.jpg" alt="요가 아이콘 이미지" class="decoyoga">
+                    <div class="decoyoga-text"><strong>동작:</strong> 다운독</div>
+                </div>
+                <div class="downdog-container">
+                    <img src="./static/img/downdog.jpg" alt="다운독등 자세" class="downdog">
+                </div>
             </div>
             <div class="box exercise-table">
-                <h2 class="heading heading-sm">이미지를 따라하세요</h2>
-                <img src="./static/img/downdog.jpg" alt="이미지 설명" width="300">
-                <h3 class="heading heading-sm">자세 교정</h2>
-                    <div class="space-below"><strong>상체:</strong> 허리를 더 펴세요</div>
-                    <div class="space-below"><strong>하체:</strong> 무릎을 펴세요</div>
-                    <div class="space-below"><strong>기타:</strong> 고개를 숙이세요</div>
-                    <a href="http://localhost:5000/after" id="nextButton" target="_blank">
-                        <img src="./static/img/direction1.jpg" alt="다음">
-                    </a>
+                <strong>자세교정</strong>
+             
+                <div class="horizontal-box-container">
+                    <div class="horizontal-box">뭐라무러ㅏ</div>
+                    <div class="gap"></div> <!-- 간격을 위한 빈 요소 추가 -->
+                    <div class="horizontal-box">뭐라무러ㅏ</div>
+                </div>
+                
+                
 
+               
+                
+        
             </div>
+
         </div>
 
-    </div>
     <script>
          // 웹캠 접근 및 비디오 표시
          navigator.mediaDevices.getUserMedia({
@@ -59,10 +73,4 @@
     </script>
 
 {% endblock %}
-
-
-{% block footer %}
-    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-{% endblock %}
-
 

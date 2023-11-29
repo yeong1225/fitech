@@ -1,70 +1,110 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* CSS 스타일을 사용하여 video 요소를 나란히 배치 */
-        .video-container {
-            display: flex;
-            justify-content: space-between;
-        }
+{% block head %}
+<script src="https://kit.fontawesome.com/b2a71afe25.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jsCalendar.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jsCalendar.micro.css') }}">
+<script type="text/javascript" src="{{ url_for('static', filename='js/jsCalendar.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jsCalendar.datepicker.js') }}"></script>
+<link href="{{ url_for('static', filename='css/styles3.css') }}" rel="stylesheet" />
+<link href="{{ url_for('static', filename='css/exercise.css') }}" rel="stylesheet" />
+<!-- Additional CSS and JavaScript links can be included here -->
+<style>
+    /* CSS 스타일을 사용하여 video 요소를 나란히 배치 */
+    .video-container {
+        display: flex;
+        justify-content: space-between;
+    }
 
-        .video {
-            width: 48%;
-            /* 각각의 비디오 요소가 화면 너비의 48%를 차지하도록 설정 */
-            max-width: 100%;
-            /* 최대 너비 설정 */
-        }
+    .video {
+        width: 48%;
+        /* 각각의 비디오 요소가 화면 너비의 48%를 차지하도록 설정 */
+        max-width: 100%;
+        /* 최대 너비 설정 */
+    }
 
-        /* 로딩 페이지 스타일 */
-        #loadingPage {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            /* 흰 배경 */
-            color: black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2em;
-            z-index: 1000;
-            /* 로딩 페이지를 다른 콘텐츠 위에 표시 */
-        }
+    /* 로딩 페이지 스타일 */
+    #loadingPage {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: white;
+        /* 흰 배경 */
+        color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2em;
+        z-index: 1000;
+        /* 로딩 페이지를 다른 콘텐츠 위에 표시 */
+    }
 
-        /* 실제 콘텐츠는 초기에 숨겨진 상태 */
-        #content {
-            display: none;
-        }
-    </style>
-</head>
+    /* 실제 콘텐츠는 초기에 숨겨진 상태 */
+    #content {
+        display: none;
+    }
+</style>
+{% endblock %}
 
-<body>
+{% block content %}
+<header class="masthead" style="background-image: url('./static/img/yoga.jpg'); background-size: cover;">
+</header>
+<div id="loadingPage">
+    <img src="{{ url_for('static', filename='gif/loading.gif') }}">
+</div>
+<!-- Main Content-->
+<div id="content">
+    <div class="dashboard">
+        <div class="profile">
+            <h1>Timer</h1>
+            <img src="./static/img/timer.jpg" alt="이미지 설명">
+            <!--<div id="timer">10</div> -->
+            <div id="timeDisplay"></div>
+        </div>
 
-    <div id="loadingPage">
-        <img src="{{ url_for('static', filename='gif/loading.gif') }}">
+        <div class="bento">
+            <div class="box calories">
+                <!-- 웹캠 비디오 요소 추가 -->
+                <img src="{{ url_for('video_feed') }}" class="image" onload="hideLoadingPage()">
+            </div>
+            <div class="box exercise-score">
+                <div class="decoyoga-container">
+                    <img src="./static/img/decoyoga.jpg" alt="요가 아이콘 이미지" class="decoyoga">
+                    <div class="decoyoga-text"><strong>동작:</strong> 다운독</div>
+                </div>
+                <div class="downdog-container">
+                    <img src="{{ url_for('static', filename='gif/warrior2.gif') }}" alt="움짤">
+                </div>
+            </div>
+            <div class="box exercise-table">
+                <strong>자세교정</strong>
+
+                <div class="horizontal-box-container">
+                    <div class="horizontal-box">뭐라무러ㅏ</div>
+                    <div class="gap"></div> <!-- 간격을 위한 빈 요소 추가 -->
+                    <div class="horizontal-box">뭐라무러ㅏ</div>
+                </div>
+                <div id="feedBackDisplay1" style="font-size: 20px;"></div>
+                <div id="feedBackDisplay2" style="font-size: 20px;"></div>
+                <div id="feedBackDisplay3" style="font-size: 20px;"></div>
+                <div id="feedBackDisplay4" style="font-size: 20px;"></div>
+                <div id="feedBackDisplay5" style="font-size: 20px;"></div>
+                <div id="feedBackDisplay6" style="font-size: 20px;"></div>
+                <div id="feedBackDisplay7" style="font-size: 20px;"></div>
+                <div id="feedBackDisplay8" style="font-size: 20px;"></div>
+
+
+
+
+
+
+            </div>
+
+        </div>
     </div>
-    <div id="content">
-        <h1>모델입니다</h1>
-        <img src="{{ url_for('video_feed') }}" class="image" onload="hideLoadingPage()">
-        <!-- <video src="{{ url_for('get_video') }}" class="video" autoplay muted playsinline controls loop></video> -->
-        <img src="{{ url_for('static', filename='gif/warrior2.gif') }}" alt="움짤">
-        <div id="timeDisplay"></div>
-        <div id="feedBackDisplay1" style="font-size: 20px;"></div>
-        <div id="feedBackDisplay2" style="font-size: 20px;"></div>
-        <div id="feedBackDisplay3" style="font-size: 20px;"></div>
-        <div id="feedBackDisplay4" style="font-size: 20px;"></div>
-        <div id="feedBackDisplay5" style="font-size: 20px;"></div>
-        <div id="feedBackDisplay6" style="font-size: 20px;"></div>
-        <div id="feedBackDisplay7" style="font-size: 20px;"></div>
-        <div id="feedBackDisplay8" style="font-size: 20px;"></div>
-    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
         function hideLoadingPage() {
@@ -82,7 +122,7 @@
         // Listen for the 'return_time' event
         socket.on('time', function (data) {
             var time = data.time;
-            document.getElementById('timeDisplay').innerHTML = 'Time: ' + time;
+            document.getElementById('timeDisplay').innerHTML = time;
         });
 
         // Listen for the 'return_time' event
@@ -151,6 +191,5 @@
             }
         });
     </script>
-</body>
 
-</html>
+    {% endblock %}
