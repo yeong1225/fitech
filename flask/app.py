@@ -391,8 +391,11 @@ def feed():
                 angle.append(int(angle7))
                 angle8 = calculateAngle(left_hip, left_knee, left_ankle)
                 angle.append(int(angle8))
-
                 
+                angle9= abs(angle4 - angle6) #왼쪽으로 기울어짐
+                angle.append(int(angle9))
+                angle10 = abs(angle3 - angle5) #오른쪽으로 기울어짐
+                angle.append(int(angle10))
                 #print(detectedLabel)
             
 
@@ -516,6 +519,9 @@ def compare_pose(image,angle_point,angle_user,labels):
         else:
             feedback6 =""
         send_feedback6(feedback6)
+        
+        if angle_user[9] > 10:
+            #기울어짐 체크
         
   
       #labels = "DownDog"
