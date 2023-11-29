@@ -163,10 +163,10 @@ def prepare():
 def instructions():
     return render_template('instructions.html')
 
-# 운동 페이지
-@app.route('/exercise')
-def exercise():
-    return render_template('exercise.html')
+# # 운동 페이지
+# @app.route('/exercise')
+# def exercise():
+#     return render_template('exercise.html')
 
 
 
@@ -526,7 +526,7 @@ def compare_pose(image,angle_point,angle_user,labels):
             feedback6 =""
         send_feedback6(feedback6)
         
-        if angle_user[9] > 10:
+        #if angle_user[9] > 10:
             #기울어짐 체크
         
   
