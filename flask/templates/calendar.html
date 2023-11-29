@@ -125,6 +125,95 @@
         margin: 0 auto;
         text-align: right;
     }
+
+    /* Enhanced Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.6);
+        /* Dim the background */
+    }
+
+    .modal-content {
+        position: relative;
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        width: 40%;
+        /* Adjust width */
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        right: 10px;
+        top: 0;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* Style the input field */
+    #eventMemo {
+        width: calc(100% - 40px);
+        /* Full width minus padding */
+        padding: 10px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    /* Style the save button */
+    #saveEvent {
+        padding: 10px 20px;
+        background-color: rgb(77, 181, 218);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        float: right;
+    }
+
+    #saveEvent:hover {
+        background-color: #007bff;
+    }
+
+    /* Center Align the Modal Title */
+    .modal-content h2 {
+        text-align: center;
+        /* Center align the title */
+    }
+
+    /* Update Save Button Color */
+    #saveEvent {
+        background-color: rgb(77, 181, 218);
+        color: white;
+        /* A nice shade of blue */
+        /* Rest of the styles remain the same */
+    }
+
+    /* Style for Close Button */
+    .close {
+        /* Existing styles */
+        cursor: pointer;
+        /* Add cursor pointer for better UX */
+    }
 </style>
 
 
@@ -149,6 +238,15 @@
         <div id="events-calendar"></div>
         <!-- Events -->
         <div id="events"></div>
+        <!-- Event Modal -->
+        <div id="eventModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>요가동작과 감정을 기록하세요</h2>
+                <input type="text" id="eventMemo" placeholder="예) 몸이 개운해서 기분 좋다:)">
+                <button id="saveEvent">Save</button>
+            </div>
+        </div>
         <!-- Clear -->
         <div class="clear"></div>
     </div>
@@ -233,7 +331,7 @@
                 div.textContent = event.memo;
                 //div.textContent = (index + 1) + ". " + event.memo;
                 elements.list.appendChild(div);
-                
+
                 var close = document.createElement("div");
                 close.className = "close";
                 close.textContent = "×";
@@ -273,64 +371,36 @@
     });
 
 
-    // Function to add an event to the calendar
-    function addEventToCalendar(memo, dateStr) {
-        var requestData = { date: dateStr, memo: memo };
-        fetch('/add_event', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestData)
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    if (!events.hasOwnProperty(dateStr)) {
-                        events[dateStr] = [];
-                    }
-                    events[dateStr].push({ memo: memo });
-                    calendar.select(new Date(dateStr));
-                    showEvents(current);
-                } else {
-                    alert('Error adding event: ' + data.message);
-                }
-            })
-            .catch(error => {
-                alert('Error: ' + error);
-            });
-    }
-</script>
-<script>
-    function addEventToCalendar(memo, date) {
-        const requestData = {
-            date: date,
-            memo: memo
-        };
+    // Modal related code
+    var modal = document.getElementById("eventModal");
+    // Ensure that we're selecting the close button inside the modal
+    var closeModal = modal.getElementsByClassName("close")[0];
+    var saveEventButton = document.getElementById("saveEvent");
 
-        fetch('/add_event', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestData)
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    alert('Event added successfully');
-                    // Reload the page or update the calendar UI as needed
-                } else {
-                    alert('Error adding event: ' + data.message);
-                }
-            })
-            .catch(error => {
-                alert('Error: ' + error);
-            });
+    elements.addButton.onclick = function () {
+        modal.style.display = "block";
     }
 
+    closeModal.onclick = function () {
+        modal.style.display = "none";
+    }
 
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    saveEventButton.onclick = function () {
+        var memo = document.getElementById("eventMemo").value;
+        if (memo) {
+            var dateStr = jsCalendar.tools.dateToString(current, 'YYYY-MM-DD', 'en');
+            addEventToCalendar(memo, dateStr);
+            modal.style.display = "none";
+        }
+    }
     elements.addButton.addEventListener("click", function () {
         // Get event name
-        var memo = prompt("요가동작과 감정을 기록하세요", "예) 몸이 개운해서 기분 좋다:)");
         if (memo) {
             var date = jsCalendar.tools.dateToString(current, 'YYYY-MM-DD', 'en');
             addEventToCalendar(memo, date);
@@ -362,7 +432,40 @@
         // Refresh events
         showEvents(current);
     }, false);
-    
+</script>
+<script>
+    function addEventToCalendar(memo, date) {
+        const requestData = {
+            date: date,
+            memo: memo
+        };
+
+        fetch('/add_event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Event added successfully');
+
+                    // Refresh the page to show the updated events
+                    window.location.reload();
+                } else {
+                    alert('Error adding event: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+    }
+
+
+
+
 </script>
 
 

@@ -133,7 +133,7 @@
         /* Smaller font size for descriptions */
     }
 
-    .feedback-form .btn {
+    .feedbackForm .btn {
         float: right;
         /* 오른쪽 정렬 */
         margin-right: 5px;
@@ -145,7 +145,7 @@
         /* 버튼을 중앙에 위치 */
     }
 
-    .feedback-form .btn,
+    .feedbackForm .btn,
     .next-session-buttons .btn,
     .btn-primary {
         margin: 10px;
@@ -293,7 +293,7 @@
     }
 
     /* 감정기록 폼 스타일 */
-    .feedback-form {
+    .feedbackForm {
         width: 95%;
         /* 폼의 폭을 좌우 여백을 줄이고 95%로 설정 */
         margin: 0 auto;
@@ -301,12 +301,12 @@
     }
 
     /* 피드백 텍스트 영역 스타일 */
-    .feedback-form .form-group {
+    .feedbackForm .form-group {
         width: 100%;
         /* 입력 필드의 폭을 폼의 폭과 동일하게 설정 */
     }
 
-    .feedback-form textarea {
+    .feedbackForm textarea {
         width: 100%;
         /* 텍스트 영역의 폭을 폼의 폭과 동일하게 설정 */
         margin-bottom: 30px;
@@ -361,7 +361,7 @@
         /* Negative margin to bring grade score closer to grade letter if needed */
     }
 
-    #your-button-id,
+    #button,
     .your-button-class {
         background-color: black;
         /* Soft blue */
@@ -528,14 +528,14 @@
         <br>
         <br>
         <!-- Feedback Form -->
-        <div class="mt-4 feedback-form section">
+        <div class="mt-4 feedbackForm section">
             <h2 style="font-size: 28px;  text-align: center; font-family: 'SUITE-Regular', sans-serif;">감정기록</h2>
             <p style="  text-align: center; font-family: 'SUITE-Regular', sans-serif;">지금의 감정을 기록해봐요!</p>
             <form>
                 <div class="form-group">
                     <textarea class="form-control" id="feedback" rows="3"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary" id="your-button-id">기록하기</button>
+                <button class="btn btn-primary" id="button">기록하기</button>
             </form>
         </div>
         <br>
@@ -568,4 +568,74 @@
         </div>
     </div>
 </footer>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var form = document.querySelector("form");
+
+        form.onsubmit = function (event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            var time = '10분'; // Replace this with the actual logic to get the time
+            var movements = ['전사자세', '나무자세']; // Replace with actual logic to get movements
+            var memoText = document.getElementById("feedback").value;
+
+            // Combine the memo with time and movements
+            //var combinedMemo = `${time}, ${movements.join(', ')}`;
+            if (memoText) {
+                //combinedMemo += ', ' + memoText;
+                combinedMemo = '(' + time + ') ' + movements;
+            }
+
+            var date = new Date().toISOString().slice(0, 10); // Format: YYYY-MM-DD
+            var requestData1 = {
+                date: date,
+                memo: combinedMemo
+            };
+
+            // First request with combinedMemo
+            fetch('/add_memo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData1)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        //alert('First memo added successfully');
+
+                        // Second request with original memo
+                        var requestData = {
+                            date: date,
+                            memo: memoText
+                        };
+
+                        return fetch('/add_memo', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(requestData)
+                        });
+                    } else {
+                        throw new Error('Error adding first memo: ' + data.message);
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('memo added successfully');
+                        // Clear the textarea
+                        document.getElementById("feedback").value = '';
+                    } else {
+                        throw new Error('Error adding second memo: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error);
+                });
+        };
+    });
+</script>
 {% endblock %}
