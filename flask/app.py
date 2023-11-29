@@ -43,6 +43,10 @@ app.register_blueprint(log,url_prefix='/')
 def home():
     return render_template('home.html')
 
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
 # 이벤트 추가(캘린더)
 @app.route('/add_event', methods=['POST'])
 def add_event():
@@ -163,10 +167,10 @@ def prepare():
 def instructions():
     return render_template('instructions.html')
 
-# # 운동 페이지
-# @app.route('/exercise')
-# def exercise():
-#     return render_template('exercise.html')
+# 운동 페이지
+@app.route('/exercise')
+def exercise():
+    return render_template('exercise.html')
 
 
 
@@ -304,7 +308,7 @@ def feed():
         while cap.isOpened():
 
             ret,frame= cap.read()
-            frame = cv2.flip(frame, 1) 
+            # frame = cv2.flip(frame, 1) 
             # Resize frame to new dimensions
             frame = cv2.resize(frame, (new_frame_width, new_frame_height))
             
