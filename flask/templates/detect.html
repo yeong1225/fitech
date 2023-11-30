@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
 <script src="https://kit.fontawesome.com/b2a71afe25.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jsCalendar.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jsCalendar.micro.css') }}">
@@ -10,11 +13,14 @@
 <link href="{{ url_for('static', filename='css/exercise.css') }}" rel="stylesheet" />
 <!-- Additional CSS and JavaScript links can be included here -->
 <style>
+
     /* CSS 스타일을 사용하여 video 요소를 나란히 배치 */
     .video-container {
         display: flex;
         justify-content: space-between;
     }
+
+
 
     .video {
         width: 48%;
@@ -68,6 +74,8 @@
             <p>Time spent since page access: <span id="timeDifference"></span> seconds.</p> -->
         </div>
 
+        <button class="end-session-button" onclick="sendTimeDifference()">END</button>
+
         <div class="bento">
             <div class="box calories">
                 <!-- 웹캠 비디오 요소 추가 -->
@@ -76,40 +84,49 @@
             <div class="box exercise-score">
                 <div class="decoyoga-container">
                     <img src="./static/img/decoyoga.jpg" alt="요가 아이콘 이미지" class="decoyoga">
-                    <div class="decoyoga-text"><strong>동작:</strong> 다운독</div>
+                    <div class="decoyoga-text">다운독</div>
                 </div>
                 <div class="downdog-container">
                     <img src="{{ url_for('static', filename='gif/warrior2.gif') }}" alt="움짤">
                 </div>
             </div>
             <div class="box exercise-table">
-                <strong>자세교정</strong>
+                <div class="feedback-section">
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-comments fa-beat fa-2xl" style="color: #cee3d2;"></i>
+                        <span class="feedback-text">피드백</span>
+                    </div>
+                    
+                    <div>
+                    <div class="horizontal-box-container">
+                        <div id="box1" class="horizontal-box">
+                            <div id="feedBackDisplay1" style="font-size: 25px;"></div>
+                            <div id="feedBackDisplay2" style="font-size: 25px;"></div>
+                            <div id="feedBackDisplay3" style="font-size: 25px;"></div>
+                            <div id="feedBackDisplay4" style="font-size: 25px;"></div>
+                        </div>
+                        
+                        <div id="box2" class="horizontal-box">
+                            <div id="feedBackDisplay5" style="font-size: 25px;"></div>
+                            <div id="feedBackDisplay6" style="font-size: 25px;"></div>
+                            <div id="feedBackDisplay7" style="font-size: 25px;"></div>
+                            <div id="feedBackDisplay8" style="font-size: 25px;"></div>
+                        </div>
+                    </div>
 
-                <div class="horizontal-box-container">
-                    <div class="horizontal-box">뭐라무러ㅏ</div>
-                    <div class="gap"></div> <!-- 간격을 위한 빈 요소 추가 -->
-                    <div class="horizontal-box">뭐라무러ㅏ</div>
-                </div>
-                <div id="feedBackDisplay1" style="font-size: 20px;"></div>
-                <div id="feedBackDisplay2" style="font-size: 20px;"></div>
-                <div id="feedBackDisplay3" style="font-size: 20px;"></div>
-                <div id="feedBackDisplay4" style="font-size: 20px;"></div>
-                <div id="feedBackDisplay5" style="font-size: 20px;"></div>
-                <div id="feedBackDisplay6" style="font-size: 20px;"></div>
-                <div id="feedBackDisplay7" style="font-size: 20px;"></div>
-                <div id="feedBackDisplay8" style="font-size: 20px;"></div>
-
-
-
-
+                
+                
 
 
             </div>
+            
 
         </div>
-        <!-- <a href="after" class="card__cta cta">운동 끝내기</a> -->
-        <button onclick="sendTimeDifference()">Calculate and Send Time Difference</button>
+        
+        
     </div>
+
+</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
@@ -156,8 +173,8 @@
         // Connect to the WebSocket server
         var socket = io.connect('http://' + document.domain + ':' + location.port);
 
-        // Listen for the 'return_time' event
-        socket.on('time', function (data) {
+          // Listen for the 'return_time' event
+          socket.on('time', function (data) {
             var time = data.time;
             document.getElementById('timeDisplay').innerHTML = time;
         });
@@ -165,50 +182,50 @@
         // Listen for the 'return_time' event
         socket.on('feedback1', function (data) {
             var feedback1 = data.feedback1;
-            document.getElementById('feedBackDisplay1').innerHTML = '피드백: ' + feedback1;
+            document.getElementById('feedBackDisplay1').innerHTML = '' + feedback1;
         });
 
         // Listen for the 'return_time' event
         socket.on('feedback2', function (data) {
             var feedback2 = data.feedback2;
-            document.getElementById('feedBackDisplay2').innerHTML = '피드백: ' + feedback2;
+            document.getElementById('feedBackDisplay2').innerHTML = '' + feedback2;
         });
 
         // Listen for the 'return_time' event
         socket.on('feedback3', function (data) {
             var feedback3 = data.feedback3;
-            document.getElementById('feedBackDisplay3').innerHTML = '피드백: ' + feedback3;
+            document.getElementById('feedBackDisplay3').innerHTML = '' + feedback3;
         });
 
         // Listen for the 'return_time' event
         socket.on('feedback4', function (data) {
             var feedback4 = data.feedback4;
-            document.getElementById('feedBackDisplay4').innerHTML = '피드백: ' + feedback4;
+            document.getElementById('feedBackDisplay4').innerHTML = '' + feedback4;
         });
 
         // Listen for the 'return_time' event
         socket.on('feedback5', function (data) {
             var feedback5 = data.feedback5;
-            document.getElementById('feedBackDisplay5').innerHTML = '피드백: ' + feedback5;
+            document.getElementById('feedBackDisplay5').innerHTML = '' + feedback5;
         });
 
 
         // Listen for the 'return_time' event
         socket.on('feedback6', function (data) {
             var feedback6 = data.feedback6;
-            document.getElementById('feedBackDisplay6').innerHTML = '피드백: ' + feedback6;
+            document.getElementById('feedBackDisplay6').innerHTML = '' + feedback6;
         });
 
         // Listen for the 'return_time' event
         socket.on('feedback7', function (data) {
             var feedback7 = data.feedback7;
-            document.getElementById('feedBackDisplay7').innerHTML = '피드백: ' + feedback7;
+            document.getElementById('feedBackDisplay7').innerHTML = '' + feedback7;
         });
 
         // Listen for the 'return_time' event
         socket.on('feedback8', function (data) {
             var feedback8 = data.feedback8;
-            document.getElementById('feedBackDisplay8').innerHTML = '피드백: ' + feedback8;
+            document.getElementById('feedBackDisplay8').innerHTML = '' + feedback8;
         });
 
 
