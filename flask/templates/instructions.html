@@ -75,25 +75,30 @@
   }
 
   .card {
-  font-family: 'komika_axisregular', sans-serif;
-  background-color: var(--accent-color);
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 600px !important; /* 모든 카드의 높이를 고정합니다 */
-  display: flex; /* Flexbox 사용 */
-  flex-direction: column; /* 세로 방향 정렬 */
-  justify-content: center; /* 내용을 수직 중앙 정렬 */
-}
+    font-family: 'komika_axisregular', sans-serif;
+    background-color: var(--accent-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 600px !important;
+    /* 모든 카드의 높이를 고정합니다 */
+    display: flex;
+    /* Flexbox 사용 */
+    flex-direction: column;
+    /* 세로 방향 정렬 */
+    justify-content: center;
+    /* 내용을 수직 중앙 정렬 */
+  }
 
-  
+
   .card__price,
   .card__bullets,
   .card__cta {
     font-family: 'SUITE-Regular', sans-serif !important;
     /* 폰트 적용 */
   }
-  .card__heading{
+
+  .card__heading {
     font-family: 'komika_axisregular', sans-serif;
     /* 폰트 적용 */
   }
@@ -103,19 +108,30 @@
     background-size: cover;
     background-position: center;
   }
-  .card-body {
-  display: flex; /* Flex 컨테이너 설정 */
-  flex-direction: column; /* 자식 요소들을 세로로 배치 */
-  justify-content: center; /* 수직 방향으로 가운데 정렬 */
-  align-items: center; /* 수평 방향으로 가운데 정렬 */
-  text-align: center; /* 텍스트 가운데 정렬 */
-  height: 100%; /* 부모 요소(.card)의 전체 높이를 차지하도록 설정 */
-}
 
-  .btns, .card__cta {
-    display: block; /* 블록 요소로 만들어 자동 마진 적용 가능 */
-    margin: 0 auto; /* 위 아래 마진 0, 좌우 마진 자동으로 가운데 정렬 */
-    width: fit-content; /* 버튼의 너비를 내용에 맞춤 */
+  .card-body {
+    display: flex;
+    /* Flex 컨테이너 설정 */
+    flex-direction: column;
+    /* 자식 요소들을 세로로 배치 */
+    justify-content: center;
+    /* 수직 방향으로 가운데 정렬 */
+    align-items: center;
+    /* 수평 방향으로 가운데 정렬 */
+    text-align: center;
+    /* 텍스트 가운데 정렬 */
+    height: 100%;
+    /* 부모 요소(.card)의 전체 높이를 차지하도록 설정 */
+  }
+
+  .btns,
+  .card__cta {
+    display: block;
+    /* 블록 요소로 만들어 자동 마진 적용 가능 */
+    margin: 0 auto;
+    /* 위 아래 마진 0, 좌우 마진 자동으로 가운데 정렬 */
+    width: fit-content;
+    /* 버튼의 너비를 내용에 맞춤 */
   }
 </style>
 <link href="./static/css/styles3.css" rel="stylesheet" />
@@ -192,7 +208,8 @@
           <p class="card__price"><strong>이미지와 같은 포즈를 따라하세요!</strong></p>
           <ul role="list" class="card__bullets flow">
             <li>화면에 나타나는 이미지와
-              <br>동일한 자세를 취하세요</li>
+              <br>동일한 자세를 취하세요
+            </li>
             <li>정확한 자세를 취하면 어플리케이션은 <br>실시간으로 이를 분석하고 피드백을 제공하여 <br>올바른 자세 학습을 도와 줄 거에요</li>
             <li>이미지와 일치하는 포즈를 유지하면 <br>교정의 효과를 높일 수 있어요</li>
           </ul>
@@ -206,7 +223,7 @@
           <p class="card__price"><strong>10초간 버티세요!</strong></p>
           <ul role="list" class="card__bullets flow">
             <li>정확한 자세를 취한 후, 화면에 나타나는 <br>안내에 따라 최소 10초간 자세를 유지하세요</li>
-            <li>이 단계는 근육 강화 및 올바른 자세<br>  유지 훈련을 위한 중요한 부분이에요</li>
+            <li>이 단계는 근육 강화 및 올바른 자세<br> 유지 훈련을 위한 중요한 부분이에요</li>
             <li>버티는 동안 어플리케이션은 <br>시간 경과에 따른 자세의 변화를<br> 모니터링하고 조언을 제공하여 <br>사용자의 교정 향상을 도와 줄 거에요</li>
             <li>아래의 버튼을 클릭하여 시작해보세요</li>
           </ul>
@@ -224,6 +241,44 @@
     <button class="btn-close" class="btns" autofocus>Close Modal</button>
   </dialog>
 </section>
+<script>
+  function startCamera() {
+    navigator.mediaDevices.getUserMedia({
+      video: { width: 640, height: 480 } // 카메라 해상도 설정
+    })
+      .then(stream => {
+        let video = document.getElementById('cameraStream');
+        video.srcObject = stream;
+      })
+      .catch(err => {
+        console.error("카메라 접근 에러: ", err);
+      });
+  }
+
+  // 카메라 스트림을 종료하는 함수
+  function stopCamera() {
+    let video = document.getElementById('cameraStream');
+    if (video.srcObject) {
+      video.srcObject.getTracks().forEach(track => track.stop());
+    }
+  }
+
+  // 모달창 열기 및 카메라 시작
+  const modal = document.querySelector('dialog');
+  const btnOpenModal = document.querySelector('.btn-open');
+  btnOpenModal.addEventListener('click', () => {
+    modal.showModal();
+    startCamera(); // 카메라 시작
+  });
+
+  // 모달창 닫기 및 카메라 정지
+  const btnCloseModal = document.querySelector('.btn-close');
+  btnCloseModal.addEventListener('click', () => {
+    modal.close();
+    stopCamera(); // 카메라 정지
+  });
+
+</script>
 {% endblock %}
 
 
