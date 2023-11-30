@@ -13,7 +13,6 @@
 <link href="{{ url_for('static', filename='css/exercise.css') }}" rel="stylesheet" />
 <!-- Additional CSS and JavaScript links can be included here -->
 <style>
-
     /* CSS 스타일을 사용하여 video 요소를 나란히 배치 */
     .video-container {
         display: flex;
@@ -84,166 +83,178 @@
             <div class="box exercise-score">
                 <div class="decoyoga-container">
                     <img src="./static/img/decoyoga.jpg" alt="요가 아이콘 이미지" class="decoyoga">
-                    <div class="decoyoga-text">다운독</div>
+                    <div id="labelDisplay" class="decoyoga-text"></div>
                 </div>
                 <div class="downdog-container">
-                    <img src="{{ url_for('static', filename='gif/warrior2.gif') }}" alt="움짤">
+                    <img src="{{ url_for('static', filename='gif/default.gif') }}" alt="움짤">
                 </div>
-            </div>
-            <div class="box exercise-table">
-                <div class="feedback-section">
-                    <div class="feedback-title">
-                        <i class="fa-solid fa-comments fa-beat fa-2xl" style="color: #cee3d2;"></i>
-                        <span class="feedback-text">피드백</span>
-                    </div>
-                    
-                    <div>
-                    <div class="horizontal-box-container">
-                        <div id="box1" class="horizontal-box">
-                            <div id="feedBackDisplay1" style="font-size: 25px;"></div>
-                            <div id="feedBackDisplay2" style="font-size: 25px;"></div>
-                            <div id="feedBackDisplay3" style="font-size: 25px;"></div>
-                            <div id="feedBackDisplay4" style="font-size: 25px;"></div>
+                <div class="box exercise-table">
+                    <div class="feedback-section">
+                        <div class="feedback-title">
+                            <i class="fa-solid fa-comments fa-beat fa-2xl" style="color: #cee3d2;"></i>
+                            <span class="feedback-text">피드백</span>
                         </div>
-                        
-                        <div id="box2" class="horizontal-box">
-                            <div id="feedBackDisplay5" style="font-size: 25px;"></div>
-                            <div id="feedBackDisplay6" style="font-size: 25px;"></div>
-                            <div id="feedBackDisplay7" style="font-size: 25px;"></div>
-                            <div id="feedBackDisplay8" style="font-size: 25px;"></div>
+
+                        <div>
+                            <div class="horizontal-box-container">
+                                <div id="box1" class="horizontal-box">
+                                    <div id="feedBackDisplay1" style="font-size: 25px;"></div>
+                                    <div id="feedBackDisplay2" style="font-size: 25px;"></div>
+                                    <div id="feedBackDisplay3" style="font-size: 25px;"></div>
+                                    <div id="feedBackDisplay4" style="font-size: 25px;"></div>
+                                </div>
+
+                                <div id="box2" class="horizontal-box">
+                                    <div id="feedBackDisplay5" style="font-size: 25px;"></div>
+                                    <div id="feedBackDisplay6" style="font-size: 25px;"></div>
+                                    <div id="feedBackDisplay7" style="font-size: 25px;"></div>
+                                    <div id="feedBackDisplay8" style="font-size: 25px;"></div>
+                                </div>
+                            </div>
+
+
+
+
+
                         </div>
+
+
                     </div>
 
-                
-                
 
+                </div>
 
             </div>
-            
 
-        </div>
-        
-        
-    </div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+            <script>
 
-</div>
+                let accessTime;
+                console.log(accessTime);
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    <script>
+                window.onload = function () {
+                    // 페이지가 로드될 때 현재 시간을 기록
+                    accessTime = new Date();
+                };
 
-        let accessTime;
-        console.log(accessTime);
+                function sendTimeDifference() {
+                    let currentTime = new Date();
+                    let timeDifference0 = Math.floor((currentTime - accessTime) / 1000);
+                    let timeDifference = Math.floor(timeDifference0 / 60); // 분 단위로 변환
 
-        window.onload = function () {
-            // 페이지가 로드될 때 현재 시간을 기록
-            accessTime = new Date();
-        };
+                    // AJAX 요청을 사용하여 시간 차이를 서버로 전송
+                    fetch('/send_time_difference', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ timeDifference: timeDifference })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            window.location.href = '/after'; // 'after' 페이지로 이동
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                }
 
-        function sendTimeDifference() {
-            let currentTime = new Date();
-            let timeDifference0 = Math.floor((currentTime - accessTime) / 1000);
-            let timeDifference = Math.floor(timeDifference0 / 60); // 분 단위로 변환
+                function hideLoadingPage() {
+                    // 로딩 페이지 숨기기
+                    document.getElementById("loadingPage").style.display = "none";
+                    // 실제 콘텐츠 표시
+                    document.getElementById("content").style.display = "block";
+                }
 
-            // AJAX 요청을 사용하여 시간 차이를 서버로 전송
-            fetch('/send_time_difference', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ timeDifference: timeDifference })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    window.location.href = '/after'; // 'after' 페이지로 이동
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
+                var previousFeedback = ''; // 이전 피드백 값을 저장하는 변수
+
+                // Connect to the WebSocket server
+                var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+                // Listen for the 'return_time' event
+                socket.on('time', function (data) {
+                    var time = data.time;
+                    document.getElementById('timeDisplay').innerHTML = time;
                 });
-        }
 
-        function hideLoadingPage() {
-            // 로딩 페이지 숨기기
-            document.getElementById("loadingPage").style.display = "none";
-            // 실제 콘텐츠 표시
-            document.getElementById("content").style.display = "block";
-        }
+                // Listen for the 'return_time' event
+                socket.on('label', function (data) {
+                    var label = data.label;
+                    document.getElementById('labelDisplay').innerHTML = label;
+                    var imageUrl = "{{ url_for('static', filename='gif/') }}" + label + ".gif";
 
-        var previousFeedback = ''; // 이전 피드백 값을 저장하는 변수
+                    // Find the image element and update its src attribute
+                    var imageElement = document.querySelector('.downdog-container img');
+                    if (imageElement) {
+                        imageElement.src = imageUrl;
+                    }
+                });
 
-        // Connect to the WebSocket server
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
+                // Listen for the 'return_time' event
+                socket.on('feedback1', function (data) {
+                    var feedback1 = data.feedback1;
+                    document.getElementById('feedBackDisplay1').innerHTML = '' + feedback1;
+                });
 
-          // Listen for the 'return_time' event
-          socket.on('time', function (data) {
-            var time = data.time;
-            document.getElementById('timeDisplay').innerHTML = time;
-        });
+                // Listen for the 'return_time' event
+                socket.on('feedback2', function (data) {
+                    var feedback2 = data.feedback2;
+                    document.getElementById('feedBackDisplay2').innerHTML = '' + feedback2;
+                });
 
-        // Listen for the 'return_time' event
-        socket.on('feedback1', function (data) {
-            var feedback1 = data.feedback1;
-            document.getElementById('feedBackDisplay1').innerHTML = '' + feedback1;
-        });
+                // Listen for the 'return_time' event
+                socket.on('feedback3', function (data) {
+                    var feedback3 = data.feedback3;
+                    document.getElementById('feedBackDisplay3').innerHTML = '' + feedback3;
+                });
 
-        // Listen for the 'return_time' event
-        socket.on('feedback2', function (data) {
-            var feedback2 = data.feedback2;
-            document.getElementById('feedBackDisplay2').innerHTML = '' + feedback2;
-        });
+                // Listen for the 'return_time' event
+                socket.on('feedback4', function (data) {
+                    var feedback4 = data.feedback4;
+                    document.getElementById('feedBackDisplay4').innerHTML = '' + feedback4;
+                });
 
-        // Listen for the 'return_time' event
-        socket.on('feedback3', function (data) {
-            var feedback3 = data.feedback3;
-            document.getElementById('feedBackDisplay3').innerHTML = '' + feedback3;
-        });
-
-        // Listen for the 'return_time' event
-        socket.on('feedback4', function (data) {
-            var feedback4 = data.feedback4;
-            document.getElementById('feedBackDisplay4').innerHTML = '' + feedback4;
-        });
-
-        // Listen for the 'return_time' event
-        socket.on('feedback5', function (data) {
-            var feedback5 = data.feedback5;
-            document.getElementById('feedBackDisplay5').innerHTML = '' + feedback5;
-        });
+                // Listen for the 'return_time' event
+                socket.on('feedback5', function (data) {
+                    var feedback5 = data.feedback5;
+                    document.getElementById('feedBackDisplay5').innerHTML = '' + feedback5;
+                });
 
 
-        // Listen for the 'return_time' event
-        socket.on('feedback6', function (data) {
-            var feedback6 = data.feedback6;
-            document.getElementById('feedBackDisplay6').innerHTML = '' + feedback6;
-        });
+                // Listen for the 'return_time' event
+                socket.on('feedback6', function (data) {
+                    var feedback6 = data.feedback6;
+                    document.getElementById('feedBackDisplay6').innerHTML = '' + feedback6;
+                });
 
-        // Listen for the 'return_time' event
-        socket.on('feedback7', function (data) {
-            var feedback7 = data.feedback7;
-            document.getElementById('feedBackDisplay7').innerHTML = '' + feedback7;
-        });
+                // Listen for the 'return_time' event
+                socket.on('feedback7', function (data) {
+                    var feedback7 = data.feedback7;
+                    document.getElementById('feedBackDisplay7').innerHTML = '' + feedback7;
+                });
 
-        // Listen for the 'return_time' event
-        socket.on('feedback8', function (data) {
-            var feedback8 = data.feedback8;
-            document.getElementById('feedBackDisplay8').innerHTML = '' + feedback8;
-        });
+                // Listen for the 'return_time' event
+                socket.on('feedback8', function (data) {
+                    var feedback8 = data.feedback8;
+                    document.getElementById('feedBackDisplay8').innerHTML = '' + feedback8;
+                });
 
 
-        // Listen for the 'return_feedback' event
-        socket.on('feedback', function (data) {
-            var feedback = data.feedback;
+                // Listen for the 'return_feedback' event
+                socket.on('feedback', function (data) {
+                    var feedback = data.feedback;
 
-            // 이전 피드백 값과 새로운 피드백 값 비교
-            if (feedback !== previousFeedback) {
-                document.getElementById('feedBackDisplay').innerHTML = 'Feedback: ' + feedback;
-                previousFeedback = feedback; // 이전 피드백 값을 업데이트
+                    // 이전 피드백 값과 새로운 피드백 값 비교
+                    if (feedback !== previousFeedback) {
+                        document.getElementById('feedBackDisplay').innerHTML = 'Feedback: ' + feedback;
+                        previousFeedback = feedback; // 이전 피드백 값을 업데이트
 
-                // Web Speech API를 사용하여 음성으로 출력
-                var speechSynthesis = window.speechSynthesis;
-                var speechUtterance = new SpeechSynthesisUtterance(feedback);
-                speechSynthesis.speak(speechUtterance);
-            }
-        });
-    </script>
+                        // Web Speech API를 사용하여 음성으로 출력
+                        var speechSynthesis = window.speechSynthesis;
+                        var speechUtterance = new SpeechSynthesisUtterance(feedback);
+                        speechSynthesis.speak(speechUtterance);
+                    }
+                });
+            </script>
 
-    {% endblock %}
+            {% endblock %}

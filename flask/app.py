@@ -136,6 +136,11 @@ def count_time(time):
 def send_time(time):
     socketio.emit('time', {'time': time})
     
+
+    
+def send_label(label):
+    socketio.emit('label', {'label': label})
+    
 # def send_feedback(feedback):
 #     socketio.emit('feedback', {'feedback': feedback})
     
@@ -240,7 +245,8 @@ def feed():
     threshold = 0.5
     new_frame_width = 640
     new_frame_height = 480
-    global seconds_old, dem,z
+    global seconds_old, dem,z,prev_z
+    prev_z = 0
     actions = np.array(['Downdog','Warrior1','Warrior2'])
     cap= cv2.VideoCapture(0)
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
@@ -360,7 +366,8 @@ def feed():
             
 
                 if z==1:
-                    label = "Warrior2"
+                    label = "Downdog"
+                    #send_label(label)
                     # cv2.rectangle(image, (0, 450), (350, 300), (0, 255, 0), cv2.FILLED)
                     # cv2.putText(image, str(detectedLabel) ,(10,230),
                     #                 cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
@@ -374,7 +381,9 @@ def feed():
                                     cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
                     
                 elif z==2:
-                    label = "Downdog"
+                    label = "Warrior2"
+                    #Warrior2
+                    #send_label(label)
                     angle_target = np.array([176, 173, 165, 170, 122, 130, 175, 105])
                     cv2.putText(image, str(detectedLabel) ,(10,230),
                                     cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
@@ -387,7 +396,8 @@ def feed():
                                     cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
                     
                 elif z==3:
-                    label = "Downdog"
+                    #label = "Warrior1"
+                    send_label(label)
                     cv2.rectangle(image, (0, 450), (350, 300), (0, 255, 0), cv2.FILLED)
                     cv2.putText(image, str(detectedLabel) ,(10,230),
                                     cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
@@ -400,6 +410,9 @@ def feed():
                 elif z==4:
                     label = "Downdog"
                     
+                if z != prev_z:  # z 값이 이전 값과 다를 때만 라벨 전송
+                    send_label(label)
+                    prev_z = z
             except:
                 pass
 
@@ -450,7 +463,7 @@ def compare_pose(image,angle_point,angle_user,labels):
             feedback3 = "왼쪽 팔을 더 드세요"
             send_feedback3(feedback3)
             stage = stage + 1
-            cv2.putText(image, str("Lift your left arm"), (10,180), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
+            #cv2.putText(image, str("Lift your left arm"), (10,180), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[3][0]*width), int(angle_point[3][1]*height)),30,(0,0,255),5)
         else:
             feedback3 = ""
@@ -459,7 +472,7 @@ def compare_pose(image,angle_point,angle_user,labels):
             feedback4 = "왼쪽 팔을 더 내리세요"
             send_feedback4(feedback4)
             stage = stage + 1
-            cv2.putText(image, str("Put your arm down a little"), (10,200), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
+            #cv2.putText(image, str("Put your arm down a little"), (10,200), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[3][0]*width), int(angle_point[3][1]*height)),30,(0,0,255),5)
         else:
             feedback4 = ""
@@ -467,7 +480,7 @@ def compare_pose(image,angle_point,angle_user,labels):
         if angle_user[7] < (angle_target[7] - 15):
             stage = stage + 1
             feedback5 = "왼쪽 무릎을 더 세우세요"
-            cv2.putText(image, str("Extend the angle at left knee"), (10,340), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
+            #cv2.putText(image, str("Extend the angle at left knee"), (10,340), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)
         else:
             feedback5 = ""
@@ -476,7 +489,7 @@ def compare_pose(image,angle_point,angle_user,labels):
         if angle_user[7] > (angle_target[7] + 30):
             stage = stage + 1
             feedback6 = "왼쪽 무릎을 더 굽히세요"
-            cv2.putText(image, str("Reduce the angle at left knee"), (10,360), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
+            #cv2.putText(image, str("Reduce the angle at left knee"), (10,360), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)
         else:
             feedback6 =""
@@ -521,7 +534,7 @@ def compare_pose(image,angle_point,angle_user,labels):
         if user_elbow < (target_elbow - 20):
             feedback1 = "팔꿈치를 펴세요"
             stage = stage + 1
-            cv2.putText(image, str("Extend the right arm at elbow"), (10,60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
+            #cv2.putText(image, str("Extend the right arm at elbow"), (10,60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[0][0]*width), int(angle_point[0][1]*height)),30,(0,0,255),5)
             cv2.circle(image,(int(angle_point[1][0]*width), int(angle_point[1][1]*height)),30,(0,0,255),5)
         else:
@@ -546,7 +559,7 @@ def compare_pose(image,angle_point,angle_user,labels):
         if user_knee < target_knee:
             stage = stage + 1
             feedback3 = "무릎을 펴세요"
-            cv2.putText(image, str("Extend the angle of right knee"), (10,300), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
+            #cv2.putText(image, str("Extend the angle of right knee"), (10,300), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[6][0]*width), int(angle_point[6][1]*height)),30,(0,0,255),5)
             cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)  
         else:
@@ -571,7 +584,7 @@ def compare_pose(image,angle_point,angle_user,labels):
             #print("Extend the angle of right knee")
             stage = stage + 1
             feedback1 = "오른쪽 무릎을 세우세요."
-            cv2.putText(image, str("Extend the angle of right knee"), (10,300), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
+            #cv2.putText(image, str("Extend the angle of right knee"), (10,300), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[6][0]*width), int(angle_point[6][1]*height)),30,(0,0,255),5)
         else:
             feedback1 = ""
@@ -580,7 +593,7 @@ def compare_pose(image,angle_point,angle_user,labels):
         if angle_user[7] < (angle_target[7] - 15):
             stage = stage + 1
             feedback2 = "왼쪽 무릎을 더 세우세요"
-            cv2.putText(image, str("Extend the angle at left knee"), (10,340), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
+            #cv2.putText(image, str("Extend the angle at left knee"), (10,340), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)
         else:
             feedback2= ""
@@ -589,7 +602,7 @@ def compare_pose(image,angle_point,angle_user,labels):
         if angle_user[7] > (angle_target[7] + 30):
             stage = stage + 1
             feedback3 = "왼쪽 무릎을 더 굽히세요"
-            cv2.putText(image, str("Reduce the angle at left knee"), (10,360), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
+            #cv2.putText(image, str("Reduce the angle at left knee"), (10,360), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)
         else:
             feedback3 =""
