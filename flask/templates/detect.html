@@ -50,6 +50,10 @@
     #content {
         display: none;
     }
+
+    audio::-webkit-media-controls-panel {
+        display: none !important;
+    }
 </style>
 {% endblock %}
 
@@ -67,6 +71,7 @@
             <img src="./static/img/timer.jpg" alt="이미지 설명">
             <!--<div id="timer">10</div> -->
             <div id="timeDisplay"></div>
+
             <!-- <h1>Time Difference Calculator</h1>
             <p>Page accessed on: <span id="accessTime"></span></p>
             <button onclick="calculateTimeDifference()">Calculate Time Difference</button>
@@ -123,6 +128,12 @@
 
 
                 </div>
+
+                <audio controls autoplay>
+                    <!-- 노래 파일 경로를 소스(src)에 지정 -->
+                    <source src="{{ url_for('static', filename='mp3/bird.mp3') }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
 
             </div>
 

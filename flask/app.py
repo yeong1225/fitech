@@ -183,7 +183,7 @@ def test_count_time():
 
 @app.route('/detect')
 def detect():
-    return render_template("detect.html")
+    return render_template('detect.html')
 
 def mediapipe_detection(image, model):
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) # COLOR CONVERSION BGR 2 RGB
@@ -618,12 +618,12 @@ def compare_pose(image,angle_point,angle_user,labels):
              
 
 
-    if stage!=0:
-        #print("FIGHTING!")
-        cv2.putText(image, str("FIGHTING!"), (170,30), cv2.FONT_HERSHEY_SIMPLEX, 1, [0,0,255], 2, cv2.LINE_AA)
-        pass
-    if stage == 0:
-        cv2.putText(image, str("PERFECT"), (170,30), cv2.FONT_HERSHEY_SIMPLEX, 1, [0,0,255], 2, cv2.LINE_AA)
+    # if stage!=0:
+    #     #print("FIGHTING!")
+    #     cv2.putText(image, str("FIGHTING!"), (170,30), cv2.FONT_HERSHEY_SIMPLEX, 1, [0,0,255], 2, cv2.LINE_AA)
+    #     pass
+    # if stage == 0:
+    #     cv2.putText(image, str("PERFECT"), (170,30), cv2.FONT_HERSHEY_SIMPLEX, 1, [0,0,255], 2, cv2.LINE_AA)
         
 
 
