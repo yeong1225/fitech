@@ -86,7 +86,7 @@
     /* Flexbox 사용 */
     flex-direction: column;
     /* 세로 방향 정렬 */
-    justify-content: center;
+    /*justify-content: center;*/
     /* 내용을 수직 중앙 정렬 */
   }
 
@@ -108,13 +108,19 @@
     background-size: cover;
     background-position: center;
   }
+  .col:first-child .card__bullets {
+  margin-top: 100px; /* 여기! step1 가운데 글 가운데로원하는 여백 값으로 변경하세요 */
+}
+.btn-open{
+    margin-top:70px; /*여기! 버튼 아래위치 170*/
+  }
 
   .card-body {
     display: flex;
     /* Flex 컨테이너 설정 */
     flex-direction: column;
     /* 자식 요소들을 세로로 배치 */
-    justify-content: center;
+    /*justify-content: center;여기!*/
     /* 수직 방향으로 가운데 정렬 */
     align-items: center;
     /* 수평 방향으로 가운데 정렬 */
@@ -170,6 +176,15 @@
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
+
+  #playButton2, #playButton3 {
+      margin-top: 75px; /* Adjust the space above the button */
+      margin-bottom: 10px; /* Adjust the space below the button */
+    }
+
+    #playButton1 {
+      margin-top: 50px; /* No margin at the top for the first button */
+    }
 </style>
 <link href="./static/css/styles3.css" rel="stylesheet" />
 {% endblock %}
@@ -230,7 +245,7 @@
           <h2 class="card__heading">Step 03</h2>
           <p class="card__price"><strong>10초간 버티세요!</strong></p>
           <ul role="list" class="card__bullets flow">
-            <li>정확한 자세를 취한 후, 화면에 나타나는 <br>안내에 따라 최소 10초간 자세를 유지하세요</li>
+            <li>정확한 자세를 취한 후, 화면에 나타나는 <br>안내에 따라 최소 10초간<br> 자세를 유지하세요</li>
             <li>이 단계는 근육 강화 및 올바른 자세<br> 유지 훈련을 위한 중요한 부분이에요</li>
             <li>버티는 동안 어플리케이션은 <br>시간 경과에 따른 자세의 변화를<br> 모니터링하고 조언을 제공하여 <br>사용자의 교정 향상을 도와 줄 거에요</li>
             <li>아래의 버튼을 클릭하여 시작해보세요</li>
