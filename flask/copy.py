@@ -36,7 +36,7 @@ app.secret_key = 'your_secret_key_here'
 
 #app.register_blueprint(bp, url_prefix='/')
 app.register_blueprint(log,url_prefix='/')
-app.register_blueprint(cal,url_prefix='/')
+
 
 
 # 홈 페이지
@@ -70,40 +70,6 @@ def instructions():
 def exercise():
     return render_template('exercise.html')
 
-@app.route('/send_time_difference', methods=['POST'])
-def receive_time_difference():
-    data = request.json
-    session['time_difference'] = data['timeDifference']
-    return jsonify({'status': 'success'})
-
-@app.route('/get_events', methods=['GET'])
-def get_events():
-    date = request.args.get('date')  # 클라이언트에서 전송한 날짜 정보 받기
-    user_id = session.get('user_id')  # 세션에서 사용자 ID 가져오기
-
-    if user_id:
-        cursor = db.cursor()
-
-        # MySQL에서 해당 날짜의 이벤트 정보 가져오기
-        query = """
-        SELECT time, memo FROM calendar4
-        WHERE user_id = %s AND date = %s
-        """
-        cursor.execute(query, (user_id, date))
-        event_data = cursor.fetchone()  # 날짜에 해당하는 첫 번째 이벤트 데이터 가져오기
-
-        cursor.close()
-
-        if event_data:
-            # 이벤트 데이터가 있으면 클라이언트에 반환
-            events = {
-                "time": event_data["time"],
-                "memo": event_data["memo"]
-            }
-            return jsonify(events)
-        else:
-            # 이벤트 데이터가 없으면 오류 메시지 반환
-            return jsonify({"error": "No events for this date"})
 
 
 
@@ -156,13 +122,6 @@ def send_feedback5(feedback5):
 
 def send_feedback6(feedback6):
     socketio.emit('feedback6', {'feedback6': feedback6})
-    
-def send_feedback7(feedback7):
-    socketio.emit('feedback7', {'feedback7': feedback7})
-    
-def send_feedback8(feedback8):
-    socketio.emit('feedback8', {'feedback8': feedback8})
-
 
 @app.route('/test4')
 def test4():
@@ -247,7 +206,7 @@ def feed():
         while cap.isOpened():
 
             ret,frame= cap.read()
-            # frame = cv2.flip(frame, 1) 
+            frame = cv2.flip(frame, 1) 
             # Resize frame to new dimensions
             frame = cv2.resize(frame, (new_frame_width, new_frame_height))
             
@@ -313,27 +272,11 @@ def feed():
                 
                 left_knee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].x, landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].y]
                 angle_point.append(left_knee)
-                
                 right_ankle = [landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE.value].y]
                 
                 left_ankle = [landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].x, landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].y]
                 
-                right_eye = [landmarks[mp_pose.PoseLandmark.RIGHT_EYE.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_EYE.value].y]
-                angle_point.append(right_eye)
-        
-                left_eye = [landmarks[mp_pose.PoseLandmark.LEFT_EYE.value].x, landmarks[mp_pose.PoseLandmark.LEFT_EYE.value].y]
-                angle_point.append(left_eye)
-        
-                right_ear = [landmarks[mp_pose.PoseLandmark.RIGHT_EAR.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_EAR.value].y]
-                angle_point.append(right_ear)
-        
-                left_ear = [landmarks[mp_pose.PoseLandmark.LEFT_EAR.value].x, landmarks[mp_pose.PoseLandmark.LEFT_EAR.value].y]
-                angle_point.append(left_ear)
-                
-                nose = [landmarks[mp_pose.PoseLandmark.NOSE.value].x, landmarks[mp_pose.PoseLandmark.LEFT_EAR.value].y]
-                angle_point.append(nose)
-                
-                # print(angle_point)
+     
                 
                 # p_score = dif_compare(keypoints, point_target)      
                 
@@ -356,6 +299,11 @@ def feed():
                 angle.append(int(angle7))
                 angle8 = calculateAngle(left_hip, left_knee, left_ankle)
                 angle.append(int(angle8))
+                
+                angle9= abs(angle4 - angle6) #왼쪽으로 기울어짐
+                angle.append(int(angle9))
+                angle10 = abs(angle3 - angle5) #오른쪽으로 기울어짐
+                angle.append(int(angle10))
                 #print(detectedLabel)
             
 
@@ -368,13 +316,13 @@ def feed():
                     a_score = diff_compare_angle(angle,angle_target)
                     compare_pose(image,angle_point,angle,label)
                     if a_score >=75:
-                        time, z = count_time(30)
+                        time, z = count_time(5)
                         send_time(time)
                         cv2.putText(image, f"TIME: {int(time)}s", (10,250),
                                     cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
                     
                 elif z==2:
-                    label = "Downdog"
+                    label = "Warrior1"
                     angle_target = np.array([176, 173, 165, 170, 122, 130, 175, 105])
                     cv2.putText(image, str(detectedLabel) ,(10,230),
                                     cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
@@ -397,8 +345,6 @@ def feed():
                         send_time(time)
                         cv2.putText(image, f"TIME: {int(time)}s", (10,250),
                                     cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
-                elif z==4:
-                    label = "Downdog"
                     
             except:
                 pass
@@ -464,53 +410,27 @@ def compare_pose(image,angle_point,angle_user,labels):
         else:
             feedback4 = ""
         send_feedback4(feedback4)
-        if angle_user[7] < (angle_target[7] - 15):
-            stage = stage + 1
-            feedback5 = "왼쪽 무릎을 더 세우세요"
-            cv2.putText(image, str("Extend the angle at left knee"), (10,340), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
-            cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)
-        else:
-            feedback5 = ""
-        send_feedback5(feedback5)
+        # if angle_user[7] < (angle_target[7] - 15):
+        #     stage = stage + 1
+        #     feedback5 = "왼쪽 무릎을 더 세우세요"
+        #     cv2.putText(image, str("Extend the angle at left knee"), (10,340), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
+        #     cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)
+        # else:
+        #     feedback5 = ""
+        # send_feedback5(feedback5)
 
         if angle_user[7] > (angle_target[7] + 30):
             stage = stage + 1
-            feedback6 = "왼쪽 무릎을 더 굽히세요"
+            feedback6 = "오른쪽 무릎을 더 굽히세요"
             cv2.putText(image, str("Reduce the angle at left knee"), (10,360), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)
         else:
             feedback6 =""
         send_feedback6(feedback6)
         
-        #몸 왼쪽으로 기울어졌는지 확인인
-        lefthip_x = angle_point[5][0]
-        leftshouler_x = angle_point[3][0]
-        differ = abs(lefthip_x - leftshouler_x)
-        print(differ)
+        if angle_user[9] > 10:
+            #기울어짐 체크
         
-        if differ > 0.04:
-            stage = stage + 1
-            feedback7 = "몸이 기울어졌어요ㅇㄹ"
-        else:
-             feedback7 =""
-        send_feedback7(feedback7)
-        
-        right_eye = angle_point[8][1]
-        left_eye = angle_point[9][1]
-        right_ear = angle_point[10][1]
-        left_ear = angle_point[11][1]
-        #고개 돌렸는지 안돌렸는지 확인
-        vertical_distance_eyes = abs(right_eye - left_eye)
-        vertical_distance_ears = abs(right_ear - left_ear)
-        rotation_threshold = 0.02
-        head_rotated = vertical_distance_eyes > rotation_threshold or vertical_distance_ears > rotation_threshold
-        if not head_rotated:
-            stage = stage + 1
-            feedback8 = "고개를 돌리세요"
-        else:
-            feedback8 = ""
-        send_feedback8(feedback8)
-      
   
       #labels = "DownDog"
     #angle_target = np.array([178, 177, 161, 160, 62, 62, 173, 175])
@@ -518,7 +438,7 @@ def compare_pose(image,angle_point,angle_user,labels):
         angle_target = np.array([178, 177, 161, 160, 62, 62, 173, 175])
         user_elbow = (angle_user[0] + angle_user[1])/2  
         target_elbow = (angle_target[0] + angle_target[1])/2  
-        if user_elbow < (target_elbow - 20):
+        if user_elbow < (target_elbow - 15):
             feedback1 = "팔꿈치를 펴세요"
             stage = stage + 1
             cv2.putText(image, str("Extend the right arm at elbow"), (10,60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
@@ -528,36 +448,18 @@ def compare_pose(image,angle_point,angle_user,labels):
             feedback1 = ""
         send_feedback1(feedback1)
         
-        #겨드랑이 각도
-        user_Armpit = (angle_user[2]+angle_user[3])/2
-        target_Armpit = (angle_target[2]+angle_target[3])/2
-        if user_Armpit < (target_Armpit - 15):
-            #팔을 쭉 늘려주세요
-            feedback2 = "팔을 쭉 늘려주세요"
-            stage = stage + 1
-            cv2.circle(image,(int(angle_point[2][0]*width), int(angle_point[2][1]*height)),30,(0,0,255),5)
-            cv2.circle(image,(int(angle_point[3][0]*width), int(angle_point[3][1]*height)),30,(0,0,255),5)
-        else:
-             feedback2 = ""
-        send_feedback2(feedback2)
-                
         user_knee =  (angle_user[6]+ angle_user[7])/2
         target_knee = (angle_target[6] + angle_target[7])/2
         if user_knee < target_knee:
             stage = stage + 1
-            feedback3 = "무릎을 펴세요"
+            feedback2 = "무릎을 펴세요"
             cv2.putText(image, str("Extend the angle of right knee"), (10,300), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[6][0]*width), int(angle_point[6][1]*height)),30,(0,0,255),5)
             cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)  
         else:
-             feedback3 = ""
-        send_feedback3(feedback3)
+             feedback2 = ""
+        send_feedback2(feedback2)
         
-    feedback4 = ""
-    feedback5 = ""
-    feedback6 = ""
-    feedback7 = ""
-    feedback8 = ""
     # 7 -> 오른쪽 무릎 (6)
     # 8 -> 왼쪽 (7)
     #오른쪽
@@ -570,7 +472,7 @@ def compare_pose(image,angle_point,angle_user,labels):
         if angle_user[6] < (angle_target[6] - 15):
             #print("Extend the angle of right knee")
             stage = stage + 1
-            feedback1 = "오른쪽 무릎을 세우세요."
+            feedback1 = "왼쪽 무릎을 세우세요."
             cv2.putText(image, str("Extend the angle of right knee"), (10,300), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[6][0]*width), int(angle_point[6][1]*height)),30,(0,0,255),5)
         else:
@@ -579,26 +481,21 @@ def compare_pose(image,angle_point,angle_user,labels):
 
         if angle_user[7] < (angle_target[7] - 15):
             stage = stage + 1
-            feedback2 = "왼쪽 무릎을 더 세우세요"
+            feedback5 = "오른쪽 무릎을 더 세우세요"
             cv2.putText(image, str("Extend the angle at left knee"), (10,340), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)
         else:
-            feedback2= ""
-        send_feedback2(feedback2)
+            feedback5 = ""
+        send_feedback5(feedback5)
 
         if angle_user[7] > (angle_target[7] + 30):
             stage = stage + 1
-            feedback3 = "왼쪽 무릎을 더 굽히세요"
+            feedback6 = "오른쪽 무릎을 더 굽히세요"
             cv2.putText(image, str("Reduce the angle at left knee"), (10,360), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)
         else:
-            feedback3 =""
-        send_feedback3(feedback3)
-    feedback4 = ""
-    feedback5 = ""
-    feedback6 = ""
-    feedback7 = ""
-    feedback8 = ""
+            feedback6 =""
+        send_feedback6(feedback6)
         
        
         
@@ -627,6 +524,7 @@ def video_feed():
 
 if __name__ == '__main__':
     socketio.run(app, Debug =True)
+
 
 
 

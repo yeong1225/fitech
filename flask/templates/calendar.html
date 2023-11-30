@@ -149,6 +149,31 @@
         <div id="events-calendar"></div>
         <!-- Events -->
         <div id="events"></div>
+        <!-- Event Modal -->
+        <div id="eventModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>요가동작과 감정을 기록하세요</h2>
+                <input type="text" id="eventMemo" placeholder="예) 몸이 개운해서 기분 좋다:)">
+                <button id="saveEvent">Save</button>
+            </div>
+        </div>
+        <!-- HTML 템플릿 내에 숨겨진 데이터 -->
+        <div style="display: none;">
+            {% for event in events %}
+            <span id="time">{{ event.time }}</span>
+            <!-- 다른 이벤트 정보를 출력 -->
+            {% endfor %}
+        </div>
+        <div style="display: none;">
+            {% for event in events %}
+            <div class="event-item">
+                <!-- Display 'list' value -->
+                List: {{ event.list }}
+                <!--<br>-->
+            </div>
+            {% endfor %}
+        </div>
         <!-- Clear -->
         <div class="clear"></div>
     </div>
@@ -170,15 +195,16 @@
     </div>
 </footer>
 
- <!-- Create the calendar -->
- <script type="text/javascript">
+<!-- Create the calendar -->
+<script type="text/javascript">
+    // Get elements
+    var initialEvents = {{ events | tojson }};
     // Get elements
     var elements = {
-        // Calendar element
         calendar: document.getElementById("events-calendar"),
-        // Input element
-        events: document.getElementById("events")
-    }
+        events: document.getElementById("events"),
+        exerciseTypes: document.getElementById("exercise-types")
+    };
 
     // Create the calendar
     elements.calendar.className = "clean-theme";
@@ -188,15 +214,28 @@
     elements.title = document.createElement("div");
     elements.title.className = "title";
     elements.events.appendChild(elements.title);
+
+    elements.title2 = document.createElement("div");
+    elements.title2.className = "title2";
+    elements.events.appendChild(elements.title2);
+
+    elements.title3 = document.createElement("div");
+    elements.title3.className = "title3";
+    elements.events.appendChild(elements.title3);
+
+
     elements.subtitle = document.createElement("div");
     elements.subtitle.className = "subtitle";
     elements.events.appendChild(elements.subtitle);
+
     elements.list = document.createElement("div");
     elements.list.className = "list";
     elements.events.appendChild(elements.list);
+
     elements.actions = document.createElement("div");
     elements.actions.className = "action";
     elements.events.appendChild(elements.actions);
+
     elements.addButton = document.createElement("input");
     elements.addButton.type = "button";
     elements.addButton.value = "Add";
@@ -205,43 +244,71 @@
     var events = {};
     var date_format = "DD/MM/YYYY";
     var current = null;
+    initialEvents.forEach(function (event) {
+        var eventDateStr = jsCalendar.tools.dateToString(new Date(event.date), date_format, "en");
+        if (!events.hasOwnProperty(eventDateStr)) {
+            events[eventDateStr] = [];
+        }
+        events[eventDateStr].push({
+            id: event.id,
+            time: event.time,  // Include time
+            list: event.list,  // Include exercise type
+            memo: event.memo
+        });
+        calendar.select(new Date(event.date));
+    });
 
     var showEvents = function (date) {
-        // Date string
-        var id = jsCalendar.tools.dateToString(date, date_format, "en");
-        // Set date
-        current = new Date(date.getTime());
-        // Set title
-        elements.title.textContent = id;
-        // Clear old events
-        elements.list.innerHTML = "";
-        // Add events on list
-        if (events.hasOwnProperty(id) && events[id].length) {
-            // Number of events
-            elements.subtitle.textContent = events[id].length + " " + ((events[id].length > 1) ? "events" : "event");
+    var id = jsCalendar.tools.dateToString(date, date_format, "en");
+    current = new Date(date.getTime());
+    elements.title.textContent = id;
+    elements.list.innerHTML = "";
+    elements.title2.textContent = ""; // 초기화
+    elements.title3.textContent = ""; // 초기화
 
-            var div;
-            var close;
-            // For each event
-            for (var i = 0; i < events[id].length; i++) {
-                div = document.createElement("div");
-                div.className = "event-item";
-                div.textContent = (i + 1) + ". " + events[id][i].name;
-                elements.list.appendChild(div);
-                close = document.createElement("div");
-                close.className = "close";
-                close.textContent = "×";
-                div.appendChild(close);
-                close.addEventListener("click", (function (date, index) {
-                    return function () {
-                        removeEvent(date, index);
-                    }
-                })(date, i), false);
+    if (events.hasOwnProperty(id) && events[id].length) {
+        elements.subtitle.textContent = events[id].length + " events";
+
+        // 운동 시간과 종류를 분리하여 저장
+        var times = [];
+        var lists = [];
+
+        events[id].forEach(function (event, index) {
+            // 운동 시간과 종류가 있는 경우만 배열에 추가
+            if (event.time) {
+                times.push(event.time);
             }
-        } else {
-            elements.subtitle.textContent = "No events";
+            if (event.list) {
+                lists.push(event.list);
+            }
+
+            // 이벤트 목록 표시
+            var div = document.createElement("div");
+            div.className = "event-item";
+            div.textContent = event.memo; // 메모 표시
+            elements.list.appendChild(div);
+
+            // 삭제 버튼 추가 및 이벤트 처리
+            var close = document.createElement("div");
+            close.className = "close";
+            close.textContent = "×";
+            div.appendChild(close);
+            close.addEventListener("click", function () {
+                removeEvent(id, index);
+            });
+        });
+
+        // 운동 시간과 종류가 존재하는 경우에만 표시
+        if (times.length > 0) {
+            elements.title2.textContent = "운동 시간: " + times.join(", ") + "분";
         }
-    };
+        if (lists.length > 0) {
+            elements.title3.textContent = "운동 종류: " + lists.join(", ");
+        }
+    } else {
+        elements.subtitle.textContent = "No events";
+    }
+};
 
     var removeEvent = function (date, index) {
         // Date string
@@ -279,16 +346,44 @@
         showEvents(date);
     });
 
+
+    // Modal related code
+    var modal = document.getElementById("eventModal");
+    // Ensure that we're selecting the close button inside the modal
+    var closeModal = modal.getElementsByClassName("close")[0];
+    var saveEventButton = document.getElementById("saveEvent");
+
+    elements.addButton.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    closeModal.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    saveEventButton.onclick = function () {
+        var memo = document.getElementById("eventMemo").value;
+        if (memo) {
+            var dateStr = jsCalendar.tools.dateToString(current, 'YYYY-MM-DD', 'en');
+            addEventToCalendar(memo, dateStr);
+            modal.style.display = "none";
+        }
+    }
     elements.addButton.addEventListener("click", function () {
         // Get event name
-        var names = ["John", "Bob", "Anna", "George", "Harry", "Jack", "Alexander"];
-        var name = prompt(
-            "Event info",
-            names[Math.floor(Math.random() * names.length)] + "'s birthday."
-        );
+        if (memo) {
+            var date = jsCalendar.tools.dateToString(current, 'YYYY-MM-DD', 'en');
+            addEventToCalendar(memo, date);
+        }
 
         //Return on cancel
-        if (name === null || name === "") {
+        if (memo === null || memo === "") {
             return;
         }
 
@@ -308,13 +403,46 @@
         }
 
         // Add event
-        events[id].push({ name: name });
+        events[id].push({ memo: memo });
 
         // Refresh events
         showEvents(current);
     }, false);
 </script>
+<script>
+    function addEventToCalendar(memo, date) {
+        const requestData = {
+            date: date,
+            memo: memo
+        };
 
+        fetch('/add_event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Event added successfully');
+
+                    // Refresh the page to show the updated events
+                    window.location.reload();
+                } else {
+                    alert('Error adding event: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+    }
+
+
+
+
+</script>
 
 
 <!-- Core theme JS-->
