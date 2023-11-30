@@ -154,19 +154,25 @@
     color: #fff;
     width: 100px;
     height: 30px;
+    position: absolute; /* Position the button absolutely within the dialog */
+  top: 10px; /* Adjust as necessary for your layout */
+  right: 10px; 
   }
 
   dialog {
-    border: none;
-    border-radius: 0.25rem;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    width: 660px;
-    height: 700px;
-    text-align: center;
-    margin: auto;
-    place-items: center;
-    background-color: #ffffff;
-  }
+  border: none;
+  position: relative; 
+  border-radius: 0.25rem;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  width: 660px; /* Adjust the width as needed */
+  height: 700px; /* Adjust the height as needed */
+  text-align: center;
+  margin: auto;
+  place-items: center;
+  background-color: #ffffff;
+  overflow: hidden; /* Hide any content that exceeds the modal dimensions */
+  padding: 0; /* Remove padding if unnecessary */
+}
 
   .icon {
     font-size: 4rem;
@@ -175,6 +181,7 @@
   .text-content {
     margin-top: 1rem;
     margin-bottom: 1rem;
+    overflow: hidden; 
   }
 
   #playButton2, #playButton3 {
@@ -184,6 +191,10 @@
 
     #playButton1 {
       margin-top: 50px; /* No margin at the top for the first button */
+    }
+    video#cameraStream {
+        max-width: 100%; /* Ensures video does not exceed the dialog width */
+        height: auto; /* Maintains aspect ratio */
     }
 </style>
 <link href="./static/css/styles3.css" rel="stylesheet" />
@@ -261,7 +272,7 @@
     <div class="text-content">
       <video id="cameraStream" autoplay></video>
     </div>
-    <button class="btn-close" class="btns" autofocus>Close Modal</button>
+    <button class="btn-close" class="btns" autofocus></button>
   </dialog>
 </section>
 <script>
