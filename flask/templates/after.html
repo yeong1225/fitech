@@ -394,7 +394,7 @@
 
     #button,
     .your-button-class {
-        background-color: black;
+        background-color: #2E8B57;
         /* Soft blue */
         /* other styles if needed */
     }
@@ -550,17 +550,36 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         height: 310px;
     }
-    .result{
-        font-size: 28px; 
+
+    .result {
+        font-size: 28px;
         font-family: 'SUITE-Regular', 'sans-serif';
         transform: translateY(15px);
-        
+
     }
 
-    .record{
+    .record {
         text-align: center;
         font-family: 'SUITE-Regular', 'sans-serif';
         transform: translateY(15px);
+    }
+
+    .emoji-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .emoji-buttons {
+        flex-grow: 1;
+        /* 가운데로 확장되도록 설정 */
+        margin-right: 10px;
+        /* 선택적으로 여백 조정 가능 */
+    }
+
+    .emoji-display {
+        transform: translateY(16px);
+        order: -1;
+        /* 순서를 지정하여 emoji-display를 왼쪽에 배치합니다 */
     }
 </style>
 {% endblock %}
@@ -578,7 +597,7 @@
                         <div class="row moveright">
 
                             <div class="col-md-12 text-center">
-                                <h2 class ="result">
+                                <h2 class="result">
                                     오늘의 운동 결과</h2>
                             </div>
                         </div>
@@ -633,16 +652,18 @@
         <!-- Emotion Emoji Buttons -->
         <div class="emotion-record-box mt-5 ">
             <div class="emotion-recording moveright">
-                <h3 class = "record">오늘의 일기</h3>
-                <div class="emoji-buttons" style="text-align: center;">
-                    <button class="emoji-btn" data-emotion="excited">😆</button>
-                    <button class="emoji-btn" data-emotion="happy">😊</button>
-                    <button class="emoji-btn" data-emotion="soso">😑</button>
-                    <button class="emoji-btn" data-emotion="angry">😠</button>
-                    <button class="emoji-btn" data-emotion="sad">😢</button>
-                </div>
-                <div class="emoji-display">
-                    <span id="selectedEmojiDisplay"></span>
+                <h3 class="record">오늘의 일기</h3>
+                <div class="emoji-container">
+                    <div class="emoji-buttons" style="text-align: center;">
+                        <button class="emoji-btn" data-emotion="excited">😆</button>
+                        <button class="emoji-btn" data-emotion="happy">😊</button>
+                        <button class="emoji-btn" data-emotion="soso">😑</button>
+                        <button class="emoji-btn" data-emotion="angry">😠</button>
+                        <button class="emoji-btn" data-emotion="sad">😢</button>
+                    </div>
+                    <div class="emoji-display">
+                        <span id="selectedEmojiDisplay"></span>
+                    </div>
                 </div>
             </div>
             <form>

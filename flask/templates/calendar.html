@@ -311,7 +311,7 @@
                 .then(response => response.json())
                 .then(data => {
                     // 이벤트 세부 정보를 표시합니다.
-                    displayEventDetails(updatedDate, data);
+                    displayEventDetails2(updatedDate, data);
                 })
                 .catch(error => {
                     console.error('Error fetching events:', error);
@@ -339,46 +339,46 @@
         }
         createCalendar(currentYear, currentMonth);
     });
-    document.addEventListener("DOMContentLoaded", function () {
+    // document.addEventListener("DOMContentLoaded", function () {
 
-        function getYesterdayFormatted() {
-            const today = new Date();
-            const yesterday = new Date(today);
-            yesterday.setDate(yesterday.getDate() - 1); // Subtract one day
-            return yesterday.toISOString().split('T')[0];
-        }
+    //     function getYesterdayFormatted() {
+    //         const today = new Date();
+    //         const yesterday = new Date(today);
+    //         yesterday.setDate(yesterday.getDate() - 1); // Subtract one day
+    //         return yesterday.toISOString().split('T')[0];
+    //     }
 
-        function highlightTodayAndFetchEvents() {
-            const today = new Date();
-            const todayFormatted = today.toISOString().split('T')[0];
-            const todayFormatted2 = getYesterdayFormatted();
+    //     function highlightTodayAndFetchEvents() {
+    //         const today = new Date();
+    //         const todayFormatted = today.toISOString().split('T')[0];
+    //         const todayFormatted2 = getYesterdayFormatted();
 
-            // Highlight today's date in the calendar
-            const todayCell = document.querySelector(`td[data-date='${todayFormatted2}']`);
-            if (todayCell) {
-                todayCell.classList.add('selected');
-            }
+    //         // Highlight today's date in the calendar
+    //         const todayCell = document.querySelector(`td[data-date='${todayFormatted2}']`);
+    //         if (todayCell) {
+    //             todayCell.classList.add('selected');
+    //         }
 
-            // Fetch and display event details for today
-            fetchAndDisplayEventDetails2(todayFormatted);
-        }
+    //         // Fetch and display event details for today
+    //         fetchAndDisplayEventDetails2(todayFormatted);
+    //     }
 
-        // Function to fetch and display event details for a given date
-        function fetchAndDisplayEventDetails2(date) {
-            fetch(`/get_event?selected_date=${date}`)
-                .then(response => response.json())
-                .then(data => {
-                    displayEventDetails2(date, data);
-                })
-                .catch(error => {
-                    console.error('Error fetching events:', error);
-                });
-        }
+    //     // Function to fetch and display event details for a given date
+    //     function fetchAndDisplayEventDetails2(date) {
+    //         fetch(`/get_event?selected_date=${date}`)
+    //             .then(response => response.json())
+    //             .then(data => {
+    //                 displayEventDetails2(date, data);
+    //             })
+    //             .catch(error => {
+    //                 console.error('Error fetching events:', error);
+    //             });
+    //     }
 
-        // Initialize calendar and set default date to today
-        createCalendar(currentYear, currentMonth);
-        highlightTodayAndFetchEvents();
-    });
+    //     // Initialize calendar and set default date to today
+    //     createCalendar(currentYear, currentMonth);
+    //     highlightTodayAndFetchEvents();
+    // });
 
 
    
