@@ -43,6 +43,7 @@
         border-radius: 10px;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
         overflow: hidden;
+
     }
 
     /* 달력 스타일 */
@@ -57,6 +58,7 @@
         box-sizing: border-box;
         /*box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.4);*/
         margin-bottom: 10px;
+        height: 420px;
     }
 
     .header {
@@ -124,6 +126,7 @@
         box-sizing: border-box;
         margin-right: 250px;
         font-family: 'SUITE-Regular', Arial, sans-serif;
+        height: 420px;
     }
 
     #selected-date {
@@ -197,7 +200,7 @@
 <div class="calendar-container">
     <div id="calendar"></div>
     <div id="event-display">
-        <h2 style="font-family: 'SUITE-Regular', Arial, sans-serif;">기록</h2>
+        <h2 style="font-family: 'SUITE-Regular', Arial, sans-serif;">Record</h2>
         <div id="event-details"></div>
     </div>
 </div>
@@ -378,7 +381,74 @@
     });
 
 
-    function displayEventDetails(date, events) {
+    // function displayEventDetails(date, events) {
+    //     const eventDetailsContainer = document.getElementById('event-details');
+    //     eventDetailsContainer.textContent = ''; // 이전 내용 초기화
+    //     // Emotion to emoji mapping
+    //     const emotionMap = {
+    //         'excited': '😆',
+    //         'happy': '😊',
+    //         'soso': '😐',
+    //         'angry': '😠',
+    //         'sad': '😢'
+    //     };
+    //     /// 선택한 날짜를 이벤트 창에 표시합니다.
+    //     const selectedDateElement = document.createElement('p');
+    //     selectedDateElement.id = 'selected-date';
+
+    //     // 현재 날짜 문자열을 Date 객체로 변환
+    //     const selectedDate = new Date(date);
+
+    //     // 날짜를 1일 더하고 다시 문자열로 변환
+    //     selectedDate.setDate(selectedDate.getDate());
+    //     const formattedDate = selectedDate.toISOString().split('T')[0];
+
+    //     //selectedDateElement.textContent = 'Selected Date: ' + formattedDate;
+    //     selectedDateElement.textContent = '날짜 : ' + formattedDate;
+    //     eventDetailsContainer.appendChild(selectedDateElement);
+
+    //     if (events && events.length > 0) {
+    //         events.forEach(event => {
+    //             const eventElement = document.createElement('div');
+    //             eventElement.classList.add('event-item');
+    //             let eventText = ''; // 이벤트 텍스트 초기화
+
+    //             // Check if the memo contains an emotion keyword
+    //             let memoParts = event.memo.split(' ');
+    //             let emotionText = memoParts.shift(); // Remove the first part of the memo
+    //             let emotionEmoji = emotionMap[emotionText.toLowerCase()]; // Find corresponding emoji
+    //             // If an emoji is found, prepend it to the memo
+    //             let displayText = emotionEmoji ? emotionEmoji + ' ' : '';
+    //             displayText += memoParts.join(' '); // Add the rest of the memo
+
+    //             if (event.time || event.time === 0) {
+    //                 // time이 존재하면 시간 정보를 추가
+    //                 eventText += `${event.time}분<br>`;
+
+    //             }
+
+    //             if (event.memo) {
+    //                 // memo가 존재하면 메모 정보를 추가
+    //                 if (eventText) {
+    //                     // 이미 시간 정보가 있는 경우, 시간과 메모를 줄 바꿈으로 구분
+    //                     eventText += '\n';
+    //                 }
+    //                 eventText += displayText;
+    //             }
+
+    //             // 이벤트 텍스트를 설정
+    //             eventElement.innerHTML = eventText;
+    //             eventElement.style.marginLeft = '5px';
+    //             eventDetailsContainer.appendChild(eventElement);
+    //         });
+    //     } else {
+    //         const noEventsMessage = document.createElement('p');
+    //         noEventsMessage.textContent = 'No events for this date.';
+    //         eventDetailsContainer.appendChild(noEventsMessage);
+    //     }
+    // }
+
+    function displayEventDetails2(date, events) {
         const eventDetailsContainer = document.getElementById('event-details');
         eventDetailsContainer.textContent = ''; // 이전 내용 초기화
         // Emotion to emoji mapping
@@ -445,73 +515,6 @@
         }
     }
 
-    function displayEventDetails2(date, events) {
-        const eventDetailsContainer = document.getElementById('event-details');
-        eventDetailsContainer.textContent = ''; // 이전 내용 초기화
-        // Emotion to emoji mapping
-        const emotionMap = {
-            'excited': '😆',
-            'happy': '😊',
-            'soso': '😐',
-            'angry': '😠',
-            'sad': '😢'
-        };
-        /// 선택한 날짜를 이벤트 창에 표시합니다.
-        const selectedDateElement = document.createElement('p');
-        selectedDateElement.id = 'selected-date';
-
-        // 현재 날짜 문자열을 Date 객체로 변환
-        const selectedDate = new Date(date);
-
-        // 날짜를 1일 더하고 다시 문자열로 변환
-        selectedDate.setDate(selectedDate.getDate());
-        const formattedDate = selectedDate.toISOString().split('T')[0];
-
-        //selectedDateElement.textContent = 'Selected Date: ' + formattedDate;
-        selectedDateElement.textContent = '날짜 : ' + formattedDate;
-        eventDetailsContainer.appendChild(selectedDateElement);
-
-        if (events && events.length > 0) {
-            events.forEach(event => {
-                const eventElement = document.createElement('div');
-                eventElement.classList.add('event-item');
-                let eventText = ''; // 이벤트 텍스트 초기화
-
-                // Check if the memo contains an emotion keyword
-                let memoParts = event.memo.split(' ');
-                let emotionText = memoParts.shift(); // Remove the first part of the memo
-                let emotionEmoji = emotionMap[emotionText.toLowerCase()]; // Find corresponding emoji
-                // If an emoji is found, prepend it to the memo
-                let displayText = emotionEmoji ? emotionEmoji + ' ' : '';
-                displayText += memoParts.join(' '); // Add the rest of the memo
-
-                if (event.time || event.time === 0) {
-                    // time이 존재하면 시간 정보를 추가
-                    eventText += `시간 : ${event.time}분<br>`;
-
-                }
-
-                if (event.memo) {
-                    // memo가 존재하면 메모 정보를 추가
-                    if (eventText) {
-                        // 이미 시간 정보가 있는 경우, 시간과 메모를 줄 바꿈으로 구분
-                        eventText += '\n';
-                    }
-                    eventText += displayText;
-                }
-
-                // 이벤트 텍스트를 설정
-                eventElement.innerHTML = eventText;
-                eventElement.style.marginLeft = '5px';
-                eventDetailsContainer.appendChild(eventElement);
-            });
-        } else {
-            const noEventsMessage = document.createElement('p');
-            noEventsMessage.textContent = 'No events for this date.';
-            eventDetailsContainer.appendChild(noEventsMessage);
-        }
-    }
-
     // 초기 달력 생성
     createCalendar(currentYear, currentMonth);
 
@@ -526,7 +529,13 @@
 {% block footer %}
 <!-- Footer-->
 <footer class="border-top">
-
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="small text-center text-muted fst-italic">Copyright © Fitech 2023</div>
+            </div>
+        </div>
+    </div>
 </footer>
 <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 {% endblock %}

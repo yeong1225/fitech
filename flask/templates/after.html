@@ -555,19 +555,6 @@
         </div>
     </div>
 </section>
-{% endblock %}
-
-{% block footer %}
-<!-- Include any necessary footer elements here -->
-<footer class="border-top">
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <div class="small text-center text-muted fst-italic">Copyright © Fitech 2023</div>
-            </div>
-        </div>
-    </div>
-</footer>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Define a mapping of emoji characters to names
@@ -621,7 +608,9 @@
                         // Clear the form and provide a success message
                         document.getElementById("feedback").value = ''; // Clear the textarea
                         document.getElementById('selectedEmojiDisplay').textContent = ''; // Clear the selected emoji display
-                        alert('Memo added successfully');
+                        // alert('Memo added successfully');
+                        console.log('메모잘됨');
+                        window.location.href = "{{ url_for('cal.calendar') }}";
                     } else {
                         throw new Error('Error saving memo: ' + data.message);
                     }
@@ -632,5 +621,19 @@
         };
     });
 </script>
+
+{% endblock %}
+
+{% block footer %}
+<!-- Include any necessary footer elements here -->
+<footer class="border-top">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="small text-center text-muted fst-italic">Copyright © Fitech 2023</div>
+            </div>
+        </div>
+    </div>
+</footer>
 
 {% endblock %}
