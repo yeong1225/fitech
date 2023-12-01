@@ -169,10 +169,6 @@ def send_feedback8(feedback8):
     socketio.emit('feedback8', {'feedback8': feedback8})
 
 
-@app.route('/test4')
-def test4():
-    return render_template('test4.html')
-
 @app.route('/test_count_time')
 def test_count_time():
     time, new_z = count_time(5)
@@ -554,7 +550,7 @@ def compare_pose(image,angle_point,angle_user,labels):
         #고개 돌렸는지 안돌렸는지 확인
         vertical_distance_eyes = abs(right_eye - left_eye)
         vertical_distance_ears = abs(right_ear - left_ear)
-        rotation_threshold = 0.03
+        rotation_threshold = 0.01
         head_rotated = vertical_distance_eyes > rotation_threshold or vertical_distance_ears > rotation_threshold
         if not head_rotated:
             stage = stage + 1
@@ -638,7 +634,7 @@ def compare_pose(image,angle_point,angle_user,labels):
             feedback2= ""
         send_feedback2(feedback2)
 
-        if angle_user[7] > (angle_target[7] + 30):
+        if angle_user[7] > (angle_target[7] + 40):
             stage = stage + 1
             feedback3 = "왼쪽 무릎을 더 굽히세요"
             #cv2.putText(image, str("Reduce the angle at left knee"), (10,360), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)

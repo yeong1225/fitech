@@ -94,6 +94,14 @@
         transform: translateY(-20px);
     }
 
+    .custom-p02 {
+        transform: translateY(-24px);
+    }
+
+    .custom-p03 {
+        transform: translateY(-24px);
+    }
+
     .grade-letter {
         font-size: 2em;
         /* 32px if base font size is 16px */
@@ -325,6 +333,7 @@
         margin-top: 20px;
         width: 940px;
         margin-left: 30px;
+        transform: translateY(15px);
         /* 입력 필드의 폭을 폼의 폭과 동일하게 설정 */
     }
 
@@ -484,6 +493,7 @@
 
     .emoji-buttons {
         background-color: transparent;
+        transform: translateY(15px);
         /* 배경을 투명하게 설정 */
     }
 
@@ -540,6 +550,18 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         height: 310px;
     }
+    .result{
+        font-size: 28px; 
+        font-family: 'SUITE-Regular', 'sans-serif';
+        transform: translateY(15px);
+        
+    }
+
+    .record{
+        text-align: center;
+        font-family: 'SUITE-Regular', 'sans-serif';
+        transform: translateY(15px);
+    }
 </style>
 {% endblock %}
 
@@ -556,7 +578,7 @@
                         <div class="row moveright">
 
                             <div class="col-md-12 text-center">
-                                <h2 style="font-size: 28px; font-family: 'SUITE-Regular', sans-serif;">
+                                <h2 class ="result">
                                     오늘의 운동 결과</h2>
                             </div>
                         </div>
@@ -578,7 +600,7 @@
                                     <span class="icon"><img src="{{ url_for('static', filename='img/count.jpg') }}"
                                             alt="Time Icon"><i class="icon-diamond"></i></span>
                                     <div class="desc">
-                                        <h3 class="custom-p01">동작 개수</h3>
+                                        <h3 class="custom-p02">동작 개수</h3>
                                         <p>3</p>
                                     </div>
                                 </div>
@@ -588,7 +610,7 @@
                                     <span class="icon"><img src="{{ url_for('static', filename='img/list.jpg') }}"
                                             alt="Time Icon"><i class="icon-paperplane"></i></span>
                                     <div class="desc">
-                                        <h3 class="custom-p01">동작 종류</h3>
+                                        <h3 class="custom-p03">동작 종류</h3>
                                         <ul>
                                             <li>Downdog</li>
                                             <li>Warrior2</li>
@@ -611,7 +633,7 @@
         <!-- Emotion Emoji Buttons -->
         <div class="emotion-record-box mt-5 ">
             <div class="emotion-recording moveright">
-                <h3 style="text-align: center; font-family: 'SUITE-Regular', sans-serif;">오늘의 감정 기록</h3>
+                <h3 class = "record">오늘의 일기</h3>
                 <div class="emoji-buttons" style="text-align: center;">
                     <button class="emoji-btn" data-emotion="excited">😆</button>
                     <button class="emoji-btn" data-emotion="happy">😊</button>
