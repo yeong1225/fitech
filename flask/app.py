@@ -370,8 +370,9 @@ def feed():
                 angle8 = calculateAngle(left_hip, left_knee, left_ankle)
                 angle.append(int(angle8))
                 #print(detectedLabel)
-            
-
+                
+                t = 10
+                
                 if z==1:
                     label = "Downdog"
                     #send_label(label)
@@ -382,7 +383,7 @@ def feed():
                     a_score = diff_compare_angle(angle,angle_target)
                     compare_pose(image,angle_point,angle,label)
                     if a_score >=75:
-                        time, z = count_time(30)
+                        time, z = count_time(t)
                         send_time(time)
                         # cv2.putText(image, f"TIME: {int(time)}s", (10,250),
                         #             cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
@@ -397,7 +398,7 @@ def feed():
                     a_score = diff_compare_angle(angle,angle_target)
                     compare_pose(image,angle_point,angle,label)
                     if detectedLabel == label:
-                        time, z = count_time(30)
+                        time, z = count_time(t)
                         send_time(time)
                         # cv2.putText(image, f"TIME: {int(time)}s", (10,250),
                         #             cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
@@ -410,7 +411,7 @@ def feed():
                     #                 cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
                     compare_pose(image,angle_point,angle,label)
                     if detectedLabel == label:
-                        time, z = count_time(30)
+                        time, z = count_time(t)
                         send_time(time)
                         # cv2.putText(image, f"TIME: {int(time)}s", (10,250),
                         #             cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
