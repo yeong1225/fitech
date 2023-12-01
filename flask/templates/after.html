@@ -101,6 +101,7 @@
     }
 
     .icons {
+        
         display: flex;
         justify-content: center;
     }
@@ -115,7 +116,7 @@
     }
 
     .icon {
-        margin: 0 20px;
+        margin: 30px 20px;
         /* 아이콘 간의 좌우 간격을 15px에서 20px로 늘림 */
         text-align: center;
         flex-direction: column;
@@ -291,16 +292,22 @@
 
     /* 감정기록 폼 스타일 */
     .feedbackForm {
-        width: 55%;
+        width: 70%;
         /* 폼의 폭을 좌우 여백을 줄이고 95%로 설정 */
         margin: 20px auto 30px;
         /* 자동 마진으로 중앙 정렬 */
     }
 
     /* 피드백 텍스트 영역 스타일 */
-    .feedbackForm .form-group {
+    .feedbackForm {
         width: 100%;
         margin-top: 20px;
+        /* 입력 필드의 폭을 폼의 폭과 동일하게 설정 */
+    }
+    .form-group {
+        margin-top: 20px;
+        width:950px;
+        margin-left:30px;
         /* 입력 필드의 폭을 폼의 폭과 동일하게 설정 */
     }
 
@@ -420,6 +427,9 @@
         list-style-type: none;
         /* 리스트 스타일 제거 */
     }
+    .services .desc ul {
+        margin-top:33px;
+    }
 
     /* 플레이스홀더 스타일 */
     #feedback::placeholder {
@@ -487,6 +497,8 @@
 
     /* Emotion Record Box Styles */
     .emotion-record-box {
+        width:1035px;
+        margin-left:320px;
         background-color: white;
         /* Light background color */
         padding: 20px;
