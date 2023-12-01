@@ -67,8 +67,8 @@
 <div id="content">
     <div class="dashboard">
         <div class="profile">
-            <h1>Timer</h1>
             <img src="./static/img/timer.jpg" alt="이미지 설명">
+            <h1>Timer</h1>
             <!--<div id="timer">10</div> -->
             <div id="timeDisplay"></div>
 
@@ -91,7 +91,7 @@
                     <div id="labelDisplay" class="decoyoga-text"></div>
                 </div>
                 <div class="downdog-container">
-                    <img src="{{ url_for('static', filename='gif/default.gif') }}" alt="움짤">
+                    <img src="{{ url_for('static', filename='gif/warrior2.gif') }}" alt="움짤">
                 </div>
                 <div class="box exercise-table">
                     <div class="feedback-section">
@@ -103,17 +103,17 @@
                         <div>
                             <div class="horizontal-box-container">
                                 <div id="box1" class="horizontal-box">
-                                    <div id="feedBackDisplay1" style="font-size: 25px;"></div>
-                                    <div id="feedBackDisplay2" style="font-size: 25px;"></div>
-                                    <div id="feedBackDisplay3" style="font-size: 25px;"></div>
-                                    <div id="feedBackDisplay4" style="font-size: 25px;"></div>
+                                    <div id="feedBackDisplay1" ></div>
+                                    <div id="feedBackDisplay2" ></div>
+                                    <div id="feedBackDisplay3" ></div>
+                                    <div id="feedBackDisplay4" ></div>
                                 </div>
 
                                 <div id="box2" class="horizontal-box">
-                                    <div id="feedBackDisplay5" style="font-size: 25px;"></div>
-                                    <div id="feedBackDisplay6" style="font-size: 25px;"></div>
-                                    <div id="feedBackDisplay7" style="font-size: 25px;"></div>
-                                    <div id="feedBackDisplay8" style="font-size: 25px;"></div>
+                                    <div id="feedBackDisplay5" ></div>
+                                    <div id="feedBackDisplay6" ></div>
+                                    <div id="feedBackDisplay7" ></div>
+                                    <div id="feedBackDisplay8" ></div>
                                 </div>
                             </div>
 
@@ -129,7 +129,7 @@
 
                 </div>
 
-                <audio controls autoplay>
+                <audio controls autoplay class="hidden-audio" style="display: none;">
                     <!-- 노래 파일 경로를 소스(src)에 지정 -->
                     <source src="{{ url_for('static', filename='mp3/bird.mp3') }}" type="audio/mpeg">
                     Your browser does not support the audio element.
