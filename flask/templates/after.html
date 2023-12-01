@@ -303,6 +303,7 @@
     /* 피드백 텍스트 영역 스타일 */
     .feedbackForm .form-group {
         width: 100%;
+        margin-top:20px;
         /* 입력 필드의 폭을 폼의 폭과 동일하게 설정 */
     }
 
@@ -530,8 +531,22 @@
         <br>
         <!-- Feedback Form -->
         <div class="mt-4 feedbackForm section">
-            <h2 style="font-size: 28px;  text-align: center; font-family: 'SUITE-Regular', sans-serif;">감정기록</h2>
-            <p style="  text-align: center; font-family: 'SUITE-Regular', sans-serif;">지금의 감정을 기록해봐요!</p>
+           <!-- <h2 style="font-size: 28px;  text-align: center; font-family: 'SUITE-Regular', sans-serif;">감정기록</h2>
+            <p style="  text-align: center; font-family: 'SUITE-Regular', sans-serif;">지금의 감정을 기록해봐요!</p>-->
+            <!-- Emotion Emoji Buttons -->
+<div class="emotion-recording">
+    <h3 style="text-align: center; font-family: 'SUITE-Regular', sans-serif;">오늘의 감정</h3>
+    <div class="emoji-buttons" style="text-align: center;">
+      <button class="emoji-btn" data-emotion="excited">😆</button>
+      <button class="emoji-btn" data-emotion="happy">😊</button>
+      <button class="emoji-btn" data-emotion="soso">😑</button>
+      <button class="emoji-btn" data-emotion="angry">😠</button>
+      <button class="emoji-btn" data-emotion="sad">😢</button>
+    </div>
+    <div class="emoji-display">
+        Selected Emoji: <span id="selectedEmojiDisplay"></span>
+      </div>
+  </div>
             <form>
                 <div class="form-group">
                     <textarea class="form-control" id="feedback" rows="3"></textarea>
@@ -570,73 +585,68 @@
     </div>
 </footer>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var form = document.querySelector("form");
-
-        form.onsubmit = function (event) {
-            event.preventDefault(); // Prevent the form from submitting the traditional way
-
-            var time = '10분'; // Replace this with the actual logic to get the time
-            var movements = ['전사자세', '나무자세']; // Replace with actual logic to get movements
-            var memoText = document.getElementById("feedback").value;
-
-            // Combine the memo with time and movements
-            //var combinedMemo = `${time}, ${movements.join(', ')}`;
-            if (memoText) {
-                //combinedMemo += ', ' + memoText;
-                combinedMemo = '(' + time + ') ' + movements;
-            }
-
-            var date = new Date().toISOString().slice(0, 10); // Format: YYYY-MM-DD
-            var requestData1 = {
-                date: date,
-                memo: combinedMemo
-            };
-
-            // First request with combinedMemo
-            fetch('/add_memo', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestData1)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        //alert('First memo added successfully');
-
-                        // Second request with original memo
-                        var requestData = {
-                            date: date,
-                            memo: memoText
-                        };
-
-                        return fetch('/add_memo', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(requestData)
-                        });
-                    } else {
-                        throw new Error('Error adding first memo: ' + data.message);
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        alert('memo added successfully');
-                        // Clear the textarea
-                        document.getElementById("feedback").value = '';
-                    } else {
-                        throw new Error('Error adding second memo: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    alert('Error: ' + error);
-                });
-        };
+    document.addEventListener("DOMContentLoaded", function() {
+    // Define a mapping of emoji characters to names
+    var emojiMap = {
+        '😆': 'excited',
+        '😊': 'happy',
+        '😑': 'soso',
+        '😠': 'angry',
+        '😢': 'sad'
+    };
+    
+    var selectedEmoji = '';
+    var selectedEmojiName = '';
+    
+    // Get all emoji buttons and set up click event listeners
+    var emojiButtons = document.querySelectorAll('.emoji-btn');
+    emojiButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            selectedEmoji = this.textContent; // Set the selected emoji
+            selectedEmojiName = emojiMap[selectedEmoji]; // Set the selected emoji's name
+            document.getElementById('selectedEmojiDisplay').textContent = selectedEmoji; // Update the display
+        });
     });
+
+    // Handle form submission
+    document.querySelector("form").onsubmit = function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        var memoText = document.getElementById("feedback").value.trim(); // Get the memo text
+        // Combine emoji name with memo text
+        var combinedMemo = selectedEmojiName ? selectedEmojiName + ' ' + memoText : memoText;
+
+        // Create your request payload with the combined memo
+        var requestData = {
+            date: new Date().toISOString().slice(0, 10), // Get the current date in YYYY-MM-DD format
+            memo: combinedMemo
+        };
+
+        // Send the combined memo to the server
+        fetch('/add_memo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === 'success') {
+                console.log('Memo saved successfully');
+                // Clear the form and provide a success message
+                document.getElementById("feedback").value = ''; // Clear the textarea
+                document.getElementById('selectedEmojiDisplay').textContent = ''; // Clear the selected emoji display
+                alert('Memo added successfully');
+            } else {
+                throw new Error('Error saving memo: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error: ' + error);
+        });
+    };
+});
 </script>
+
 {% endblock %}
