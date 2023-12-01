@@ -101,7 +101,7 @@
     }
 
     .icons {
-        
+
         display: flex;
         justify-content: center;
     }
@@ -116,7 +116,7 @@
     }
 
     .icon {
-        margin: 30px 20px;
+        margin: 50px 20px;
         /* 아이콘 간의 좌우 간격을 15px에서 20px로 늘림 */
         text-align: center;
         flex-direction: column;
@@ -264,6 +264,7 @@
         border-bottom: 2px solid #ff79c6;
         /* Title underline */
         margin-bottom: 20px;
+        margin-top: 0px;
         /* Space below the underline */
         font-size: 1.5em;
         /* Font size */
@@ -304,10 +305,11 @@
         margin-top: 20px;
         /* 입력 필드의 폭을 폼의 폭과 동일하게 설정 */
     }
+
     .form-group {
         margin-top: 20px;
-        width:950px;
-        margin-left:30px;
+        width: 950px;
+        margin-left: 30px;
         /* 입력 필드의 폭을 폼의 폭과 동일하게 설정 */
     }
 
@@ -392,7 +394,7 @@
         /* Circular shape */
         overflow: hidden;
         /* Ensures content doesn't spill outside the circle */
-        margin-right: 15px;
+        margin-right: -20px;
         /* Adjust as needed */
     }
 
@@ -423,89 +425,103 @@
         font-family: 'SUITE-Regular', Arial, sans-serif;
     }
 
-    ul {
-        list-style-type: none;
-        /* 리스트 스타일 제거 */
-    }
-    .services .desc ul {
-        margin-top:33px;
+    .move-left {
+        margin-left: -50px;
+        /* Adjust value as needed */
     }
 
-    /* 플레이스홀더 스타일 */
-    #feedback::placeholder {
-        color: gray;
-        /* 회색 플레이스홀더 텍스트 색상 */
-    }
+    .moveright {
+        margin-left: 35px;
+        /* Adjust value as needed */}
 
-    /* 클릭 시 플레이스홀더 숨김 */
-    #feedback:focus::placeholder {
-        color: transparent;
-        /* 클릭 시 플레이스홀더 텍스트 숨김 */
-    }
+        ul {
+            list-style-type: none;
+            /* 리스트 스타일 제거 */
+        }
 
-    .emotion-recording {
-        background-color: transparent;
-        /* 배경을 투명하게 설정 */
-        border: none;
-        /* 테두리 제거 */
-    }
+        .services .desc ul {
+            margin-left: -33px;
+        }
 
-    .emoji-buttons {
-        background-color: transparent;
-        /* 배경을 투명하게 설정 */
-    }
+        .services .desc p {
+            margin-top: 37px;
+        }
 
-    .emoji-btn {
-        background-color: transparent;
-        /* 배경을 투명하게 설정 */
-        border: none;
-        /* 테두리 제거 */
-    }
+        /* 플레이스홀더 스타일 */
+        #feedback::placeholder {
+            color: gray;
+            /* 회색 플레이스홀더 텍스트 색상 */
+        }
 
-    .emoji-display {
-        background-color: transparent;
-        /* 배경을 투명하게 설정 */
-        border: none;
-        /* 테두리 제거 */
-    }
+        /* 클릭 시 플레이스홀더 숨김 */
+        #feedback:focus::placeholder {
+            color: transparent;
+            /* 클릭 시 플레이스홀더 텍스트 숨김 */
+        }
 
-    #colorlib-services {
-        margin-top: 500px;
-        /* 상단 여백을 0으로 설정 */
-    }
+        .emotion-recording {
+            background-color: transparent;
+            /* 배경을 투명하게 설정 */
+            border: none;
+            /* 테두리 제거 */
+        }
 
-    .custom-margin-bottom {
-        margin-bottom: 50px;
-        /* Change this value to your desired margin */
-    }
+        .emoji-buttons {
+            background-color: transparent;
+            /* 배경을 투명하게 설정 */
+        }
 
-    h2,
-    h3 {
-        color: #265c4a;
-        /* Deep green for headings */
-    }
+        .emoji-btn {
+            background-color: transparent;
+            /* 배경을 투명하게 설정 */
+            border: none;
+            /* 테두리 제거 */
+        }
 
-    .workout-results-box {
-        background-color: white;
-        /* Light background color */
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 30px;
-        /* Space between boxes */
-    }
+        .emoji-display {
+            background-color: transparent;
+            /* 배경을 투명하게 설정 */
+            border: none;
+            /* 테두리 제거 */
+        }
 
-    /* Emotion Record Box Styles */
-    .emotion-record-box {
-        width:1035px;
-        margin-left:320px;
-        background-color: white;
-        /* Light background color */
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        height: 310px;
-    }
+        #colorlib-services {
+            margin-top: 500px;
+            /* 상단 여백을 0으로 설정 */
+        }
+
+        .custom-margin-bottom {
+            margin-bottom: 50px;
+            /* Change this value to your desired margin */
+        }
+
+        h2,
+        h3 {
+            color: #265c4a;
+            /* Deep green for headings */
+        }
+
+        .workout-results-box {
+            background-color: white;
+            /* Light background color */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            /* Space between boxes */
+        }
+
+        /* Emotion Record Box Styles */
+        .emotion-record-box {
+            width: 1035px;
+            margin-left: 320px;
+            background-color: white;
+            /* Light background color */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            height: 310px;
+        }
 </style>
 {% endblock %}
 
@@ -519,10 +535,11 @@
             <div id="colorlib-services " style="text-align: center;">
                 <div class="container">
                     <div class="workout-results-box">
-                        <div class="row">
+                        <div class="row moveright">
 
-                            <div class="col-md-12 text-center">
-                                <h2 style="font-size: 28px; font-family: 'SUITE-Regular', sans-serif;">오늘의 운동 결과</h2>
+                            <div class="col-md-12 text-center" >
+                                <h2 style="font-size: 28px; font-family: 'SUITE-Regular', sans-serif;" >
+                                    오늘의 운동 결과</h2>
                             </div>
                         </div>
                         <br>
@@ -539,7 +556,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4 animate-box">
-                                <div class="services">
+                                <div class="services move-left">
                                     <span class="icon"><img src="{{ url_for('static', filename='img/count.jpg') }}"
                                             alt="Time Icon"><i class="icon-diamond"></i></span>
                                     <div class="desc">
@@ -574,8 +591,8 @@
         <!-- <h2 style="font-size: 28px;  text-align: center; font-family: 'SUITE-Regular', sans-serif;">감정기록</h2>
             <p style="  text-align: center; font-family: 'SUITE-Regular', sans-serif;">지금의 감정을 기록해봐요!</p>-->
         <!-- Emotion Emoji Buttons -->
-        <div class="emotion-record-box mt-5">
-            <div class="emotion-recording">
+        <div class="emotion-record-box mt-5 ">
+            <div class="emotion-recording moveright">
                 <h3 style="text-align: center; font-family: 'SUITE-Regular', sans-serif;">오늘의 감정 기록</h3>
                 <div class="emoji-buttons" style="text-align: center;">
                     <button class="emoji-btn" data-emotion="excited">😆</button>
