@@ -79,6 +79,7 @@
     background-color: var(--accent-color);
     border-radius: 8px;
     padding: 20px;
+    /* margin-right:10px; */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     height: 600px !important;
     /* 모든 카드의 높이를 고정합니다 */
@@ -91,11 +92,17 @@
   }
 
 
+
   .card__price,
   .card__bullets,
   .card__cta {
     font-family: 'SUITE-Regular', sans-serif !important;
+
     /* 폰트 적용 */
+  }
+
+  ul.card__bullets.flow {
+    margin-right: 25px;
   }
 
   .card__heading {
@@ -108,8 +115,10 @@
     background-size: cover;
     background-position: center;
   }
-.btn-open{
-    margin-top:70px; /*여기! 버튼 아래위치 170*/
+
+  .btn-open {
+    margin-top: 70px;
+    /*여기! 버튼 아래위치 170*/
   }
 
   .card-body {
@@ -151,25 +160,31 @@
     color: #fff;
     width: 100px;
     height: 30px;
-    position: absolute; /* Position the button absolutely within the dialog */
-  top: 10px; /* Adjust as necessary for your layout */
-  right: 10px; 
+    position: absolute;
+    /* Position the button absolutely within the dialog */
+    top: 10px;
+    /* Adjust as necessary for your layout */
+    right: 10px;
   }
 
   dialog {
-  border: none;
-  position: relative; 
-  border-radius: 0.25rem;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  width: 660px; /* Adjust the width as needed */
-  height: 700px; /* Adjust the height as needed */
-  text-align: center;
-  margin: auto;
-  place-items: center;
-  background-color: #ffffff;
-  overflow: hidden; /* Hide any content that exceeds the modal dimensions */
-  padding: 0; /* Remove padding if unnecessary */
-}
+    border: none;
+    position: relative;
+    border-radius: 0.25rem;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    width: 660px;
+    /* Adjust the width as needed */
+    height: 700px;
+    /* Adjust the height as needed */
+    text-align: center;
+    margin: auto;
+    place-items: center;
+    background-color: #ffffff;
+    overflow: hidden;
+    /* Hide any content that exceeds the modal dimensions */
+    padding: 0;
+    /* Remove padding if unnecessary */
+  }
 
   .icon {
     font-size: 4rem;
@@ -178,21 +193,167 @@
   .text-content {
     margin-top: 1rem;
     margin-bottom: 1rem;
-    overflow: hidden; 
+    overflow: hidden;
   }
 
-  #playButton2, #playButton3 {
-      margin-top: 75px; /* Adjust the space above the button */
-      margin-bottom: 10px; /* Adjust the space below the button */
-    }
+  #playButton2,
+  #playButton3 {
+    margin-top: 75px;
+    /* Adjust the space above the button */
+    margin-bottom: 10px;
+    /* Adjust the space below the button */
+  }
 
-    #playButton1 {
-      margin-top: 50px; /* No margin at the top for the first button */
-    }
-    video#cameraStream {
-        max-width: 100%; /* Ensures video does not exceed the dialog width */
-        height: auto; /* Maintains aspect ratio */
-    }
+  #playButton1 {
+    margin-top: 50px;
+    /* No margin at the top for the first button */
+  }
+
+  video#cameraStream {
+    max-width: 100%;
+    /* Ensures video does not exceed the dialog width */
+    height: auto;
+    /* Maintains aspect ratio */
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    /* 버튼을 일렬로 정렬하고 간격을 동일하게 분배합니다 */
+    align-items: baseline;
+    /* 모든 버튼을 수직으로 기준선 정렬로 설정합니다 */
+  }
+
+
+  #playButton1 {
+
+    margin-right: 10px;
+    /* #playButton1 오른쪽에 10px 마진을 추가하여 간격을 띄웁니다 */
+  }
+
+  #playButton2 {
+
+    margin-right: 10px;
+    /* #playButton1 오른쪽에 10px 마진을 추가하여 간격을 띄웁니다 */
+  }
+
+  .button-container button {
+    width: 100px;
+    height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .card .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+  }
+
+
+
+
+
+
+  .btn-open,
+  .cta,
+  .button-container button {
+    width: fit-content;
+    padding: 10px 20px;
+    margin-top: 10px;
+    font-weight: bold;
+    border-radius: 5px !important;
+    border: none;
+    cursor: pointer;
+    font-family: 'SUITE-Regular', sans-serif !important;
+  }
+
+  .btn-open:hover,
+  .cta:hover,
+  .button-container button:hover {
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-text);
+  }
+
+  /* CSS for step1 */
+
+  .button-container {
+    display: flex;
+    justify-content: space-around;
+    /* 각 버튼을 동일한 간격으로 배치 */
+    margin-top: 20px;
+    transform: translateY(-19px);
+    /* 버튼과 상단 간격 조절 */
+  }
+
+
+  .button-container2 {
+    display: flex;
+    /* 각 버튼을 동일한 간격으로 배치 */
+    margin-top: 115px;
+    /* 버튼과 상단 간격 조절 */
+  }
+
+  .button-container3 {
+    display: flex;
+    /* 각 버튼을 동일한 간격으로 배치 */
+    margin-top: 10px;
+    /* 버튼과 상단 간격 조절 */
+  }
+
+  .btn-open {
+    transform: translateY(-41px);
+    /* 버튼을 위로 이동시킵니다. */
+  }
+
+  .custom-h01{
+    transform: translateY(31px);
+  }
+
+  .custom-h02{
+    transform: translateY(29px);
+  }
+
+  .custom-h03{
+    transform: translateY(5px);
+  }
+
+  .custom-p01{
+    transform: translateY(35px);
+  }
+
+  .custom-p02{
+    transform: translateY(23px);
+  }
+
+  .custom-p03{
+    transform: translateY(-2px);
+  }
+
+  .custom-ul01 {
+    /* 원하는 스타일을 추가하세요 */
+    transform: translateY(30px);
+  }
+  .custom-ul02 {
+    /* 원하는 스타일을 추가하세요 */
+    transform: translateY(14px);
+  }
+  .custom-ul03 {
+    /* 원하는 스타일을 추가하세요 */
+    transform: translateY(-8px);
+  }
+
+
+
+
+
+  /* 다음 내용까지는 여전히 위에 위치하도록 설정 */
 </style>
 <link href="./static/css/styles3.css" rel="stylesheet" />
 {% endblock %}
@@ -208,29 +369,43 @@
   <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col">
       <div class="card">
+
         <div class="card-body">
-          <h2 class="card__heading">Step 01</h2>
-          <p class="card__price"><strong>카메라 접근을 허용해주세요!</strong></p>
-          <ul role="list" class="card__bullets flow">
-            <li>카메라 접근 권한을 허용하여<Br>
-              실시간 자세 교정의 효과를 즐기세요</li>
-            <li>화면 안에 전신이 나오도록<br>
-              카메라의 각도와 위치를 조정해주세요</li>
-          </ul>
-          <button class="btn-open" class="btns" id="new">카메라 켜기</button>
+          <div class="step1">
+            <h2 class="card__heading custom-h01">Step 01</h2>
+            <p class="card__price custom-p01"><strong>카메라 접근을 허용해주세요!</strong></p>
+            <ul role="list" class="card__bullets flow custom-ul01">
+              <li>카메라 접근 권한을 허용하고
+              </li>
+              <li>화면 안에 전신이 나오도록<br>
+                <br>
+                카메라의 각도와 위치를 <br>조정해주세요
+              </li>
+            </ul>
+          </div>
+          <div class="button-container2">
+            <button class="btn-open" class="btns" id="new">카메라 켜기</button>
+          </div>
         </div>
       </div>
     </div>
     <div class="col">
       <div class="card">
         <div class="card-body">
-          <h2 class="card__heading">Step 02</h2>
-          <p class="card__price"><strong>노래를 선택해주세요</strong></p>
+          <h2 class="card__heading custom-h02">Step 02</h2>
+          <p class="card__price custom-p02"><strong>노래를 선택해주세요</strong></p>
 
-      
-          <button id="playButton1">Bird</button>
-          <button id="playButton2">Piano</button>
-          <button id="playButton3">River</button>
+          <ul role="list" class="card__bullets flow custom-ul02">
+            <li>3 가지 테마의 음악이 <br> 준비되어있으니,
+            </li>
+            <br>
+            <li>마음에 드는 음악을 <br> 선택해주세요</li>
+          </ul>
+          <div class="button-container">
+            <button id="playButton1">🐦</button>
+            <button id="playButton2">🎹</button>
+            <button id="playButton3">🌊</button>
+          </div>
 
           <audio id="audioPlayer1" src="{{ url_for('static', filename='mp3/bird.mp3') }}"></audio>
           <audio id="audioPlayer2" src="{{ url_for('static', filename='mp3/piano.mp3') }}"></audio>
@@ -250,15 +425,22 @@
     <div class="col">
       <div class="card">
         <div class="card-body">
-          <h2 class="card__heading">Step 03</h2>
-          <p class="card__price"><strong>10초간 버티세요!</strong></p>
-          <ul role="list" class="card__bullets flow">
-            <li>정확한 자세를 취한 후, 화면에 나타나는 <br>안내에 따라 최소 10초간<br> 자세를 유지하세요</li>
-            <li>이 단계는 근육 강화 및 올바른 자세<br> 유지 훈련을 위한 중요한 부분이에요</li>
-            <li>버티는 동안 어플리케이션은 <br>시간 경과에 따른 자세의 변화를<br> 모니터링하고 조언을 제공하여 <br>사용자의 교정 향상을 도와 줄 거에요</li>
-            <li>아래의 버튼을 클릭하여 시작해보세요</li>
+          <div class="step3">
+            <h2 class="card__heading custom-h03">Step 03</h2>
+          </div>
+          <p class="card__price custom-p03"><strong>운동을 시작해주세요</strong></p>
+          <ul role="list" class="card__bullets flow custom-ul03" >
+            <!-- <li>지시에 따라 정확한 자세를 취한 후, 화면에 나타나는 <br>안내에 따라 최소 30초간 자세를 유지하세요</li>
+            <br> -->
+            <li>화면에 나타나는 지시에 따라 <br>30초간 자세를 유지하세요</li>
+            <br>
+            <li>잘못된 자세로 수행할 경우 <br>피드백이 제공됩니다</li>
+            <br>
+            <!-- <li>아래의 버튼을 클릭하여<br> 시작해보세요</li> -->
           </ul>
+          <div class="button-container3">
           <a href="detect" class="card__cta cta">시작하기</a>
+        </div>
         </div>
       </div>
     </div>
@@ -321,30 +503,30 @@
   playButton1.addEventListener('click', function () {
     if (audioPlayer1.paused) {
       audioPlayer1.play();
-      playButton1.innerHTML = '일시 정지';
+      playButton1.innerHTML = 'Stop';
     } else {
       audioPlayer1.pause();
-      playButton1.innerHTML = 'Bird';
+      playButton1.innerHTML = '🐦';
     }
   });
 
   playButton2.addEventListener('click', function () {
     if (audioPlayer2.paused) {
       audioPlayer2.play();
-      playButton2.innerHTML = '일시 정지';
+      playButton2.innerHTML = 'Stop';
     } else {
       audioPlayer2.pause();
-      playButton2.innerHTML = 'Piano';
+      playButton2.innerHTML = '🎹';
     }
   });
 
   playButton3.addEventListener('click', function () {
     if (audioPlayer3.paused) {
       audioPlayer3.play();
-      playButton3.innerHTML = '일시 정지';
+      playButton3.innerHTML = 'Stop';
     } else {
       audioPlayer3.pause();
-      playButton3.innerHTML = 'River';
+      playButton3.innerHTML = '🌊';
     }
   });
 

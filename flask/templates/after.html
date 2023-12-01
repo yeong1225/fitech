@@ -2,10 +2,6 @@
 
 {% block head %}
 
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jsCalendar.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jsCalendar.micro.css') }}">
-<script type="text/javascript" src="{{ url_for('static', filename='js/jsCalendar.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/jsCalendar.datepicker.js') }}"></script>
 <link href="{{ url_for('static', filename='css/styles3.css') }}" rel="stylesheet" />
 <!-- Additional CSS and JavaScript links can be included here -->
 <style>
@@ -303,7 +299,7 @@
     /* 피드백 텍스트 영역 스타일 */
     .feedbackForm .form-group {
         width: 100%;
-        margin-top:20px;
+        margin-top: 20px;
         /* 입력 필드의 폭을 폼의 폭과 동일하게 설정 */
     }
 
@@ -416,6 +412,54 @@
         color: #000;
         font-size: 28px;
     }
+
+    ul {
+        list-style-type: none;
+        /* 리스트 스타일 제거 */
+    }
+
+    /* 플레이스홀더 스타일 */
+    #feedback::placeholder {
+        color: gray;
+        /* 회색 플레이스홀더 텍스트 색상 */
+    }
+
+    /* 클릭 시 플레이스홀더 숨김 */
+    #feedback:focus::placeholder {
+        color: transparent;
+        /* 클릭 시 플레이스홀더 텍스트 숨김 */
+    }
+
+    .emotion-recording {
+        background-color: transparent;
+        /* 배경을 투명하게 설정 */
+        border: none;
+        /* 테두리 제거 */
+    }
+
+    .emoji-buttons {
+        background-color: transparent;
+        /* 배경을 투명하게 설정 */
+    }
+
+    .emoji-btn {
+        background-color: transparent;
+        /* 배경을 투명하게 설정 */
+        border: none;
+        /* 테두리 제거 */
+    }
+
+    .emoji-display {
+        background-color: transparent;
+        /* 배경을 투명하게 설정 */
+        border: none;
+        /* 테두리 제거 */
+    }
+
+    #colorlib-services {
+        margin-top: 500px;
+        /* 상단 여백을 0으로 설정 */
+    }
 </style>
 {% endblock %}
 
@@ -423,64 +467,14 @@
 <header class="masthead" style="background-image: url('./static/img/yoga.jpg'); background-size: cover;">
 </header>
 
-<!-- Main Content-->
-
-
-<div class="title section"><strong>오늘의 운동 결과</strong></div>
-<br>
-<div id="grading-interface">
-    <div class="grade-display">
-        <div class="grade-circle" style="background-color: black">
-            <span class="grade-letter">{{ grade }}</span>
-
-            <span class="grade-score">{{ hits }}/{{ total }}</span>
-        </div>
-    </div>
-    <br>
-    <div class="icons">
-        <div class="icon">
-            <img src="{{ url_for('static', filename='img/icon1.jpg') }}" alt="Image 1">
-            전사자세 1
-            <div class="icon-description">상체를 조금 더 세우세요</div>
-            <div class="icon-description">상체를 조금 더 세우세요</div>
-        </div>
-        <div class="icon">
-            <img src="{{ url_for('static', filename='img/icon2.jpg') }}" alt="icon 2">
-            요가자세 2
-            <div class="icon-description">설명2</div>
-        </div>
-        <div class="icon">
-            <img src="{{ url_for('static', filename='img/icon3.jpg') }}" alt="icon 3">
-            요가자세 3
-            <div class="icon-description">설명3</div>
-        </div>
-        <div class="icon">
-            <img src="{{ url_for('static', filename='img/icon4.jpg') }}" alt="icon 4">
-            요가자세 4
-            <div class="icon-description">설명4</div>
-        </div>
-    </div>
-</div>
-</div>
-
-
-
-
-</body>
-<br>
-<section class="h-100" style="margin-top: 30px; margin-bottom: 30px;">
+<section class="h-100">
     <div class="container mt-5">
-        <br> <br>
-        <br>
-        <br>
-        <!-- Session Summary -->
-        <!-- Summary Section -->
         <div id="colorlib-page">
             <div id="colorlib-services " style="text-align: center;">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 text-center">
-                            <h2 style="font-size: 28px; font-family: 'SUITE-Regular', sans-serif;">요약</h2>
+                            <h2 style="font-size: 28px; font-family: 'SUITE-Regular', sans-serif;">오늘의 운동 결과</h2>
                         </div>
                     </div>
                     <br>
@@ -502,7 +496,7 @@
                                         alt="Time Icon"><i class="icon-diamond"></i></span>
                                 <div class="desc">
                                     <h3>동작 개수</h3>
-                                    <p>2</p>
+                                    <p>3</p>
                                 </div>
                             </div>
                         </div>
@@ -512,10 +506,10 @@
                                         alt="Time Icon"><i class="icon-paperplane"></i></span>
                                 <div class="desc">
                                     <h3>동작 종류</h3>
-                                    <p>
                                     <ul>
-                                        <li>나무자세</li>
-                                        <li>전사2자세</li>
+                                        <li>Downdog</li>
+                                        <li>Warrior2</li>
+                                        <li>Warrior1</li>
                                     </ul>
                                     </p>
                                 </div>
@@ -525,47 +519,37 @@
                 </div>
             </div>
         </div>
-        <br>
-        <br>
-        <br>
-        <br>
+    </div>
         <!-- Feedback Form -->
         <div class="mt-4 feedbackForm section">
-           <!-- <h2 style="font-size: 28px;  text-align: center; font-family: 'SUITE-Regular', sans-serif;">감정기록</h2>
+            <!-- <h2 style="font-size: 28px;  text-align: center; font-family: 'SUITE-Regular', sans-serif;">감정기록</h2>
             <p style="  text-align: center; font-family: 'SUITE-Regular', sans-serif;">지금의 감정을 기록해봐요!</p>-->
             <!-- Emotion Emoji Buttons -->
-<div class="emotion-recording">
-    <h3 style="text-align: center; font-family: 'SUITE-Regular', sans-serif;">오늘의 감정</h3>
-    <div class="emoji-buttons" style="text-align: center;">
-      <button class="emoji-btn" data-emotion="excited">😆</button>
-      <button class="emoji-btn" data-emotion="happy">😊</button>
-      <button class="emoji-btn" data-emotion="soso">😑</button>
-      <button class="emoji-btn" data-emotion="angry">😠</button>
-      <button class="emoji-btn" data-emotion="sad">😢</button>
-    </div>
-    <div class="emoji-display">
-        Selected Emoji: <span id="selectedEmojiDisplay"></span>
-      </div>
-  </div>
+            <div class="emotion-recording">
+                <h3 style="text-align: center; font-family: 'SUITE-Regular', sans-serif;">Record</h3>
+                <div class="emoji-buttons" style="text-align: center;">
+                    <button class="emoji-btn" data-emotion="excited">😆</button>
+                    <button class="emoji-btn" data-emotion="happy">😊</button>
+                    <button class="emoji-btn" data-emotion="soso">😑</button>
+                    <button class="emoji-btn" data-emotion="angry">😠</button>
+                    <button class="emoji-btn" data-emotion="sad">😢</button>
+                </div>
+                <div class="emoji-display">
+                    <span id="selectedEmojiDisplay"></span>
+                </div>
+            </div>
             <form>
                 <div class="form-group">
-                    <textarea class="form-control" id="feedback" rows="3"></textarea>
+                    <textarea class="form-control" id="feedback" rows="3"
+                        placeholder="예)내가 감사하게 여기는 것, 오늘을 기분 좋게 만드는 것, 오늘의 다짐"></textarea>
                 </div>
                 <button class="btn btn-primary" id="button">기록하기</button>
             </form>
         </div>
-        <br>
-        <br>
-        <br><br><br><br>
-        <br><br>
-        <br>
+
         <!-- Next Session Recommendation -->
         <div class="mt-4 mb-5 section">
-            <h2 style="font-size: 28px;  text-align: center; font-family: 'SUITE-Regular', sans-serif;">조금 더 해볼까요?</h2>
-
-            <br>
             <div class="next-session-buttons">
-                <button class="btn btn-primary">다른 동작하기</button>
                 <a href="{{ url_for('home') }}" class="btn btn-warning">끝내기</a>
             </div>
         </div>
@@ -585,68 +569,68 @@
     </div>
 </footer>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-    // Define a mapping of emoji characters to names
-    var emojiMap = {
-        '😆': 'excited',
-        '😊': 'happy',
-        '😑': 'soso',
-        '😠': 'angry',
-        '😢': 'sad'
-    };
-    
-    var selectedEmoji = '';
-    var selectedEmojiName = '';
-    
-    // Get all emoji buttons and set up click event listeners
-    var emojiButtons = document.querySelectorAll('.emoji-btn');
-    emojiButtons.forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            selectedEmoji = this.textContent; // Set the selected emoji
-            selectedEmojiName = emojiMap[selectedEmoji]; // Set the selected emoji's name
-            document.getElementById('selectedEmojiDisplay').textContent = selectedEmoji; // Update the display
-        });
-    });
-
-    // Handle form submission
-    document.querySelector("form").onsubmit = function(event) {
-        event.preventDefault(); // Prevent default form submission
-
-        var memoText = document.getElementById("feedback").value.trim(); // Get the memo text
-        // Combine emoji name with memo text
-        var combinedMemo = selectedEmojiName ? selectedEmojiName + ' ' + memoText : memoText;
-
-        // Create your request payload with the combined memo
-        var requestData = {
-            date: new Date().toISOString().slice(0, 10), // Get the current date in YYYY-MM-DD format
-            memo: combinedMemo
+    document.addEventListener("DOMContentLoaded", function () {
+        // Define a mapping of emoji characters to names
+        var emojiMap = {
+            '😆': 'excited',
+            '😊': 'happy',
+            '😑': 'soso',
+            '😠': 'angry',
+            '😢': 'sad'
         };
 
-        // Send the combined memo to the server
-        fetch('/add_memo', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8'
-            },
-            body: JSON.stringify(requestData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.status === 'success') {
-                console.log('Memo saved successfully');
-                // Clear the form and provide a success message
-                document.getElementById("feedback").value = ''; // Clear the textarea
-                document.getElementById('selectedEmojiDisplay').textContent = ''; // Clear the selected emoji display
-                alert('Memo added successfully');
-            } else {
-                throw new Error('Error saving memo: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error: ' + error);
+        var selectedEmoji = '';
+        var selectedEmojiName = '';
+
+        // Get all emoji buttons and set up click event listeners
+        var emojiButtons = document.querySelectorAll('.emoji-btn');
+        emojiButtons.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                selectedEmoji = this.textContent; // Set the selected emoji
+                selectedEmojiName = emojiMap[selectedEmoji]; // Set the selected emoji's name
+                document.getElementById('selectedEmojiDisplay').textContent = selectedEmoji; // Update the display
+            });
         });
-    };
-});
+
+        // Handle form submission
+        document.querySelector("form").onsubmit = function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            var memoText = document.getElementById("feedback").value.trim(); // Get the memo text
+            // Combine emoji name with memo text
+            var combinedMemo = selectedEmojiName ? selectedEmojiName + ' ' + memoText : memoText;
+
+            // Create your request payload with the combined memo
+            var requestData = {
+                date: new Date().toISOString().slice(0, 10), // Get the current date in YYYY-MM-DD format
+                memo: combinedMemo
+            };
+
+            // Send the combined memo to the server
+            fetch('/add_memo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                },
+                body: JSON.stringify(requestData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        console.log('Memo saved successfully');
+                        // Clear the form and provide a success message
+                        document.getElementById("feedback").value = ''; // Clear the textarea
+                        document.getElementById('selectedEmojiDisplay').textContent = ''; // Clear the selected emoji display
+                        alert('Memo added successfully');
+                    } else {
+                        throw new Error('Error saving memo: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error: ' + error);
+                });
+        };
+    });
 </script>
 
 {% endblock %}
