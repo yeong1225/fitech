@@ -89,6 +89,11 @@
         margin-bottom: 20px;
     }
 
+
+    .custom-p01 {
+        transform: translateY(-20px);
+    }
+
     .grade-letter {
         font-size: 2em;
         /* 32px if base font size is 16px */
@@ -138,8 +143,18 @@
         /* 기록하기 버튼 마진 조정 */
     }
 
+    .button-container {
+        display: flex;
+        margin-left: 30px;
+        justify-content: center;
+        /* This will center the button */
+        margin-top: 10px;
+        /* Add some space above the button if needed */
+    }
+
     .next-session-buttons {
         text-align: center;
+        margin-left: 30px;
         /* 버튼을 중앙에 위치 */
     }
 
@@ -308,7 +323,7 @@
 
     .form-group {
         margin-top: 20px;
-        width: 950px;
+        width: 940px;
         margin-left: 30px;
         /* 입력 필드의 폭을 폼의 폭과 동일하게 설정 */
     }
@@ -432,96 +447,99 @@
 
     .moveright {
         margin-left: 35px;
-        /* Adjust value as needed */}
+        /* Adjust value as needed */
+    }
 
-        ul {
-            list-style-type: none;
-            /* 리스트 스타일 제거 */
-        }
+    ul {
+        list-style-type: none;
+        /* 리스트 스타일 제거 */
+    }
 
-        .services .desc ul {
-            margin-left: -33px;
-        }
+    .services .desc ul {
+        margin-left: -33px;
+    }
 
-        .services .desc p {
-            margin-top: 37px;
-        }
+    .services .desc p {
+        margin-top: 37px;
+    }
 
-        /* 플레이스홀더 스타일 */
-        #feedback::placeholder {
-            color: gray;
-            /* 회색 플레이스홀더 텍스트 색상 */
-        }
+    /* 플레이스홀더 스타일 */
+    #feedback::placeholder {
+        color: gray;
+        /* 회색 플레이스홀더 텍스트 색상 */
+    }
 
-        /* 클릭 시 플레이스홀더 숨김 */
-        #feedback:focus::placeholder {
-            color: transparent;
-            /* 클릭 시 플레이스홀더 텍스트 숨김 */
-        }
+    /* 클릭 시 플레이스홀더 숨김 */
+    #feedback:focus::placeholder {
+        color: transparent;
+        /* 클릭 시 플레이스홀더 텍스트 숨김 */
+    }
 
-        .emotion-recording {
-            background-color: transparent;
-            /* 배경을 투명하게 설정 */
-            border: none;
-            /* 테두리 제거 */
-        }
+    .emotion-recording {
+        background-color: transparent;
+        /* 배경을 투명하게 설정 */
+        border: none;
+        /* 테두리 제거 */
+    }
 
-        .emoji-buttons {
-            background-color: transparent;
-            /* 배경을 투명하게 설정 */
-        }
+    .emoji-buttons {
+        background-color: transparent;
+        /* 배경을 투명하게 설정 */
+    }
 
-        .emoji-btn {
-            background-color: transparent;
-            /* 배경을 투명하게 설정 */
-            border: none;
-            /* 테두리 제거 */
-        }
+    .emoji-btn {
+        background-color: transparent;
+        /* 배경을 투명하게 설정 */
+        border: none;
+        /* 테두리 제거 */
+    }
 
-        .emoji-display {
-            background-color: transparent;
-            /* 배경을 투명하게 설정 */
-            border: none;
-            /* 테두리 제거 */
-        }
+    .emoji-display {
+        background-color: transparent;
+        /* 배경을 투명하게 설정 */
+        border: none;
+        /* 테두리 제거 */
+    }
 
-        #colorlib-services {
-            margin-top: 500px;
-            /* 상단 여백을 0으로 설정 */
-        }
+    #colorlib-services {
+        margin-top: 500px;
+        /* 상단 여백을 0으로 설정 */
+    }
 
-        .custom-margin-bottom {
-            margin-bottom: 50px;
-            /* Change this value to your desired margin */
-        }
+    .custom-margin-bottom {
+        margin-bottom: 50px;
+        /* Change this value to your desired margin */
+    }
 
-        h2,
-        h3 {
-            color: #265c4a;
-            /* Deep green for headings */
-        }
+    h2,
+    h3 {
+        color: #265c4a;
+        /* Deep green for headings */
+    }
 
-        .workout-results-box {
-            background-color: white;
-            /* Light background color */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            /* Space between boxes */
-        }
+    .workout-results-box {
+        background-color: white;
+        /* Light background color */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        /* Space between boxes */
+    }
 
-        /* Emotion Record Box Styles */
-        .emotion-record-box {
-            width: 1035px;
-            margin-left: 320px;
-            background-color: white;
-            /* Light background color */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            height: 310px;
-        }
+    /* Emotion Record Box Styles */
+    .emotion-record-box {
+        width: 1035px;
+        margin: 0 auto;
+        /*중앙정렬
+        margin-left: 320px;*/
+        background-color: white;
+        /* Light background color */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        height: 310px;
+    }
 </style>
 {% endblock %}
 
@@ -537,8 +555,8 @@
                     <div class="workout-results-box">
                         <div class="row moveright">
 
-                            <div class="col-md-12 text-center" >
-                                <h2 style="font-size: 28px; font-family: 'SUITE-Regular', sans-serif;" >
+                            <div class="col-md-12 text-center">
+                                <h2 style="font-size: 28px; font-family: 'SUITE-Regular', sans-serif;">
                                     오늘의 운동 결과</h2>
                             </div>
                         </div>
@@ -550,7 +568,7 @@
                                     <span class="icon"><img src="{{ url_for('static', filename='img/time.jpg') }}"
                                             alt="Time Icon"><i class="icon-pen3"></i></span>
                                     <div class="desc">
-                                        <h3>시간</h3>
+                                        <h3 class="custom-p01">시간</h3>
                                         <p>{{ time_difference }} 분</p>
                                     </div>
                                 </div>
@@ -560,7 +578,7 @@
                                     <span class="icon"><img src="{{ url_for('static', filename='img/count.jpg') }}"
                                             alt="Time Icon"><i class="icon-diamond"></i></span>
                                     <div class="desc">
-                                        <h3>동작 개수</h3>
+                                        <h3 class="custom-p01">동작 개수</h3>
                                         <p>3</p>
                                     </div>
                                 </div>
@@ -570,7 +588,7 @@
                                     <span class="icon"><img src="{{ url_for('static', filename='img/list.jpg') }}"
                                             alt="Time Icon"><i class="icon-paperplane"></i></span>
                                     <div class="desc">
-                                        <h3>동작 종류</h3>
+                                        <h3 class="custom-p01">동작 종류</h3>
                                         <ul>
                                             <li>Downdog</li>
                                             <li>Warrior2</li>
@@ -610,7 +628,9 @@
                     <textarea class="form-control" id="feedback" rows="3"
                         placeholder="예)내가 감사하게 여기는 것, 오늘을 기분 좋게 만드는 것, 오늘의 다짐"></textarea>
                 </div>
-                <button class="btn btn-primary" id="button">기록하기</button>
+                <div class="button-container">
+                    <button class="btn btn-primary" id="button">기록하기</button>
+                </div>
             </form>
         </div>
     </div>
