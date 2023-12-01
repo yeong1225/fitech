@@ -393,8 +393,8 @@ def feed():
                     #Warrior2
                     #send_label(label)
                     angle_target = np.array([176, 173, 165, 170, 122, 130, 175, 105])
-                    cv2.putText(image, str(detectedLabel) ,(10,230),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
+                    # cv2.putText(image, str(detectedLabel) ,(10,230),
+                    #                 cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
                     a_score = diff_compare_angle(angle,angle_target)
                     compare_pose(image,angle_point,angle,label)
                     if a_score >=75:
@@ -418,9 +418,39 @@ def feed():
                 elif z==4:
                     time = "끝! 운동 종료를 눌러주세요."
                     send_time(time)
-                    
-                if z != prev_z:  # z 값이 이전 값과 다를 때만 라벨 전송
-                    send_label(label)
+                
+                print(z)
+                
+                # z 값이 이전 값과 다를 때만 라벨 전송
+                if z != prev_z: 
+                    if z == 1:
+                        label = "Downdog"
+                        send_label(label)
+                    elif z == 2:
+                        label = "Warrior2"
+                        send_label(label)
+                    elif z == 3:
+                        label = "Warrior1"
+                        send_label(label)
+                    elif z == 4:
+                        label = "WellDone"
+                        send_label(label)
+                        feedback1 = ""
+                        feedback2 = ""
+                        feedback3 = ""
+                        feedback4 = ""
+                        feedback5 = ""
+                        feedback6 = ""
+                        feedback7 = ""
+                        feedback8 = ""
+                        send_feedback1(feedback1)
+                        send_feedback2(feedback2)
+                        send_feedback3(feedback3)
+                        send_feedback4(feedback4)
+                        send_feedback5(feedback5)
+                        send_feedback6(feedback6)
+                        send_feedback7(feedback7)
+                        send_feedback8(feedback8)
                     prev_z = z
             except:
                 pass
@@ -524,7 +554,7 @@ def compare_pose(image,angle_point,angle_user,labels):
         #고개 돌렸는지 안돌렸는지 확인
         vertical_distance_eyes = abs(right_eye - left_eye)
         vertical_distance_ears = abs(right_ear - left_ear)
-        rotation_threshold = 0.02
+        rotation_threshold = 0.03
         head_rotated = vertical_distance_eyes > rotation_threshold or vertical_distance_ears > rotation_threshold
         if not head_rotated:
             stage = stage + 1

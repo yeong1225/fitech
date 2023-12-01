@@ -91,7 +91,7 @@
                     <div id="labelDisplay" class="decoyoga-text"></div>
                 </div>
                 <div class="downdog-container">
-                    <img src="{{ url_for('static', filename='gif/default.gif') }}" alt="움짤">
+                    <img src="{{ url_for('static', filename='gif/Downdog.gif') }}" alt="움짤">
                 </div>
                 <div class="box exercise-table">
                     <div class="feedback-section">
@@ -170,6 +170,8 @@
                         }
                     });
                 };
+
+                
                 function sendTimeDifference() {
                     let currentTime = new Date();
                     let timeDifference0 = Math.floor((currentTime - accessTime) / 1000);
@@ -225,15 +227,18 @@
                         // 문자가 전송된 경우 이미지와 "Timer" 텍스트 숨김
                         document.getElementById('timerImage').style.display = 'none';
                         document.getElementById('timerHeader').style.display = 'none';
+                        document.getElementById('timeDisplay').innerHTML = time;
                     }
                 });
+
+                document.getElementById('labelDisplay').innerHTML = 'Downdog';
 
                 // Listen for the 'return_time' event
                 socket.on('label', function (data) {
                     var label = data.label;
                     document.getElementById('labelDisplay').innerHTML = label;
                     var imageUrl = "{{ url_for('static', filename='gif/') }}" + label + ".gif";
-
+                    console.log(label);
                     // Find the image element and update its src attribute
                     var imageElement = document.querySelector('.downdog-container img');
                     if (imageElement) {

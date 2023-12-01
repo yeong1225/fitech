@@ -475,6 +475,7 @@ ul>li:not(:last-child) {
   font-family: 'Black Han Sans', sans-serif;
   text-shadow: 0 0 80px var(--shadow-color);
   margin-left: 10px;
+  margin-top: -5px;
   font-size: 30px;
 
 }
