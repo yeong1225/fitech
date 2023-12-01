@@ -215,7 +215,7 @@
     height: auto;
     /* Maintains aspect ratio */
   }
-  
+
 
   .button-container {
     display: flex;
@@ -284,12 +284,16 @@
 
   /* CSS for step1 */
 
+
+  .radio-container{
+    transform: translateY(-60px);
+  }
   .button-container {
     display: flex;
     justify-content: space-around;
     /* 각 버튼을 동일한 간격으로 배치 */
     margin-top: 20px;
-    transform: translateY(-19px);
+    transform: translateY(-60px);
     /* 버튼과 상단 간격 조절 */
   }
 
@@ -313,27 +317,27 @@
     /* 버튼을 위로 이동시킵니다. */
   }
 
-  .custom-h01{
+  .custom-h01 {
     transform: translateY(31px);
   }
 
-  .custom-h02{
+  .custom-h02 {
     transform: translateY(29px);
   }
 
-  .custom-h03{
+  .custom-h03 {
     transform: translateY(5px);
   }
 
-  .custom-p01{
+  .custom-p01 {
     transform: translateY(35px);
   }
 
-  .custom-p02{
+  .custom-p02 {
     transform: translateY(23px);
   }
 
-  .custom-p03{
+  .custom-p03 {
     transform: translateY(-2px);
   }
 
@@ -341,24 +345,59 @@
     /* 원하는 스타일을 추가하세요 */
     transform: translateY(30px);
   }
+
   .custom-ul02 {
     /* 원하는 스타일을 추가하세요 */
     transform: translateY(14px);
   }
+
   .custom-ul03 {
     /* 원하는 스타일을 추가하세요 */
     transform: translateY(-8px);
   }
+
   .camera-overlay {
-  position: absolute;
-  top: 350px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px; /* Adjust as needed */
-  height: 400px; /* Adjust as needed */
-  border: 3px solid white; /* Visible border */
-  pointer-events: none; /* Allows clicks to pass through */
-}
+    position: absolute;
+    top: 350px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    /* Adjust as needed */
+    height: 400px;
+    /* Adjust as needed */
+    border: 3px solid white;
+    /* Visible border */
+    pointer-events: none;
+    /* Allows clicks to pass through */
+  }
+
+  .button-container button {
+    background-color: transparent;
+    /* 배경색을 투명으로 설정 */
+  }
+
+  .button-container button:hover {
+    background-color: transparent;
+    /* 호버 시 배경색을 투명으로 유지 */
+    /* 다른 호버 시 스타일 속성들 */
+  }
+
+  .button-container button.active {
+    background-color: #2E8B57;
+    /* 클릭된 버튼에 원하는 배경색을 적용하세요 */
+    color: #ffffff;
+    /* 클릭된 버튼에 원하는 글자색을 적용하세요 */
+  }
+
+  .circle {
+    width: 30px;
+    height: 30px;
+    background-color: blue;
+    border-radius: 50%;
+    position: absolute;
+    transition: left 0.5s ease-in-out;
+  }
+
 
 
 
@@ -412,11 +451,16 @@
             <li>마음에 드는 음악을 <br> 선택해주세요</li>
           </ul>
           <div class="button-container">
-            <button id="playButton1">🐦</button>
-            <button id="playButton2">🎹</button>
-            <button id="playButton3">🌊</button>
+            <button id="playButton1" data-button="brid">🐦</button>
+            <button id="playButton2" data-button="piano">🎹</button>
+            <button id="playButton3" data-button="river">🌊</button>
           </div>
 
+          <div class="radio-container">
+            <label><input type="radio" name="options" value="bird">Bird</label>
+            <label><input type="radio" name="options" value="piano">Piano</label>
+            <label><input type="radio" name="options" value="river">River</label>
+          </div>
           <audio id="audioPlayer1" src="{{ url_for('static', filename='mp3/bird.mp3') }}"></audio>
           <audio id="audioPlayer2" src="{{ url_for('static', filename='mp3/piano.mp3') }}"></audio>
           <audio id="audioPlayer3" src="{{ url_for('static', filename='mp3/river.mp3') }}"></audio>
@@ -439,7 +483,7 @@
             <h2 class="card__heading custom-h03">Step 03</h2>
           </div>
           <p class="card__price custom-p03"><strong>운동을 시작해주세요</strong></p>
-          <ul role="list" class="card__bullets flow custom-ul03" >
+          <ul role="list" class="card__bullets flow custom-ul03">
             <!-- <li>지시에 따라 정확한 자세를 취한 후, 화면에 나타나는 <br>안내에 따라 최소 30초간 자세를 유지하세요</li>
             <br> -->
             <li>화면에 나타나는 지시에 따라 <br>30초간 자세를 유지하세요</li>
@@ -449,8 +493,8 @@
             <!-- <li>아래의 버튼을 클릭하여<br> 시작해보세요</li> -->
           </ul>
           <div class="button-container3">
-          <a href="detect" class="card__cta cta">시작하기</a>
-        </div>
+            <a href="detect" id="startLink" class="card__cta cta">시작하기</a>
+          </div>
         </div>
       </div>
     </div>
@@ -465,6 +509,7 @@
     <button class="btn-close" class="btns" autofocus></button>
   </dialog>
 </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   function startCamera() {
     navigator.mediaDevices.getUserMedia({
@@ -502,6 +547,35 @@
     stopCamera(); // 카메라 정지
   });
 
+  $(document).ready(function () {
+    // "시작하기" 링크 클릭 이벤트
+    $('#startLink').click(function (e) {
+      // 선택한 라디오 버튼 값 가져오기
+      var selectedValue = $('input[name="options"]:checked').val();
+
+      // 선택한 값을 서버로 전송
+      $.ajax({
+        url: '/send_selected_value',
+        type: 'POST',
+        data: {
+          selectedValue: selectedValue
+        },
+        success: function (response) {
+          console.log(response);
+          // 이후 필요한 동작 수행
+
+          // 이후에 하이퍼링크의 기본 동작을 실행
+          window.location.href = $('#startLink').attr('href');
+        },
+        error: function (error) {
+          console.error(error);
+        }
+      });
+
+    });
+  });
+
+
   var playButton1 = document.getElementById('playButton1');
   var audioPlayer1 = document.getElementById('audioPlayer1');
 
@@ -511,36 +585,59 @@
   var playButton3 = document.getElementById('playButton3');
   var audioPlayer3 = document.getElementById('audioPlayer3');
 
+  function stopAndResetButtons(currentAudio, currentButton) {
+    // 모든 오디오 일시 정지
+    audioPlayer1.pause();
+    audioPlayer2.pause();
+    audioPlayer3.pause();
+
+    // 모든 버튼 아이콘 원래대로 변경
+    playButton1.innerHTML = '🐦';
+    playButton2.innerHTML = '🎹';
+    playButton3.innerHTML = '🌊';
+
+    // 모든 버튼의 active 클래스 제거
+    playButton1.classList.remove('active');
+    playButton2.classList.remove('active');
+    playButton3.classList.remove('active');
+
+    // 현재 재생 중인 오디오 재생
+    currentAudio.play();
+
+    // 현재 버튼 아이콘 변경
+    currentButton.innerHTML = 'Stop';
+    currentButton.classList.add('active');
+  }
+
   playButton1.addEventListener('click', function () {
     if (audioPlayer1.paused) {
-      audioPlayer1.play();
-      playButton1.innerHTML = 'Stop';
+      stopAndResetButtons(audioPlayer1, playButton1);
     } else {
       audioPlayer1.pause();
       playButton1.innerHTML = '🐦';
+      playButton1.classList.remove('active'); // 색상 클래스 제거
     }
   });
 
   playButton2.addEventListener('click', function () {
     if (audioPlayer2.paused) {
-      audioPlayer2.play();
-      playButton2.innerHTML = 'Stop';
+      stopAndResetButtons(audioPlayer2, playButton2);
     } else {
       audioPlayer2.pause();
       playButton2.innerHTML = '🎹';
+      playButton1.classList.remove('active'); // 색상 클래스 제거
     }
   });
 
   playButton3.addEventListener('click', function () {
     if (audioPlayer3.paused) {
-      audioPlayer3.play();
-      playButton3.innerHTML = 'Stop';
+      stopAndResetButtons(audioPlayer3, playButton3);
     } else {
       audioPlayer3.pause();
       playButton3.innerHTML = '🌊';
+      playButton1.classList.remove('active'); // 색상 클래스 제거
     }
   });
-
 
 </script>
 {% endblock %}

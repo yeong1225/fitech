@@ -206,7 +206,7 @@ def draw_landmarks(image, results):
 def draw_styled_landmarks(image, results):
     # Draw pose connections
      mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-                             mp_drawing.DrawingSpec(color=(87,139,46), thickness=4, circle_radius=5), 
+                             mp_drawing.DrawingSpec(color=(0,255,0), thickness=4, circle_radius=5), 
                              mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=2, circle_radius=2)
                              ) 
 

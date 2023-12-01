@@ -51,29 +51,6 @@ def get_event():
 
 
 
-
-
-
-@cal.route('/delete_event', methods=['POST'])
-def delete_event():
-    if not session.get('user_id'):
-        return jsonify({'status': 'error', 'message': 'Not logged in'}), 401
-
-    try:
-        data = request.get_json()
-        date = data.get('date')
-        memo = data.get('memo')
-
-
-        cursor = db.cursor()
-        query = "DELETE FROM calendar WHERE date = %s AND memo = %s"
-        cursor.execute(query, (date, memo))
-        db.commit()
-        cursor.close()
-
-        return jsonify({'status': 'success'})
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)}), 500
     
 
     
@@ -110,28 +87,6 @@ def add_memo():
 @cal.route('/after')
 def after():
     
-    hits = 10  # Replace with actual logic to get this value
-    total = 14  # Replace with actual logic to get this value
-
-    def calculate_grade(hits, total):
-        if total == 0:
-            return 'N/A', '#555555'  # Dark gray for undefined grade
-
-        percentage = (hits / total) * 100
-
-        if percentage >= 90:
-            return 'A', '#4c9a2a'  # Dark green
-        elif percentage >= 80:
-            return 'B', '#2a77ad'  # Dark blue
-        elif percentage >= 70:
-            return 'C', '#ebcb2d'  # Dark yellow
-        elif percentage >= 60:
-            return 'D', '#ad6c2a'  # Dark orange
-        else:
-            return 'F', '#9a2a2a'  # Dark red
-
-    grade, color = calculate_grade(hits, total)
-    
     time_difference = session.get('time_difference', 'No data')
     
     #user_id = session.get('user_id')
@@ -159,4 +114,54 @@ def after():
 
 
     # Pass the grade, color, hits, and total to your template
-    return render_template('after.html', grade=grade, color=color, hits=hits, total=total, time_difference=time_difference)
+    return render_template('after.html', time_difference=time_difference)
+
+
+@cal.route('/send_selected_value', methods=['POST'])
+def send_selected_value():
+    try:
+        user_id = session.get('user_id')
+        if user_id:
+            cursor = db.cursor()
+            current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+            selected_value = request.form.get('selectedValue')  # 선택한 값을 가져옴
+
+            query = """
+            INSERT INTO button2 (user_id, date, state)
+            VALUES (%s, %s, %s)
+            ON DUPLICATE KEY UPDATE state = %s
+            """
+            cursor.execute(query, (user_id, current_date, selected_value, selected_value))
+            db.commit()
+
+            cursor.close()
+
+        return "Selected value sent successfully"
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+
+@cal.route('/get_audio_state', methods=['POST'])
+def get_audio_state():
+    try:
+         user_id = session.get('user_id')
+         if user_id:
+             
+            user_id = session.get('user_id')  # 사용자 ID 가져오기
+            current_date = datetime.datetime.now().strftime('%Y-%m-%d')  # 현재 날짜 가져오기
+
+            # 데이터베이스에서 user_id와 date에 해당하는 state 값을 가져옴
+            cursor = db.cursor()
+            query = "SELECT state FROM button2 WHERE user_id = %s AND date = %s"
+            cursor.execute(query, (user_id, current_date))
+            result = cursor.fetchone()
+            cursor.close()
+
+            state = result[0] if result else None  # state 값을 가져와서 state 변수에 저장
+
+            return jsonify(state)
+
+        
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
