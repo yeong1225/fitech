@@ -67,10 +67,10 @@
 <div id="content">
     <div class="dashboard">
         <div class="profile">
-            <img src="./static/img/timer.jpg" alt="이미지 설명">
-            <h1>Timer</h1>
-            <!--<div id="timer">10</div> -->
+            <img src="./static/img/timer.jpg" alt="이미지 설명" id="timerImage">
+            <h1 id="timerHeader">Timer</h1>
             <div id="timeDisplay"></div>
+            <div id="startText" class="decoyoga-text">운동을 시작해주세요</div>
 
             <!-- <h1>Time Difference Calculator</h1>
             <p>Page accessed on: <span id="accessTime"></span></p>
@@ -103,17 +103,17 @@
                         <div>
                             <div class="horizontal-box-container">
                                 <div id="box1" class="horizontal-box">
-                                    <div id="feedBackDisplay1" ></div>
-                                    <div id="feedBackDisplay2" ></div>
-                                    <div id="feedBackDisplay3" ></div>
-                                    <div id="feedBackDisplay4" ></div>
+                                    <div id="feedBackDisplay1"></div>
+                                    <div id="feedBackDisplay2"></div>
+                                    <div id="feedBackDisplay3"></div>
+                                    <div id="feedBackDisplay4"></div>
                                 </div>
 
                                 <div id="box2" class="horizontal-box">
-                                    <div id="feedBackDisplay5" ></div>
-                                    <div id="feedBackDisplay6" ></div>
-                                    <div id="feedBackDisplay7" ></div>
-                                    <div id="feedBackDisplay8" ></div>
+                                    <div id="feedBackDisplay5"></div>
+                                    <div id="feedBackDisplay6"></div>
+                                    <div id="feedBackDisplay7"></div>
+                                    <div id="feedBackDisplay8"></div>
                                 </div>
                             </div>
 
@@ -182,10 +182,28 @@
                 // Connect to the WebSocket server
                 var socket = io.connect('http://' + document.domain + ':' + location.port);
 
+                // 초기에 이미지와 "Timer" 텍스트 숨기기
+                document.getElementById('timerImage').style.display = 'none';
+                document.getElementById('timerHeader').style.display = 'none';
+
                 // Listen for the 'return_time' event
                 socket.on('time', function (data) {
                     var time = data.time;
-                    document.getElementById('timeDisplay').innerHTML = time;
+
+                    // 정규 표현식을 사용하여 입력이 숫자인지 확인
+                    var isNumeric = /^[0-9]+$/.test(time);
+
+                    if (isNumeric) {
+                        document.getElementById('startText').style.display = 'none';
+                        // 숫자가 전송된 경우 이미지와 "Timer" 텍스트 표시
+                        document.getElementById('timerImage').style.display = 'block';
+                        document.getElementById('timerHeader').style.display = 'block';
+                        document.getElementById('timeDisplay').innerHTML = time;
+                    } else {
+                        // 문자가 전송된 경우 이미지와 "Timer" 텍스트 숨김
+                        document.getElementById('timerImage').style.display = 'none';
+                        document.getElementById('timerHeader').style.display = 'none';
+                    }
                 });
 
                 // Listen for the 'return_time' event

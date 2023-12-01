@@ -196,11 +196,16 @@ def mediapipe_detection(image, model):
 def draw_landmarks(image, results):
     mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS) # Draw pose connections
     
+    #rgb
+    #gbr
+    # BGR 2 RGB
+    #0 191 255
+    # 255 191 0
 def draw_styled_landmarks(image, results):
     # Draw pose connections
      mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-                             mp_drawing.DrawingSpec(color=(80,22,10), thickness=2, circle_radius=4), 
-                             mp_drawing.DrawingSpec(color=(80,44,121), thickness=2, circle_radius=2)
+                             mp_drawing.DrawingSpec(color=(0,255,0), thickness=4, circle_radius=5), 
+                             mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=2, circle_radius=2)
                              ) 
 
 def extract_keypoints(results):
@@ -377,8 +382,8 @@ def feed():
                     if a_score >=75:
                         time, z = count_time(30)
                         send_time(time)
-                        cv2.putText(image, f"TIME: {int(time)}s", (10,250),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
+                        # cv2.putText(image, f"TIME: {int(time)}s", (10,250),
+                        #             cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
                     
                 elif z==2:
                     label = "Warrior2"
@@ -392,23 +397,24 @@ def feed():
                     if detectedLabel == label:
                         time, z = count_time(30)
                         send_time(time)
-                        cv2.putText(image, f"TIME: {int(time)}s", (10,250),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
+                        # cv2.putText(image, f"TIME: {int(time)}s", (10,250),
+                        #             cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
                     
                 elif z==3:
                     #label = "Warrior1"
                     send_label(label)
-                    cv2.rectangle(image, (0, 450), (350, 300), (0, 255, 0), cv2.FILLED)
-                    cv2.putText(image, str(detectedLabel) ,(10,230),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
+                    # cv2.rectangle(image, (0, 450), (350, 300), (0, 255, 0), cv2.FILLED)
+                    # cv2.putText(image, str(detectedLabel) ,(10,230),
+                    #                 cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
                     compare_pose(image,angle_point,angle,label)
                     if detectedLabel == label:
                         time, z = count_time(30)
                         send_time(time)
-                        cv2.putText(image, f"TIME: {int(time)}s", (10,250),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
+                        # cv2.putText(image, f"TIME: {int(time)}s", (10,250),
+                        #             cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
                 elif z==4:
-                    label = "Downdog"
+                    time = "끝! 운동 종료를 눌러주세요."
+                    send_time(time)
                     
                 if z != prev_z:  # z 값이 이전 값과 다를 때만 라벨 전송
                     send_label(label)
