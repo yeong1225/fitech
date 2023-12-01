@@ -215,6 +215,7 @@
     height: auto;
     /* Maintains aspect ratio */
   }
+  
 
   .button-container {
     display: flex;
@@ -348,7 +349,16 @@
     /* 원하는 스타일을 추가하세요 */
     transform: translateY(-8px);
   }
-
+  .camera-overlay {
+  position: absolute;
+  top: 350px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px; /* Adjust as needed */
+  height: 400px; /* Adjust as needed */
+  border: 3px solid white; /* Visible border */
+  pointer-events: none; /* Allows clicks to pass through */
+}
 
 
 
@@ -450,6 +460,7 @@
     <span class="icon">📷</span>
     <div class="text-content">
       <video id="cameraStream" autoplay></video>
+      <div class="camera-overlay"></div>
     </div>
     <button class="btn-close" class="btns" autofocus></button>
   </dialog>
