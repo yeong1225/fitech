@@ -91,7 +91,7 @@
                     <div id="labelDisplay" class="decoyoga-text"></div>
                 </div>
                 <div class="downdog-container">
-                    <img src="{{ url_for('static', filename='gif/default.gif') }}" alt="움짤">
+                    <img src="{{ url_for('static', filename='gif/warrior2.gif') }}" alt="움짤">
                 </div>
                 <div class="box exercise-table">
                     <div class="feedback-section">
@@ -128,17 +128,17 @@
 
 
                 </div>
-                <audio controls autoplay id="audioPlayer" class="hidden-audio" style="display: none;">
+
+                <audio controls autoplay class="hidden-audio" style="display: none;">
                     <!-- 노래 파일 경로를 소스(src)에 지정 -->
-                    <source src="" type="audio/mpeg">
+                    <source src="{{ url_for('static', filename='mp3/bird.mp3') }}" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
 
             </div>
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
             <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
             <script>
-
 
                 let accessTime;
                 console.log(accessTime);
@@ -146,35 +146,7 @@
                 window.onload = function () {
                     // 페이지가 로드될 때 현재 시간을 기록
                     accessTime = new Date();
-                    // AJAX 요청 수정
-                    $.ajax({
-                        url: '/get_audio_state',  // 서버에서 state 값을 가져올 엔드포인트
-                        type: 'POST',
-                        success: function (response) {
-                            console.log(response);
-
-                            // 서버로부터 가져온 state 값을 사용하여 오디오 파일 이름을 생성
-                            var audioFileName = response + '.mp3';
-
-                            // 오디오 플레이어의 소스(src)를 동적으로 설정
-                            var audioPlayer = $('#audioPlayer')[0];
-                            audioPlayer.src = "/static/mp3/" + audioFileName;
-
-                            // 오디오를 재생
-                            audioPlayer.muted = true;
-                            audioPlayer.play();
-                            audioPlayer.muted = false;
-                        },
-                        error: function (error) {
-                            console.error(error);
-                        }
-                    });
                 };
-
-                // $(document).ready(function () {
-                //     // 페이지 로드 시에 state 값을 가져오고 오디오를 재생
-
-                // });
 
                 function sendTimeDifference() {
                     let currentTime = new Date();
