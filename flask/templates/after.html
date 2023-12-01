@@ -14,6 +14,7 @@
 
     /* 기본 스타일 설정 */
     body {
+        background-color: #f4f4f4;
         font-family: 'SUITE-Regular', Arial, sans-serif;
         /* Apply the font to the entire body */
         /* ... other styles ... */
@@ -290,9 +291,9 @@
 
     /* 감정기록 폼 스타일 */
     .feedbackForm {
-        width: 95%;
+        width: 55%;
         /* 폼의 폭을 좌우 여백을 줄이고 95%로 설정 */
-        margin: 0 auto;
+        margin: 20px auto 30px;
         /* 자동 마진으로 중앙 정렬 */
     }
 
@@ -379,7 +380,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: whitesmoke;
+        /*background: whitesmoke;*/
         border-radius: 50%;
         /* Circular shape */
         overflow: hidden;
@@ -389,9 +390,9 @@
     }
 
     .services .icon img {
-        max-width: 100%;
+        max-width: 70%;
         /* Ensure the image doesn't exceed the icon's width */
-        max-height: 100%;
+        max-height: 70%;
         /* Ensure the image doesn't exceed the icon's height */
         object-fit: contain;
         /* Ensures the entire image fits within the container */
@@ -406,11 +407,13 @@
 
     .services .desc {
         padding-left: 100px;
+        font-family: 'SUITE-Regular', Arial, sans-serif;
     }
 
     .services .desc h3 {
         color: #000;
         font-size: 28px;
+        font-family: 'SUITE-Regular', Arial, sans-serif;
     }
 
     ul {
@@ -460,6 +463,37 @@
         margin-top: 500px;
         /* 상단 여백을 0으로 설정 */
     }
+
+    .custom-margin-bottom {
+        margin-bottom: 50px;
+        /* Change this value to your desired margin */
+    }
+
+    h2,
+    h3 {
+        color: #265c4a;
+        /* Deep green for headings */
+    }
+
+    .workout-results-box {
+        background-color: white;
+        /* Light background color */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        /* Space between boxes */
+    }
+
+    /* Emotion Record Box Styles */
+    .emotion-record-box {
+        background-color: white;
+        /* Light background color */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        height: 310px;
+    }
 </style>
 {% endblock %}
 
@@ -468,50 +502,53 @@
 </header>
 
 <section class="h-100">
-    <div class="container mt-5">
+    <div class="container custom-margin-bottom mt-5">
         <div id="colorlib-page">
             <div id="colorlib-services " style="text-align: center;">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <h2 style="font-size: 28px; font-family: 'SUITE-Regular', sans-serif;">오늘의 운동 결과</h2>
-                        </div>
-                    </div>
-                    <br>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-4 animate-box">
-                            <div class="services">
-                                <span class="icon"><img src="{{ url_for('static', filename='img/time.jpg') }}"
-                                        alt="Time Icon"><i class="icon-pen3"></i></span>
-                                <div class="desc">
-                                    <h3>시간</h3>
-                                    <p>{{ time_difference }} 분</p>
-                                </div>
+                    <div class="workout-results-box">
+                        <div class="row">
+
+                            <div class="col-md-12 text-center">
+                                <h2 style="font-size: 28px; font-family: 'SUITE-Regular', sans-serif;">오늘의 운동 결과</h2>
                             </div>
                         </div>
-                        <div class="col-md-4 animate-box">
-                            <div class="services">
-                                <span class="icon"><img src="{{ url_for('static', filename='img/count.jpg') }}"
-                                        alt="Time Icon"><i class="icon-diamond"></i></span>
-                                <div class="desc">
-                                    <h3>동작 개수</h3>
-                                    <p>3</p>
+                        <br>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4 animate-box">
+                                <div class="services">
+                                    <span class="icon"><img src="{{ url_for('static', filename='img/time.jpg') }}"
+                                            alt="Time Icon"><i class="icon-pen3"></i></span>
+                                    <div class="desc">
+                                        <h3>시간</h3>
+                                        <p>{{ time_difference }} 분</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 animate-box">
-                            <div class="services">
-                                <span class="icon"><img src="{{ url_for('static', filename='img/list.jpg') }}"
-                                        alt="Time Icon"><i class="icon-paperplane"></i></span>
-                                <div class="desc">
-                                    <h3>동작 종류</h3>
-                                    <ul>
-                                        <li>Downdog</li>
-                                        <li>Warrior2</li>
-                                        <li>Warrior1</li>
-                                    </ul>
-                                    </p>
+                            <div class="col-md-4 animate-box">
+                                <div class="services">
+                                    <span class="icon"><img src="{{ url_for('static', filename='img/count.jpg') }}"
+                                            alt="Time Icon"><i class="icon-diamond"></i></span>
+                                    <div class="desc">
+                                        <h3>동작 개수</h3>
+                                        <p>3</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 animate-box">
+                                <div class="services">
+                                    <span class="icon"><img src="{{ url_for('static', filename='img/list.jpg') }}"
+                                            alt="Time Icon"><i class="icon-paperplane"></i></span>
+                                    <div class="desc">
+                                        <h3>동작 종류</h3>
+                                        <ul>
+                                            <li>Downdog</li>
+                                            <li>Warrior2</li>
+                                            <li>Warrior1</li>
+                                        </ul>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -520,13 +557,14 @@
             </div>
         </div>
     </div>
-        <!-- Feedback Form -->
-        <div class="mt-4 feedbackForm section">
-            <!-- <h2 style="font-size: 28px;  text-align: center; font-family: 'SUITE-Regular', sans-serif;">감정기록</h2>
+    <!-- Feedback Form -->
+    <div class="mt-4  feedbackForm section">
+        <!-- <h2 style="font-size: 28px;  text-align: center; font-family: 'SUITE-Regular', sans-serif;">감정기록</h2>
             <p style="  text-align: center; font-family: 'SUITE-Regular', sans-serif;">지금의 감정을 기록해봐요!</p>-->
-            <!-- Emotion Emoji Buttons -->
+        <!-- Emotion Emoji Buttons -->
+        <div class="emotion-record-box mt-5">
             <div class="emotion-recording">
-                <h3 style="text-align: center; font-family: 'SUITE-Regular', sans-serif;">Record</h3>
+                <h3 style="text-align: center; font-family: 'SUITE-Regular', sans-serif;">오늘의 감정 기록</h3>
                 <div class="emoji-buttons" style="text-align: center;">
                     <button class="emoji-btn" data-emotion="excited">😆</button>
                     <button class="emoji-btn" data-emotion="happy">😊</button>
@@ -546,13 +584,14 @@
                 <button class="btn btn-primary" id="button">기록하기</button>
             </form>
         </div>
+    </div>
 
-        <!-- Next Session Recommendation -->
-        <div class="mt-4 mb-5 section">
-            <div class="next-session-buttons">
-                <a href="{{ url_for('home') }}" class="btn btn-warning">끝내기</a>
-            </div>
+    <!-- Next Session Recommendation -->
+    <div class="mt-4 mb-5 section">
+        <div class="next-session-buttons">
+            <a href="{{ url_for('home') }}" class="btn btn-warning">끝내기</a>
         </div>
+    </div>
     </div>
 </section>
 <script>
