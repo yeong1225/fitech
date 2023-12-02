@@ -49,6 +49,26 @@ def get_event():
 
     return jsonify(events)
 
+# @cal.route('/get_month_data', methods=['GET'])
+# def get_month_data():
+#     user_id = session.get('user_id')
+#     selected_month = request.args.get('selected_month')  # 형식: 'YYYY-MM'
+
+#     cursor = db.cursor()
+
+#     query = """
+#     select date,time 
+#     from calendar4
+#     where user_id = %s and date like %s;
+#     """
+#     cursor.execute(query, (user_id, f'{selected_month}-%',))
+#     data = cursor.fetchall()
+#     cursor.close()
+
+#     # 결과를 딕셔너리 형태로 변환
+#     results = [{'date': row[0], 'time': row[1]} for row in data]
+#     return jsonify(results)
+
 
 
     
