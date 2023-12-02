@@ -17,6 +17,11 @@ def calendar():
 def mypage():
     return render_template('mypage.html')
 
+@cal.route('/commu')
+def commu():
+    return render_template('commu.html')
+
+
 @cal.route('/add_cal', methods=['POST'])
 def add_cal():
     user_id = request.form.get('user_id')
@@ -94,6 +99,11 @@ def get_yearly_data():
     
     total_yearly_minutes = sum(monthly_totals.values())
     cursor.close()
+
+    # Replace None values with 0 in yearly_emotions
+    for emoji in emotion_map.values():
+        if emoji not in yearly_emotions:
+            yearly_emotions[emoji] = 0
 
     # 두 데이터 집합을 하나의 JSON으로 반환
     return jsonify({
