@@ -44,11 +44,6 @@ app.register_blueprint(cal,url_prefix='/')
 def home():
     return render_template('home.html')
 
-@app.route('/static/video/warrior2.mp4')
-def get_video():
-    video_path = './static/video/warrior2.mp4'
-    return send_file(video_path, as_attachment=True)
-
 # 연락처 페이지
 @app.route('/contact')
 def contact():
@@ -76,34 +71,47 @@ def receive_time_difference():
     session['time_difference'] = data['timeDifference']
     return jsonify({'status': 'success'})
 
-@app.route('/get_events', methods=['GET'])
-def get_events():
-    date = request.args.get('date')  # 클라이언트에서 전송한 날짜 정보 받기
-    user_id = session.get('user_id')  # 세션에서 사용자 ID 가져오기
+@app.route('/exDowndog')
+def exDowndog():
+    return render_template('exDowndog.html')
 
-    if user_id:
-        cursor = db.cursor()
+@app.route('/exWarrior1')
+def exWarrior1():
+    return render_template('exWarrior1.html')
 
-        # MySQL에서 해당 날짜의 이벤트 정보 가져오기
-        query = """
-        SELECT time, memo FROM calendar4
-        WHERE user_id = %s AND date = %s
-        """
-        cursor.execute(query, (user_id, date))
-        event_data = cursor.fetchone()  # 날짜에 해당하는 첫 번째 이벤트 데이터 가져오기
+@app.route('/exWarrior2')
+def exWarrior2():
+    return render_template('exWarrior2.html')
 
-        cursor.close()
 
-        if event_data:
-            # 이벤트 데이터가 있으면 클라이언트에 반환
-            events = {
-                "time": event_data["time"],
-                "memo": event_data["memo"]
-            }
-            return jsonify(events)
-        else:
-            # 이벤트 데이터가 없으면 오류 메시지 반환
-            return jsonify({"error": "No events for this date"})
+# @app.route('/get_events', methods=['GET'])
+# def get_events():
+#     date = request.args.get('date')  # 클라이언트에서 전송한 날짜 정보 받기
+#     user_id = session.get('user_id')  # 세션에서 사용자 ID 가져오기
+
+#     if user_id:
+#         cursor = db.cursor()
+
+#         # MySQL에서 해당 날짜의 이벤트 정보 가져오기
+#         query = """
+#         SELECT time, memo FROM calendar4
+#         WHERE user_id = %s AND date = %s
+#         """
+#         cursor.execute(query, (user_id, date))
+#         event_data = cursor.fetchone()  # 날짜에 해당하는 첫 번째 이벤트 데이터 가져오기
+
+#         cursor.close()
+
+#         if event_data:
+#             # 이벤트 데이터가 있으면 클라이언트에 반환
+#             events = {
+#                 "time": event_data["time"],
+#                 "memo": event_data["memo"]
+#             }
+#             return jsonify(events)
+#         else:
+#             # 이벤트 데이터가 없으면 오류 메시지 반환
+#             return jsonify({"error": "No events for this date"})
 
 
 
