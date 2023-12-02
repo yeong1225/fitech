@@ -265,7 +265,7 @@
                 var feedbackCount7 = 0;
                 var feedbackCount8 = 0;
 
-                var setcount = 120;
+                var setcount = 90;
 
                 // Listen for the 'return_time' event
                 socket.on('feedback1', function (data) {
@@ -315,7 +315,9 @@
 
                 // Listen for the 'feedback4' event
                 socket.on('feedback4', function (data) {
-                    feedbackCount4++;
+                    if (feedback4 ==! ""){
+                        feedbackCount4++;
+                    }
                     var feedback4 = data.feedback4;
                     document.getElementById('feedBackDisplay4').innerHTML = '' + feedback4;
                     if (beforefeedback4 !== feedback4) {
@@ -330,7 +332,9 @@
 
                 // Listen for the 'feedback5' event
                 socket.on('feedback5', function (data) {
-                    feedbackCount5++;
+                    if (feedback5 ==! ""){
+                        feedbackCount5++;
+                    }
                     var feedback5 = data.feedback5;
                     document.getElementById('feedBackDisplay5').innerHTML = '' + feedback5;
                     if (beforefeedback5 !== feedback5) {
@@ -345,7 +349,9 @@
 
                 // Listen for the 'feedback6' event
                 socket.on('feedback6', function (data) {
-                    feedbackCount6++;
+                    if (feedback6 ==! ""){
+                        feedbackCount6++;
+                    }
                     var feedback6 = data.feedback6;
                     document.getElementById('feedBackDisplay6').innerHTML = '' + feedback6;
                     if (beforefeedback6 !== feedback6) {
@@ -360,7 +366,9 @@
 
                 // Listen for the 'feedback7' event
                 socket.on('feedback7', function (data) {
-                    feedbackCount7++;
+                    if (feedback7 ==! ""){
+                        feedbackCount7++;
+                    }
                     var feedback7 = data.feedback7;
                     document.getElementById('feedBackDisplay7').innerHTML = '' + feedback7;
                     if (beforefeedback7 !== feedback7) {
@@ -375,7 +383,9 @@
 
                 // Listen for the 'feedback8' event
                 socket.on('feedback8', function (data) {
-                    feedbackCount8++;
+                    if (feedback8 ==! ""){
+                        feedbackCount8++;
+                    }
                     var feedback8 = data.feedback8;
                     document.getElementById('feedBackDisplay8').innerHTML = '' + feedback8;
                     if (beforefeedback8 !== feedback8) {
@@ -411,66 +421,7 @@
                     }
                 }
 
-                // 피드백 수신 횟수를 초기화합니다.
-                function resetFeedbackCount(eventName) {
-                    switch (eventName) {
-                        case 'feedback1':
-                            feedbackCount1 = 0;
-                            break;
-                        case 'feedback2':
-                            feedbackCount2 = 0;
-                            break;
-                        case 'feedback3':
-                            feedbackCount3 = 0;
-                            break;
-                        case 'feedback4':
-                            feedbackCount4 = 0;
-                            break;
-                        case 'feedback5':
-                            feedbackCount5 = 0;
-                            break;
-                        case 'feedback6':
-                            feedbackCount6 = 0;
-                            break;
-                        case 'feedback7':
-                            feedbackCount7 = 0;
-                            break;
-                        case 'feedback8':
-                            feedbackCount8 = 0;
-                            break;
-                        // 다른 피드백 이벤트에 대해서도 처리합니다.
-                    }
-                }
 
-
-                const speakText = function (text, options) {
-                    if (!text) return;
-                    synth = window.speechSynthesis;
-                    utterance = new SpeechSynthesisUtterance(text);
-                    if (speechSynthesis.pending) speechSynthesis.pending.cancel();
-                    if (options && Object.keys(options).length) {
-                        Object.keys(options).forEach(opt => {
-                            utterance[opt] = options[opt]
-                        })
-                    }
-                    synth.speak(utterance);
-                }
-
-                // Listen for the 'return_feedback' event
-                socket.on('feedback', function (data) {
-                    var feedback = data.feedback;
-
-                    // 이전 피드백 값과 새로운 피드백 값 비교
-                    if (feedback !== previousFeedback) {
-                        document.getElementById('feedBackDisplay').innerHTML = 'Feedback: ' + feedback;
-                        previousFeedback = feedback; // 이전 피드백 값을 업데이트
-
-                        // Web Speech API를 사용하여 음성으로 출력
-                        var speechSynthesis = window.speechSynthesis;
-                        var speechUtterance = new SpeechSynthesisUtterance(feedback);
-                        speechSynthesis.speak(speechUtterance);
-                    }
-                });
             </script>
 
             {% endblock %}

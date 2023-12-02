@@ -601,11 +601,16 @@ def compare_pose(image,angle_point,angle_user,labels):
              feedback3 = ""
         send_feedback3(feedback3)
         
-    feedback4 = ""
-    feedback5 = ""
-    feedback6 = ""
-    feedback7 = ""
-    feedback8 = ""
+        feedback4 = ""
+        feedback5 = ""
+        feedback6 = ""
+        feedback7 = ""
+        feedback8 = ""
+        send_feedback4(feedback4)
+        send_feedback5(feedback5)
+        send_feedback6(feedback6)
+        send_feedback7(feedback7)
+        send_feedback8(feedback8)
     # 7 -> 오른쪽 무릎 (6)
     # 8 -> 왼쪽 (7)
     #오른쪽
@@ -619,7 +624,7 @@ def compare_pose(image,angle_point,angle_user,labels):
         user_elbow = (angle_user[0] + angle_user[1])/2  
         target_elbow = (angle_target[0] + angle_target[1])/2  
         if user_elbow < (target_elbow - 20):
-            feedback1 = "팔꿈치를 펴세요"
+            feedback1 = "팔을 쭉 펴주세요"
             stage = stage + 1
             #cv2.putText(image, str("Extend the right arm at elbow"), (10,60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[0][0]*width), int(angle_point[0][1]*height)),30,(0,0,255),5)
@@ -654,12 +659,17 @@ def compare_pose(image,angle_point,angle_user,labels):
         else:
             feedback4 =""
         send_feedback4(feedback4)
-    feedback4 = ""
-    feedback5 = ""
-    feedback6 = ""
-    feedback7 = ""
-    feedback8 = ""
-        
+       
+        feedback5 = ""
+        feedback6 = ""
+        feedback7 = ""
+        feedback8 = ""
+
+        send_feedback5(feedback5)
+        send_feedback6(feedback6)
+        send_feedback7(feedback7)
+        send_feedback8(feedback8)
+            
        
         
              
