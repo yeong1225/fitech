@@ -385,7 +385,7 @@ def feed():
                         #             cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
                     
                 elif z==2:
-                    label = "Warrior2"
+                    label = "Warrior1"
                     #Warrior2
                     #send_label(label)
                     angle_target = np.array([176, 173, 165, 170, 122, 130, 175, 105])
@@ -393,20 +393,20 @@ def feed():
                     #                 cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
                     a_score = diff_compare_angle(angle,angle_target)
                     compare_pose(image,angle_point,angle,label)
-                    if a_score >=75:
+                    if detectedLabel == label:
                         time, z = count_time(t)
                         send_time(time)
                         # cv2.putText(image, f"TIME: {int(time)}s", (10,250),
                         #             cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
                     
                 elif z==3:
-                    label = "Warrior1"
+                    label = "Warrior2"
                     #send_label(label)
                     # cv2.rectangle(image, (0, 450), (350, 300), (0, 255, 0), cv2.FILLED)
                     # cv2.putText(image, str(detectedLabel) ,(10,230),
                     #                 cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 3)
                     compare_pose(image,angle_point,angle,label)
-                    if detectedLabel == label:
+                    if a_score >=75:
                         time, z = count_time(t)
                         send_time(time)
                         # cv2.putText(image, f"TIME: {int(time)}s", (10,250),
@@ -423,10 +423,10 @@ def feed():
                         label = "Downdog"
                         send_label(label)
                     elif z == 2:
-                        label = "Warrior2"
+                        label = "Warrior1"
                         send_label(label)
                     elif z == 3:
-                        label = "Warrior1"
+                        label = "Warrior2"
                         send_label(label)
                     elif z == 4:
                         label = "WellDone"
