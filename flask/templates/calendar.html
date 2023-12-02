@@ -21,7 +21,7 @@
 
     html,
     body {
-        font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+        font-family: 'SUITE-Regular', Arial, sans-serif;
     }
 
     /* 스타일을 추가하여 달력을 꾸미세요 */
@@ -58,16 +58,18 @@
         box-sizing: border-box;
         /*box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.4);*/
         margin-bottom: 10px;
-        height: 420px;
+        height: 440px;
     }
 
     .header {
-        font-family: 'komika_axisregular', sans-serif;
+        margin-top: 7px;
+        font-family: 'SUITE-Regular', Arial, sans-serif;
         margin-bottom: 15px;
         text-align: center;
+        font-weight: bold;
         /* Center align the text */
         /* Make the text bold */
-        font-size: 24px;
+        font-size: 31px;
         /* Optionally, increase the font size */
         /* Other styling properties like padding, background-color, etc., can be added here */
     }
@@ -84,10 +86,16 @@
     }
 
 
-    .calendar-table th,
-    .calendar-table td {
+
+    .calendar-table th {
+        /*여기 요일*/
         text-align: center;
-        padding: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-right: 1px;
+        /* Reduce the right padding */
+        padding-left: 5px;
+        /* Reduce the left padding */
         /*border: 1px solid #ccc;*/
         border: none;
     }
@@ -113,7 +121,6 @@
         background-color: #2E8B57;
 
         color: white;
-
         border-radius: 50%;
     }
 
@@ -126,7 +133,7 @@
         box-sizing: border-box;
         margin-right: 250px;
         font-family: 'SUITE-Regular', Arial, sans-serif;
-        height: 420px;
+        height: 440px;
     }
 
     #selected-date {
@@ -155,15 +162,41 @@
 
 
     .event-details {
-        margin-top: 10px;
+        margin-top: 22px;
+    }
+
+    .custom-p01 {
+        /*여기 날짜*/
+        transform: translateY(-2px);
+        margin-left: 20px;
+        /*text-align: center;*/
     }
 
     .event-item {
+        /*여기 감정*/
+        margin-top: 19px;
         margin-bottom: 10px;
-        padding: 5px;
+        /*padding: 5px;*/
+        padding-top: 1px;
+        padding-left: 5px;
         border: none;
+        margin-left: 100px;
         /*border: 1px solid #ccc;*/
         /*background-color: #f5f5f5;*/
+        /*text-align: center;*/
+    }
+
+    .event-item p {
+        margin-left: 100px;
+    }
+
+    .event-item br {
+        content: "";
+        display: block;
+        margin-top: 18px;
+        /* Space above the line break */
+        margin-bottom: 10px;
+        /* Space below the line break */
     }
 
     /* 이전/다음 버튼 스타일 */
@@ -189,6 +222,30 @@
     #next:hover {
         background-color: #207244;
     }
+
+    .no-events {
+        /*여기 노이벤트*/
+        color: #888;
+        /* Light grey color */
+        /*text-align: center; /* Center the text */
+        margin-top: 20px;
+        /* Add space at the top */
+        font-style: italic;
+        /* Italicize the text */
+        margin-left: 10px;
+    }
+
+    .thursday {
+        margin-right: 500px;
+    }
+
+    /* Reduce the left padding for "Fri" */
+    .friday {
+        transform: translateX(-3px);
+    }
+    .saturday {
+        transform: translateX(-4px);
+    }
 </style>
 {% endblock %}
 
@@ -201,7 +258,7 @@
     <div id="calendar"></div>
     <div id="event-display">
         <h2 style="font-family: 'SUITE-Regular', Arial, sans-serif;">Record</h2>
-        <div id="event-details"></div>
+        <div id="event-details" class="custom-p01"></div>
     </div>
 </div>
 <div class="calendar-buttons">
@@ -237,6 +294,24 @@
         weekdays.forEach(weekday => {
             const dayCell = document.createElement('th');
             dayCell.textContent = weekday;
+
+            // Add a class for styling the gap
+            if (weekday === 'Thu') {
+                dayCell.classList.add('thursday');
+            } else if (weekday === 'Fri') {
+                dayCell.classList.add('friday');
+            }
+            else if (weekday === 'Mon') {
+                dayCell.classList.add('monday');
+            } else if (weekday === 'Tue') {
+                dayCell.classList.add('tuesday');
+            } else if (weekday === 'Wed') {
+                dayCell.classList.add('wednesday');
+            } else if (weekday === 'Sat') {
+                dayCell.classList.add('saturday');
+            } else if (weekday === 'Sun') {
+                dayCell.classList.add('sunday');
+            }
             weekdayRow.appendChild(dayCell);
         });
         table.appendChild(weekdayRow);
@@ -381,7 +456,7 @@
     // });
 
 
-   
+
 
     function displayEventDetails2(date, events) {
         const eventDetailsContainer = document.getElementById('event-details');
@@ -446,6 +521,7 @@
         } else {
             const noEventsMessage = document.createElement('p');
             noEventsMessage.textContent = 'No events for this date.';
+            noEventsMessage.classList.add('no-events');
             eventDetailsContainer.appendChild(noEventsMessage);
         }
     }
