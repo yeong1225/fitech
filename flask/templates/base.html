@@ -39,6 +39,9 @@
                     {% if 'user_id' in session %}
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="calendar">일지</a></li>
                     {% endif %}
+                    {% if 'user_id' in session %}
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href=" mypage">마이 페이지</a></li>
+                    {% endif %}
                     <!--<li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4">아이디</a></li>-->
                     {% if 'user_id' in session %}
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4">{{ session['user_name'] }} 님</a></li>

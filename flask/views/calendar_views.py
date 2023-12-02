@@ -5,12 +5,17 @@ from db_config import db  # db_config 모듈에서 db 불러오기
 
 from flask import jsonify
 import datetime
+from collections import Counter
+import json
 
 
 @cal.route('/calendar')
 def calendar():
     return render_template('calendar.html')
 
+@cal.route('/mypage')
+def mypage():
+    return render_template('mypage.html')
 
 @cal.route('/add_cal', methods=['POST'])
 def add_cal():
@@ -48,6 +53,54 @@ def get_event():
     events = [{'time': row[0], 'memo': row[1]} for row in data]
 
     return jsonify(events)
+
+
+
+@cal.route('/get_yearly_data', methods=['GET'])
+def get_yearly_data():
+    user_id = session.get('user_id')
+    year = "2023"
+
+    cursor = db.cursor()
+
+    # 감정 맵 초기화
+    emotion_map = {
+        'excited': '😆',
+        'happy': '😊',
+        'soso': '😐',
+        'angry': '😠',
+        'sad': '😢'
+    }
+
+    # 연간 감정 데이터 집계
+    yearly_emotions = Counter()
+    emotion_query = "SELECT memo FROM calendar4 WHERE user_id = %s AND date LIKE %s"
+    cursor.execute(emotion_query, (user_id, f'{year}-%',))
+    memos = cursor.fetchall()
+
+    for memo in memos:
+        for word, emoji in emotion_map.items():
+            if word in memo[0]:
+                yearly_emotions[emoji] += 1
+
+    # 월별 시간 데이터 집계
+    monthly_totals = {}
+    for month in range(1, 13):
+        month_str = f"{year}-{month:02d}"
+        time_query = "SELECT SUM(time) FROM calendar4 WHERE user_id = %s AND date LIKE %s"
+        cursor.execute(time_query, (user_id, f'{month_str}-%',))
+        total_minutes = cursor.fetchone()[0] or 0
+        monthly_totals[month_str] = total_minutes
+    
+    total_yearly_minutes = sum(monthly_totals.values())
+    cursor.close()
+
+    # 두 데이터 집합을 하나의 JSON으로 반환
+    return jsonify({
+        "monthly_totals": monthly_totals, 
+        "yearly_emotions": dict(yearly_emotions),
+        "total_yearly_minutes": total_yearly_minutes
+    })
 
 # @cal.route('/get_month_data', methods=['GET'])
 # def get_month_data():

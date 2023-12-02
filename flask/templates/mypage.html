@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+<link href="./static/css/styles3.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<header class="masthead" style="background-image: url('./static/img/yoga.jpg'); background-size: cover;">
+</header>
+
+<div id="totalYearlyMinutes">
+    <!-- 총 운동 시간이 여기에 표시됩니다 -->
+</div>
+
+<div>
+    <canvas id="monthDataChart"></canvas>
+</div>
+<div>
+    <canvas id="emotionFrequencyChart"></canvas>
+</div>
+
+<script>
+    fetch('/get_yearly_data')
+        .then(response => response.json())
+        .then(data => {
+            // 시간 데이터 차트
+            const timeCtx = document.getElementById('monthDataChart').getContext('2d');
+            new Chart(timeCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.monthly_totals),
+                    datasets: [{
+                        label: 'Total Minutes',
+                        data: Object.values(data.monthly_totals),
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            document.getElementById('totalYearlyMinutes').innerText =
+                `총 운동 시간: ${data.total_yearly_minutes} 분`;
+
+            // 연간 감정 빈도수 차트
+            const emotionCtx = document.getElementById('emotionFrequencyChart').getContext('2d');
+            new Chart(emotionCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.yearly_emotions),
+                    datasets: [{
+                        label: 'Emotion Frequency',
+                        data: Object.values(data.yearly_emotions),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+
+</script>
+
+
+
+{% endblock %}
+
