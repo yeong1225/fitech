@@ -614,34 +614,46 @@ def compare_pose(image,angle_point,angle_user,labels):
     #[176, 173, 165, 170, 122, 130, 175, 90]
     #[177, 175, 169, 171, 126, 145, 175, 90]
     if labels == "Warrior1":
+        
         angle_target = np.array([176, 173, 165, 170, 122, 130, 175, 115])
-        if angle_user[6] < (angle_target[6] - 30):
-            #print("Extend the angle of right knee")
+        user_elbow = (angle_user[0] + angle_user[1])/2  
+        target_elbow = (angle_target[0] + angle_target[1])/2  
+        if user_elbow < (target_elbow - 20):
+            feedback1 = "팔꿈치를 펴세요"
             stage = stage + 1
-            feedback1 = "오른쪽 무릎을 세우세요."
-            #cv2.putText(image, str("Extend the angle of right knee"), (10,300), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
-            cv2.circle(image,(int(angle_point[6][0]*width), int(angle_point[6][1]*height)),30,(0,0,255),5)
+            #cv2.putText(image, str("Extend the right arm at elbow"), (10,60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
+            cv2.circle(image,(int(angle_point[0][0]*width), int(angle_point[0][1]*height)),30,(0,0,255),5)
+            cv2.circle(image,(int(angle_point[1][0]*width), int(angle_point[1][1]*height)),30,(0,0,255),5)
         else:
             feedback1 = ""
         send_feedback1(feedback1)
+        if angle_user[6] < (angle_target[6] - 30):
+            #print("Extend the angle of right knee")
+            stage = stage + 1
+            feedback2 = "오른쪽 무릎을 세우세요."
+            #cv2.putText(image, str("Extend the angle of right knee"), (10,300), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
+            cv2.circle(image,(int(angle_point[6][0]*width), int(angle_point[6][1]*height)),30,(0,0,255),5)
+        else:
+            feedback2 = ""
+        send_feedback2(feedback2)
 
         if angle_user[7] < (angle_target[7] - 30):
             stage = stage + 1
-            feedback2 = "왼쪽 무릎을 더 세우세요"
+            feedback3 = "왼쪽 무릎을 더 세우세요"
             #cv2.putText(image, str("Extend the angle at left knee"), (10,340), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)
         else:
-            feedback2= ""
-        send_feedback2(feedback2)
+            feedback3= ""
+        send_feedback3(feedback3)
 
         if angle_user[7] > (angle_target[7] + 40):
             stage = stage + 1
-            feedback3 = "왼쪽 무릎을 더 굽히세요"
+            feedback4 = "왼쪽 무릎을 더 굽히세요"
             #cv2.putText(image, str("Reduce the angle at left knee"), (10,360), cv2.FONT_HERSHEY_SIMPLEX, 0.7, [0,153,0], 2, cv2.LINE_AA)
             cv2.circle(image,(int(angle_point[7][0]*width), int(angle_point[7][1]*height)),30,(0,0,255),5)
         else:
-            feedback3 =""
-        send_feedback3(feedback3)
+            feedback4 =""
+        send_feedback4(feedback4)
     feedback4 = ""
     feedback5 = ""
     feedback6 = ""
