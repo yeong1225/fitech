@@ -4,7 +4,7 @@ import pymysql
 try:
     # MySQL 연결 설정
     db = pymysql.connect(
-        host='database-3.cdha8hslaur6.ap-northeast-2.rds.amazonaws.com',
+        host='admin.cdha8hslaur6.ap-northeast-2.rds.amazonaws.com',
         port=3306,
         user='root',
         passwd='root1234',

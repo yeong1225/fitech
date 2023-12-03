@@ -15,7 +15,8 @@ def calendar():
 
 @cal.route('/mypage')
 def mypage():
-    return render_template('mypage.html')
+    user_name = session.get('user_name')
+    return render_template('mypage.html',user_name=user_name)
 
 @cal.route('/commu')
 def commu():
