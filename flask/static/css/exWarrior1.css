@@ -11,7 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: stretch;
-    gap: 100px;
+    gap: 50px;
     padding: 50px;
     margin-top: 20px;
 }
@@ -61,6 +61,8 @@
     font-size: 25px;
     color: #000000;
     text-align: left;
+    margin-left:40px;
+    margin-right:40px;
 }
 
 .text-style-1 i {
