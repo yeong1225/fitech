@@ -232,17 +232,21 @@
 
                 document.getElementById('labelDisplay').innerHTML = 'Downdog';
 
-                // Listen for the 'return_time' event
+                // Listen for the 'label' event
                 socket.on('label', function (data) {
-                    var label = data.label;
-                    document.getElementById('labelDisplay').innerHTML = label;
-                    var imageUrl = "{{ url_for('static', filename='gif/') }}" + label + ".gif";
-                    console.log(label);
-                    // Find the image element and update its src attribute
-                    var imageElement = document.querySelector('.downdog-container img');
-                    if (imageElement) {
-                        imageElement.src = imageUrl;
-                    }
+                var label = data.label;
+                document.getElementById('labelDisplay').innerHTML = label;
+                var imageUrl = "{{ url_for('static', filename='gif/') }}" + label + ".gif";
+                console.log(label);
+                // Find the image element and update its src attribute
+                var imageElement = document.querySelector('.downdog-container img');
+                if (imageElement) {
+                imageElement.src = imageUrl;
+                }
+
+                // 음성으로 label 값을 출력
+                var msg = new SpeechSynthesisUtterance(label);
+                window.speechSynthesis.speak(msg);
                 });
 
                 var beforefeedback1 = ''; // 이전 피드백 내용을 저장할 변수
@@ -263,7 +267,7 @@
                 var feedbackCount7 = 0;
                 var feedbackCount8 = 0;
 
-                var setcount = 90;
+                var setcount = 50;
 
                 // Listen for the 'return_time' event
                 socket.on('feedback1', function (data) {
@@ -313,7 +317,7 @@
 
                 // Listen for the 'feedback4' event
                 socket.on('feedback4', function (data) {
-                    if (feedback4 ==! ""){
+                    if (feedback4 !== ""){
                         feedbackCount4++;
                     }
                     var feedback4 = data.feedback4;
@@ -330,7 +334,7 @@
 
                 // Listen for the 'feedback5' event
                 socket.on('feedback5', function (data) {
-                    if (feedback5 ==! ""){
+                    if (feedback5 !== ""){
                         feedbackCount5++;
                     }
                     var feedback5 = data.feedback5;
@@ -347,7 +351,7 @@
 
                 // Listen for the 'feedback6' event
                 socket.on('feedback6', function (data) {
-                    if (feedback6 ==! ""){
+                    if (feedback6 !== ""){
                         feedbackCount6++;
                     }
                     var feedback6 = data.feedback6;
@@ -364,7 +368,7 @@
 
                 // Listen for the 'feedback7' event
                 socket.on('feedback7', function (data) {
-                    if (feedback7 ==! ""){
+                    if (feedback7 !== ""){
                         feedbackCount7++;
                     }
                     var feedback7 = data.feedback7;
@@ -381,7 +385,7 @@
 
                 // Listen for the 'feedback8' event
                 socket.on('feedback8', function (data) {
-                    if (feedback8 ==! ""){
+                    if (feedback8 !== ""){
                         feedbackCount8++;
                     }
                     var feedback8 = data.feedback8;
